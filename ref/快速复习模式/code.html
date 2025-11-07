@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rapid Review Mode</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;family=Noto+Sans+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+        }
+        .font-english { font-family: 'Poppins', sans-serif; }
+        .font-chinese { font-family: 'Noto Sans SC', sans-serif; }
+    </style>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#667EEA",
+                        "success": "#48BB78",
+                        "warning": "#F6AD55",
+                        "error": "#FC8181",
+                        "background": "#F7FAFC",
+                    },
+                    fontFamily: {
+                        'display': ['Poppins', 'Noto Sans SC', 'sans-serif'],
+                        'english': ['Poppins', 'sans-serif'],
+                        'chinese': ['Noto Sans SC', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "8px",
+                        "lg": "12px",
+                        "xl": "16px",
+                        "full": "9999px",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background">
+<div class="relative flex h-screen w-full flex-col font-display antialiased">
+<!-- Pause Overlay -->
+<div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/60 p-8 backdrop-blur-sm">
+<div class="flex w-full max-w-sm flex-col items-center gap-6 rounded-xl bg-white p-8 shadow-xl">
+<h2 class="text-2xl font-bold text-gray-800 font-chinese">暂停中</h2>
+<div class="flex w-full justify-around text-center">
+<div>
+<p class="text-3xl font-bold text-primary">15/50</p>
+<p class="text-sm text-gray-500 font-chinese">已复习</p>
+</div>
+<div>
+<p class="text-3xl font-bold text-success">12</p>
+<p class="text-sm text-gray-500 font-chinese">正确</p>
+</div>
+</div>
+<div class="mt-4 flex w-full flex-col gap-3">
+<button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary text-base font-bold text-white font-chinese">继续学习</button>
+<button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-gray-200 text-base font-bold text-gray-700 font-chinese">结束练习</button>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="relative z-10 flex flex-grow flex-col">
+<!-- Top App Bar -->
+<div class="flex items-center p-4">
+<button class="flex size-12 items-center justify-center rounded-full text-gray-500 hover:bg-gray-200">
+<span class="material-symbols-outlined text-3xl">pause</span>
+</button>
+<h2 class="flex-1 text-center text-lg font-bold text-gray-700">25 / 50</h2>
+<div class="flex w-12 items-center justify-end">
+<p class="text-base font-bold text-gray-500">01:23</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="px-4 pb-4">
+<div class="h-2 rounded-full bg-gray-200">
+<div class="h-2 rounded-full bg-primary" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Card -->
+<div class="flex flex-grow flex-col items-center justify-center px-4">
+<div class="flex w-full max-w-md transform cursor-pointer flex-col items-stretch justify-start rounded-lg bg-white p-6 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.08)]">
+<div class="flex min-h-[280px] w-full grow flex-col items-center justify-center gap-4 text-center">
+<p class="font-english text-4xl font-bold tracking-tight text-gray-900">Eloquent</p>
+<!-- Card back content would be toggled here -->
+<!-- 
+                        <div class="flex flex-col items-center gap-4">
+                           <p class="text-gray-500 font-english">adj.</p>
+                           <p class="font-chinese text-2xl font-bold text-gray-800">有说服力的</p>
+                           <p class="font-english mt-2 text-base text-gray-600">She made an eloquent appeal for action.</p>
+                        </div> 
+                        -->
+</div>
+</div>
+</div>
+<!-- Button Group -->
+<div class="grid grid-cols-2 gap-3 p-4">
+<button class="flex h-16 min-w-[84px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-success text-white shadow-sm">
+<span class="material-symbols-outlined">thumb_up</span>
+<span class="truncate text-base font-bold font-chinese">秒懂</span>
+</button>
+<button class="flex h-16 min-w-[84px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-primary text-white shadow-sm">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="truncate text-base font-bold font-chinese">记得</span>
+</button>
+<button class="flex h-16 min-w-[84px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-warning text-white shadow-sm">
+<span class="material-symbols-outlined">help</span>
+<span class="truncate text-base font-bold font-chinese">模糊</span>
+</button>
+<button class="flex h-16 min-w-[84px] cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg bg-error text-white shadow-sm">
+<span class="material-symbols-outlined">cancel</span>
+<span class="truncate text-base font-bold font-chinese">忘记</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,306 @@
+id,word,phonetic_uk,phonetic_us,meanings,hasEtymology,hasMemoryStory,hasAcademicContext,hasDailyContext,hasGameDescription
+w0001,"a","/ə, eɪ(ən)/","/ə, eɪ(ən)/","一（个、件……）",false,true,true,true,true
+w0003,"able","/ˈeɪb(ə)l/","/ˈeɪb(ə)l/","能够, 有能力的",false,true,true,true,true
+w0004,"about","/əˈbaʊt/","/əˈbaʊt/","大约, 到处, 四处 prep. 关于",false,true,true,true,true
+w0019,"after","/ˈɑːftə(r)/","/ˈɑːftə(r)/","在后, 后来 prep. 在…之后 conj. 在…以后",true,true,true,true,true
+w0021,"again","/əˈɡeɪn/","/əˈɡeɪn/","再一次, 再, 又",false,true,true,true,true
+w0025,"agree","/əˈɡriː/","/əˈɡriː/","同意",false,true,true,true,true
+w0026,"air","/eə(r)/","/eə(r)/","空气, 大气",false,true,true,true,true
+w0033,"all","/ɔːl/","/ɔːl/","全部地 a. 全（部）, 所有的, 总",false,true,true,true,true
+w0034,"allow","/əˈlaʊ/","/əˈlaʊ/","允许, 准许",false,true,true,true,true
+w0035,"almost","/ˈɔːlməʊst/","/ˈɔːlməʊst/","几乎, 差不多",false,true,true,true,true
+w0039,"also","/ˈɔːlsəʊ/","/ˈɔːlsəʊ/","也",false,true,true,true,true
+w0040,"although","/ɔːlˈðəʊ/","/ɔːlˈðəʊ/","虽然, 尽管",false,true,true,true,true
+w0041,"always","/ˈɔːlweɪz/","/ˈɔːlweɪz/","总是, 一直, 永远",false,true,true,true,true
+w0046,"among","/əˈmʌŋ/","/əˈmʌŋ/","在…中间, 在（三个以上）之间",false,true,true,true,true
+w0047,"and","/ənd, ænd/","/ənd, ænd/","和, 又",false,true,true,true,true
+w0051,"another","/əˈnʌðə(r)/","/əˈnʌðə(r)/","再一, 另一, 别的 pron. 另一个",true,true,true,true,true
+w0053,"any","/ˈenɪ/","/ˈenɪ/","任何的, （用于疑问句、否定句）一些, 什么",false,true,true,true,true
+w0063,"area","/ˈeərɪə/","/ˈeərɪə/","面积, 地域, 区域",false,true,true,true,true
+w0066,"around","/əˈraʊnd/","/əˈraʊnd/","在周围, 在附近 prep. 在…周围, 大约",false,true,true,true,true
+w0074,"ask","/ɑːsk/","/ɑːsk/","问, 请求, 要求",true,true,true,true,true
+w0077,"at","/æt/","/æt/","在（几点钟）, 在（某处）",false,true,true,true,true
+w0087,"away","/əˈweɪ/","/əˈweɪ/","离开, 远离",false,true,true,true,true
+w0089,"back","/bæk/","/bæk/","回（原处）, 向后 a. 后面的 n. 背后, 后部",false,true,true,true,true
+w0103,"be","/biː/","/biː/","是 (am, is, are",false,true,true,true,true
+w0107,"because","/bɪˈkɔz; (US) bɪˈkɔːz/","/bɪˈkɔz; (US) bɪˈkɔːz/","因为",false,true,true,true,true
+w0113,"before","/bɪˈfɔː(r)/","/bɪˈfɔː(r)/","在…以前, 在…前面 ad. 以前 conj. 在…之前",false,true,true,true,true
+w0117,"believe","/bɪˈliːv/","/bɪˈliːv/","相信, 认为",true,true,true,true,true
+w0123,"big","/bɪɡ/","/bɪɡ/","大的",true,true,true,true,true
+w0144,"both","/bəʊθ/","/bəʊθ/","两, 双 pron. 两者, 双方",false,true,true,true,true
+w0169,"but","/bət, bʌt/","/bət, bʌt/","但是, 可是 prep. 除了, 除……外",false,true,true,true,true
+w0173,"by","/baɪ/","/baɪ/","在…旁, 不迟于, 被",false,true,true,true,true
+w0178,"call","/kɔːl/","/kɔːl/","喊, 叫, 电话",true,true,true,true,true
+w0181,"can","/ken, kæn/","/ken, kæn/","可能, 能够, 可以 n.（美）罐头",false,true,true,true,true
+w0191,"care","/keə(r)/","/keə(r)/","照料, 保护, 小心 v. 介意…",false,true,true,true,true
+w0195,"carry","/ˈkærɪ/","/ˈkærɪ/","拿, 搬, 带",false,true,true,true,true
+w0197,"cause","/kɔːz/","/kɔːz/","原因, 起因 vt. 促使, 引起",false,true,true,true,true
+w0203,"certain","/ˈsɜːt(ə)n/","/ˈsɜːt(ə)n/","（未指明真实名称的）某…, 确定的, 无疑的",false,true,true,true,true
+w0208,"change","/tʃeɪndʒ/","/tʃeɪndʒ/","零钱, 找头 v. 改变, 变化",true,true,true,true,true
+w0225,"city","/ˈsɪtɪ/","/ˈsɪtɪ/","市, 城市, 都市",false,true,true,true,true
+w0234,"close","/kləʊz/","/kləʊz/","亲密的, 近, 靠近 ad. 近",true,true,true,true,true
+w0254,"company","/ˈkʌmpənɪ/","/ˈkʌmpənɪ/","公司",true,true,true,true,true
+w0266,"continue","/kənˈtɪnjuː/","/kənˈtɪnjuː/","继续",true,true,true,true,true
+w0277,"country","/ˈkʌntrɪ/","/ˈkʌntrɪ/","国家, 农村, 乡下",true,true,true,true,true
+w0280,"course","/kɔːs/","/kɔːs/","过程, 经过, 课程",true,true,true,true,true
+w0307,"decide","/dɪˈsaɪd/","/dɪˈsaɪd/","决定, 下决心",true,true,true,true,true
+w0331,"different","/ˈdɪfərənt/","/ˈdɪfərənt/","不同的, 有差异的",true,true,true,true,true
+w0332,"difficult","/ˈdɪfɪkəlt/","/ˈdɪfɪkəlt/","难, 艰难, 不易相处的",true,true,true,true,true
+w0359,"door","/dɔː(r)/","/dɔː(r)/","门",false,true,true,true,true
+w0361,"down","/daʊn/","/daʊn/","沿着, 沿…而下 ad. 向下",false,true,true,true,true
+w0375,"during","/ˈdjuərɪŋ; (US) ˈdɪərɪŋ/","/ˈdjuərɪŋ; (US) ˈdɪərɪŋ/","在…期间, 在…过程中",false,true,true,true,true
+w0380,"early","/ɜːlɪ/","/ɜːlɪ/","早的 ad. 早地",true,true,true,true,true
+w0386,"education","/edjʊːkeɪʃ (ə)n/","/edjʊːkeɪʃ (ə)n/","教育, 培养",true,true,true,true,true
+w0403,"end","/end/","/end/","末尾, 终点, 结束 v. 结束",true,true,true,true,true
+w0410,"enough","/ɪˈnʌf/","/ɪˈnʌf/","足够, 充足 a. 足够, 充分的 ad. 足够地",false,true,true,true,true
+w0411,"enter","/ˈentə(r)/","/ˈentə(r)/","进入",true,true,true,true,true
+w0425,"even","/ˈiːv(ə)n/","/ˈiːv(ə)n/","甚至, 连（…都）, 更",false,true,true,true,true
+w0429,"every","/ˈevrɪ/","/ˈevrɪ/","每一, 每个的",false,true,true,true,true
+w0438,"example","/ɪɡˈzɑːmp(ə)l; (US) ɪɡˈzæmpl/","/ɪɡˈzɑːmp(ə)l; (US) ɪɡˈzæmpl/","例子, 榜样",true,true,true,true,true
+w0448,"experience","/ɪkˈspɪərɪəns/","/ɪkˈspɪərɪəns/","经验, 经历",true,true,true,true,true
+w0454,"face","/feɪs/","/feɪs/","脸 vt. 面向, 面对",false,true,true,true,true
+w0455,"fact","/fækt/","/fækt/","事实, 现实",false,true,true,true,true
+w0459,"family","/ˈfæmɪlɪ/","/ˈfæmɪlɪ/","家庭, 家族, 子女",true,true,true,true,true
+w0478,"few","/fjuː/","/fjuː/","不多, 少数, 不多的",false,true,true,true,true
+w0479,"field","/fiːld/","/fiːld/","田地, 牧场, 场地",false,true,true,true,true
+w0492,"first","/fɜːst/","/fɜːst/","第一 a.& ad. 第一, 首次, 最初 n. 开始",false,true,true,true,true
+w0506,"follow","/ˈfɔləʊ/","/ˈfɔləʊ/","跟随, 仿效, 跟得上",true,true,true,true,true
+w0509,"food","/fuːd/","/fuːd/","食物, 食品",true,true,true,true,true
+w0512,"for","/fə(r), f ɔː (r)/","/fə(r), f ɔː (r)/","为了…, 因为…, 对于…",false,true,true,true,true
+w0519,"form","/fɔːm/","/fɔːm/","表格, 形式, 结构",false,true,true,true,true
+w0534,"friend","/frend/","/frend/","朋友",true,true,true,true,true
+w0538,"from","/frəm, frɔm/","/frəm, frɔm/","从, 从…起, 来自",false,true,true,true,true
+w0542,"full","/fʊl/","/fʊl/","满的, 充满的, 完全的",false,true,true,true,true
+w0547,"game","/ɡeɪm/","/ɡeɪm/","游戏, 运动, 比赛",false,true,true,true,true
+w0550,"general","/ˈdʒenər(ə)l/","/ˈdʒenər(ə)l/","大体, 笼统的, 总的",true,true,true,true,true
+w0566,"government","/ˈɡʌvənmənt/","/ˈɡʌvənmənt/","政府",true,true,true,true,true
+w0578,"great","/ɡreɪt/","/ɡreɪt/","伟大的, 重要的, 好极了 ad.（口语）好极了",true,true,true,true,true
+w0582,"group","/ɡruːp/","/ɡruːp/","组, 群",false,true,true,true,true
+w0593,"hand","/hænd/","/hænd/","手, 指针 v. 递, 给",false,true,true,true,true
+w0598,"hard","/hɑːd/","/hɑːd/","努力地, 猛烈地 a. 硬的, 困难的",false,true,true,true,true
+w0602,"he","/heɪ/","/heɪ/","他",false,true,true,true,true
+w0603,"head","/hed/","/hed/","头, 头脑, 首脑",false,true,true,true,true
+w0606,"health","/helθ/","/helθ/","健康, 卫生",false,true,true,true,true
+w0615,"help","/help/","/help/","& vt. 帮助, 帮忙",true,true,true,true,true
+w0618,"her","/hɜː(r)/","/hɜː(r)/","她(宾格), 她的",false,true,true,true,true
+w0619,"here","/hɪə(r)/","/hɪə(r)/","这里, 在这里, 向这里",false,true,true,true,true
+w0625,"high","/haɪ/","/haɪ/","高的, 高度的 ad. 高地",false,true,true,true,true
+w0628,"him","/hɪm/","/hɪm/","他（宾格）",false,true,true,true,true
+w0630,"his","/hɪz/","/hɪz/","他的",false,true,true,true,true
+w0631,"history","/ˈhɪstərɪ/","/ˈhɪstərɪ/","历史, 历史学",false,true,true,true,true
+w0635,"home","/həʊm/","/həʊm/","家 ad. 到家, 回家",true,true,true,true,true
+w0647,"house","/haʊs/","/haʊs/","房子, 住宅",false,true,true,true,true
+w0650,"how","/haʊ/","/haʊ/","怎样, 如何, 多么",false,true,true,true,true
+w0651,"however","/haʊˈevə(r)/","/haʊˈevə(r)/","可是 conj. 然而, 可是, 尽管如此",true,true,true,true,true
+w0654,"human","/ˈhjuːmən/","/ˈhjuːmən/","人的, 人类的",false,true,true,true,true
+w0661,"idea","/aɪˈdɪə/","/aɪˈdɪə/","主意, 意见, 打算",false,true,true,true,true
+w0663,"if","/ɪf/","/ɪf/","如果, 假使, 是否",false,true,true,true,true
+w0668,"important","/ɪmˈpɔːtənt/","/ɪmˈpɔːtənt/","重要的",true,true,true,true,true
+w0671,"in","/ɪn/","/ɪn/","在…里(内), 在 ad. 在家, 在内",false,true,true,true,true
+w0673,"include","/ɪnˈkluːd/","/ɪnˈkluːd/","包含, 包括",true,true,true,true,true
+w0674,"increase","/ɪnˈkriːs/","/ɪnˈkriːs/","& n. 增加, 繁殖",true,true,true,true,true
+w0677,"information","/ɪnfəˈmeɪʃ(ə)n/","/ɪnfəˈmeɪʃ(ə)n/","信息",true,true,true,true,true
+w0685,"interest","/ˈɪntrɪst/","/ˈɪntrɪst/","兴趣, 趣味, 利息",true,true,true,true,true
+w0689,"into","/ˈɪntʊ, ˈɪntə/","/ˈɪntʊ, ˈɪntə/","到…里, 向内, 变成",false,true,true,true,true
+w0697,"it","/ɪt/","/ɪt/","它",false,true,true,true,true
+w0698,"its","/ɪts/","/ɪts/","它的",false,true,true,true,true
+w0706,"job","/dʒɔb/","/dʒɔb/","（一份）工作",false,true,true,true,true
+w0719,"just","/dʒʌst/","/dʒʌst/","刚才, 恰好, 不过",false,true,true,true,true
+w0728,"kind","/kaɪnd/","/kaɪnd/","种, 类 a. 善良, 友好的",false,true,true,true,true
+w0742,"large","/lɑːdʒ/","/lɑːdʒ/","大的, 巨大的",false,true,true,true,true
+w0743,"last","/lɑːst; (US) læst/","/lɑːst; (US) læst/","最后的 ad. 最后地 n. 最后 v. 持续",false,true,true,true,true
+w0744,"late","/leɪt/","/leɪt/","晚的, 迟的 ad. 晚地, 迟地",false,true,true,true,true
+w0746,"later","/ˈleɪtə(r)/","/ˈleɪtə(r)/","晚些的, 迟些的",true,true,true,true,true
+w0751,"least","/liːst/","/liːst/","最少, 最少量",false,true,true,true,true
+w0753,"left","/left/","/left/","左边的 ad. 向左 n. 左, 左边",false,true,true,true,true
+w0762,"light","/laɪt/","/laɪt/","光, 光亮, 灯",false,true,true,true,true
+w0763,"like","/laɪk/","/laɪk/","像, 跟…一样 vt. 喜欢, 喜爱",false,true,true,true,true
+w0764,"line","/laɪn/","/laɪn/","绳索, 线, 排",false,true,true,true,true
+w0770,"live","/lɪv/","/lɪv/","生活, 居住, 活着 a. 活的",true,true,true,true,true
+w0776,"long","/lɔŋ; (US) lɔːŋ/","/lɔŋ; (US) lɔːŋ/","长的, 远 ad. 长久",false,true,true,true,true
+w0777,"look","/lʊk/","/lʊk/","看, 瞧 v. 看, 观看 v. link 看起来",true,true,true,true,true
+w0778,"lot","/lɔt/","/lɔt/","许多, 好些",false,true,true,true,true
+w0797,"market","/ˈmɑːkɪt/","/ˈmɑːkɪt/","市场, 集市",false,true,true,true,true
+w0799,"matter","/ˈmætə(r)/","/ˈmætə(r)/","要紧事, 要紧, 事情",true,true,true,true,true
+w0800,"May","/meɪ/","/meɪ/","5月",false,true,true,true,true
+w0802,"me","/miː, mɪ/","/miː, mɪ/","我（宾格）",false,true,true,true,true
+w0807,"member","/ˈmembə(r)/","/ˈmembə(r)/","成员, 会员",true,true,true,true,true
+w0817,"might","/maɪt/","/maɪt/","aux. (may的过去式, 助动词) 可能, 也许",false,true,true,true,true
+w0822,"mind","/maɪnd/","/maɪnd/","思想, 想法 v.介意, 关心",false,true,true,true,true
+w0826,"minute","/ˈmɪnɪt/","/ˈmɪnɪt/","分钟, 一会儿, 瞬间",false,true,true,true,true
+w0828,"miss","/mɪs/","/mɪs/","失去, 错过, 缺",false,true,true,true,true
+w0833,"moment","/ˈməumənt/","/ˈməumənt/","片刻, 瞬间",true,true,true,true,true
+w0835,"money","/ˈmʌnɪ/","/ˈmʌnɪ/","钱, 货币",false,true,true,true,true
+w0837,"month","/mʌnθ/","/mʌnθ/","月, 月份",false,true,true,true,true
+w0841,"morning","/ˈmɔːnɪŋ/","/ˈmɔːnɪŋ/","早晨, 上午",false,true,true,true,true
+w0842,"mother","/ˈmʌðə(r)/","/ˈmʌðə(r)/","母亲",true,true,true,true,true
+w0847,"move","/muːv/","/muːv/","移动, 搬动, 搬家",true,true,true,true,true
+w0853,"must","/mʌst/","/mʌst/","必须, 应当, 必定是",false,true,true,true,true
+w0855,"my","/maɪ/","/maɪ/","我的",false,true,true,true,true
+w0858,"name","/neɪm/","/neɪm/","名字, 姓名, 名称 vt. 命名",false,true,true,true,true
+w0861,"national","/ˈnæʃən(ə)l/","/ˈnæʃən(ə)l/","国家的, 全国性的, 民族的",true,true,true,true,true
+w0863,"nature","/ˈneɪtʃə(r)/","/ˈneɪtʃə(r)/","自然, 性质, 种类",false,true,true,true,true
+w0864,"near","/nɪə(r)/","/nɪə(r)/","近的 ad. 附近, 邻近 prep. 在…附近, 靠近",false,true,true,true,true
+w0872,"need","/niːd/","/niːd/","需要, 需求 aux.& v. 需要, 必须",true,true,true,true,true
+w0878,"never","/ˈnevə(r)/","/ˈnevə(r)/","决不, 从来没有",true,true,true,true,true
+w0879,"new","/njuː; (US) nuː/","/njuː; (US) nuː/","新的, 新鲜的",true,true,true,true,true
+w0882,"next","/nekst/","/nekst/","下一个的, 紧挨着的, 隔壁的 ad. 随后",false,true,true,true,true
+w0885,"night","/naɪt/","/naɪt/","夜, 夜间",false,true,true,true,true
+w0890,"no","/nəʊ/","/nəʊ/","不, 不是 a. 没有, 无",false,true,true,true,true
+w0905,"not","/nɔt/","/nɔt/","不, 没",false,true,true,true,true
+w0908,"nothing","/ˈnʌθɪŋ/","/ˈnʌθɪŋ/","没有东西, 没有什么",false,true,true,true,true
+w0909,"notice","/ˈnəʊtɪs/","/ˈnəʊtɪs/","布告, 通告, 注意 vt. 注意",false,true,true,true,true
+w0911,"now","/naʊ/","/naʊ/","现在",false,true,true,true,true
+w0913,"number","/ˈnʌmbə(r)/","/ˈnʌmbə(r)/","数, 数字, 号码",true,true,true,true,true
+w0919,"of","/ɔv, əv; (US) ˈɔf/","/ɔv, əv; (US) ˈɔf/","….的",false,true,true,true,true
+w0920,"off","/ɔːf/","/ɔːf/","离开, 脱离, （走）开",false,true,true,true,true
+w0921,"office","/ˈɔfɪs/","/ˈɔfɪs/","办公室",false,true,true,true,true
+w0922,"often","/ˈɔf(ə)n; (US) ˈɔːfn/","/ˈɔf(ə)n; (US) ˈɔːfn/","经常, 常常",false,true,true,true,true
+w0925,"old","/əʊld/","/əʊld/","老的, 旧的",true,true,true,true,true
+w0926,"on","/ɔn/","/ɔn/","在…上（时）, 关于 ad. 接通, 进行下去",false,true,true,true,true
+w0927,"one","/wʌn/","/wʌn/","一（个, 只…）",false,true,true,true,true
+w0929,"only","/ˈəʊnlɪ/","/ˈəʊnlɪ/","惟一的, 仅有的 ad. 仅仅, 只",false,true,true,true,true
+w0931,"open","/ˈəʊpən/","/ˈəʊpən/","开着的, 开的 vt. 开, 打开",true,true,true,true,true
+w0934,"or","/ə(r), ɔː(r)/","/ə(r), ɔː(r)/","或, 就是, 否则",false,true,true,true,true
+w0936,"order","/ˈɔːdə(r)/","/ˈɔːdə(r)/","定购, 定货, 点菜n. 顺序",true,true,true,true,true
+w0938,"other","/ˈʌðə(r)/","/ˈʌðə(r)/","别人, 别的东西 a. 别的, 另外的",true,true,true,true,true
+w0939,"our","/ˈaʊə(r)/","/ˈaʊə(r)/","我们的",false,true,true,true,true
+w0941,"out","/aʊt/","/aʊt/","出外, 在外, 向外",false,true,true,true,true
+w0944,"over","/ˈəʊvə(r)/","/ˈəʊvə(r)/","在…上方, 越过, 遍及 ad. 翻倒",false,true,true,true,true
+w0946,"own","/əʊn/","/əʊn/","自己的 v. 拥有, 所有",false,true,true,true,true
+w0967,"part","/pɑːt/","/pɑːt/","部分, 角色, 部件",false,true,true,true,true
+w0968,"party","/ˈpɑːtɪ/","/ˈpɑːtɪ/","聚会, 晚会, 党派",false,true,true,true,true
+w0969,"pass","/pɑːs; (US) pæs/","/pɑːs; (US) pæs/","传, 递, 经过",false,true,true,true,true
+w0972,"past","/pɑːst; (US) pæst/","/pɑːst; (US) pæst/","过 n. 过去, 昔日, 往事 prep. 过…",false,true,true,true,true
+w0980,"people","/ˈpiːp(ə)l/","/ˈpiːp(ə)l/","人, 人们, 人民",false,true,true,true,true
+w0983,"perhaps","/pəˈhæps/","/pəˈhæps/","可能, 或",false,true,true,true,true
+w0985,"person","/ˈpɜːs(ə)n/","/ˈpɜːs(ə)n/","人",false,true,true,true,true
+w1003,"place","/pleɪs/","/pleɪs/","地方, 处所 v. 放置, 安置",false,true,true,true,true
+w1009,"play","/pleɪ/","/pleɪ/","玩, 打（球）, 游戏",true,true,true,true,true
+w1017,"point","/pɔɪnt/","/pɔɪnt/","指, 指向 n. 点, 分数",false,true,true,true,true
+w1029,"possible","/ˈpɔsɪb(ə)l/","/ˈpɔsɪb(ə)l/","可能的",true,true,true,true,true
+w1041,"present","/ˈprez(ə)nt/","/ˈprez(ə)nt/","出现的, 出席的 n. 礼物, 赠品 vt. 呈奉",true,true,true,true,true
+w1050,"probably","/ˈprɔbəb(ə)lɪ/","/ˈprɔbəb(ə)lɪ/","很可能, 大概",true,true,true,true,true
+w1051,"problem","/ˈprɔbləm/","/ˈprɔbləm/","问题, 难题",true,true,true,true,true
+w1052,"produce","/prəˈdjuːs; (US) -ˈduːs/","/prəˈdjuːs; (US) -ˈduːs/","生产, 制造",false,true,true,true,true
+w1060,"provide","/prəˈvaɪd/","/prəˈvaɪd/","提供",false,true,true,true,true
+w1062,"public","/ˈpʌblɪk/","/ˈpʌblɪk/","公共, 公众的 n. 公众",true,true,true,true,true
+w1068,"question","/ˈkwestʃ(ə)n/","/ˈkwestʃ(ə)n/","询问 n. 问题",true,true,true,true,true
+w1074,"quite","/kwaɪt/","/kwaɪt/","完全, 十分",false,true,true,true,true
+w1084,"raise","/reɪz/","/reɪz/","使升高, 饲养",false,true,true,true,true
+w1086,"rather","/ˈrɑːðə; (US) ˈræðər/","/ˈrɑːðə; (US) ˈræðər/","相当, 宁可",true,true,true,true,true
+w1087,"reach","/riːtʃ/","/riːtʃ/","到达, 伸手(脚)够到",true,true,true,true,true
+w1088,"ready","/ˈredɪ/","/ˈredɪ/","准备好的",true,true,true,true,true
+w1089,"real","/riːl/","/riːl/","真实的, 确实的",false,true,true,true,true
+w1090,"reason","/ˈriːz(ə)n/","/ˈriːz(ə)n/","理由, 原因",true,true,true,true,true
+w1091,"receive","/rɪˈsiːv/","/rɪˈsiːv/","收到, 得到",true,true,true,true,true
+w1101,"remember","/rɪˈmembə(r)/","/rɪˈmembə(r)/","记得, 想起",true,true,true,true,true
+w1104,"research","/rɪˈsɜːtʃ/","/rɪˈsɜːtʃ/","研究, 调查",true,true,true,true,true
+w1107,"result","/rɪˈzʌlt/","/rɪˈzʌlt/","结果, 效果",true,true,true,true,true
+w1108,"return","/rɪˈtɜːn/","/rɪˈtɜːn/","归还",true,true,true,true,true
+w1113,"right","/raɪt/","/raɪt/","权利 a. 对, 正确的 ad. 正确地, 恰恰",false,true,true,true,true
+w1119,"room","/rum/","/rum/","房间, 室, 空间",false,true,true,true,true
+w1141,"same","/seɪm/","/seɪm/","同样的事 a. 同样的, 同一",false,true,true,true,true
+w1150,"school","/skuːl/","/skuːl/","学校",true,true,true,true,true
+w1153,"science","/ˈsaɪəns/","/ˈsaɪəns/","科学, 自然科学",false,true,true,true,true
+w1166,"seem","/siːm/","/siːm/","似乎, 好像",false,true,true,true,true
+w1173,"serve","/sɜːv/","/sɜːv/","招待（顾客等）, 服务",false,true,true,true,true
+w1178,"several","/ˈsevr(ə)l/","/ˈsevr(ə)l/","几个, 数个 a. 若干",true,true,true,true,true
+w1180,"shall","/ʃæl, ʃ(ə)l/","/ʃæl, ʃ(ə)l/","aux.（表示将来）将要, 会, …好吗",false,true,true,true,true
+w1185,"she","/ʃiː/","/ʃiː/","她",false,true,true,true,true
+w1194,"short","/ʃɔːt/","/ʃɔːt/","短的, 矮的",false,true,true,true,true
+w1195,"should","/ʃud/","/ʃud/","mod. 应当, 应该, 会 v. aux. 会",false,true,true,true,true
+w1196,"show","/ʃəʊ/","/ʃəʊ/","展示, 展览（会）, 演出",true,true,true,true,true
+w1200,"side","/said/","/said/","边, 旁边, 面",false,true,true,true,true
+w1202,"since","/sins/","/sins/","从那时以来 conj. 从…以来, …以后, 由于 prep. 从…以来",false,true,true,true,true
+w1218,"small","/smɔːl/","/smɔːl/","小的, 少的",true,true,true,true,true
+w1223,"so","/səʊ/","/səʊ/","如此, 这么, 非常",false,true,true,true,true
+w1225,"society","/səˈsaɪətɪ/","/səˈsaɪətɪ/","社会",false,true,true,true,true
+w1230,"some","/sʌm/","/sʌm/","一些, 若干, 有些",false,true,true,true,true
+w1233,"something","/ˈsʌmθɪŋ/","/ˈsʌmθɪŋ/","某事, 某物",false,true,true,true,true
+w1239,"sound","/saʊnd/","/saʊnd/","听起来, 发出声音 n. 声音",false,true,true,true,true
+w1248,"special","/ˈspeʃ(ə)l/","/ˈspeʃ(ə)l/","特别的, 专门的",true,true,true,true,true
+w1260,"stand","/stænd/","/stænd/","站, 立, 停止",true,true,true,true,true
+w1262,"start","/stɑːt/","/stɑːt/","开始, 着手, 出发",true,true,true,true,true
+w1263,"state","/steɪt/","/steɪt/","状态, 情形, 国家",false,true,true,true,true
+w1267,"still","/stɪl/","/stɪl/","不动的, 平静的 ad. 仍然, 还",false,true,true,true,true
+w1272,"stop","/stɔp/","/stɔp/","停, （停车）站 v. 停, 停止",true,true,true,true,true
+w1275,"story","/ˈstɔːrɪ/","/ˈstɔːrɪ/","故事, 小说",false,true,true,true,true
+w1278,"street","/striːt/","/striːt/","街, 街道",false,true,true,true,true
+w1280,"strong","/strɔŋ/","/strɔŋ/","强(壮)的, 坚固的, 强烈的",false,true,true,true,true
+w1281,"student","/ˈstjuːdənt/","/ˈstjuːdənt/","学生",true,true,true,true,true
+w1282,"study","/ˈstʌdɪ/","/ˈstʌdɪ/","学习, 研究 n. 书房",true,true,true,true,true
+w1284,"subject","/ˈsʌbdʒɪkt/","/ˈsʌbdʒɪkt/","题目, 主题, 学科",true,true,true,true,true
+w1306,"sure","/ʃʊə(r), ʃɔː(r)/","/ʃʊə(r), ʃɔː(r)/","确信, 肯定 ad. (口语)的确, 一定",false,true,true,true,true
+w1313,"table","/ˈteɪb(ə)l/","/ˈteɪb(ə)l/","桌子, 表格",false,true,true,true,true
+w1323,"teacher","/ˈtiːtʃə(r)/","/ˈtiːtʃə(r)/","教师, 教员",true,true,true,true,true
+w1324,"team","/tiːm/","/tiːm/","队, 组",false,true,true,true,true
+w1336,"term","/tɜːm/","/tɜːm/","学期, 术语, 条款",false,true,true,true,true
+w1341,"than","/ðen, ðæn/","/ðen, ðæn/","比",false,true,true,true,true
+w1342,"thank","/θæŋk/","/θæŋk/","感谢, 致谢, 道谢 n.（复）感谢",false,true,true,true,true
+w1344,"the","/ðə, ðɪ, ðiː/","/ðə, ðɪ, ðiː/","这（那）个, 这（那）些",false,true,true,true,true
+w1345,"their","/ðeə(r)/","/ðeə(r)/","他(她, 它)们的",false,true,true,true,true
+w1347,"them","/ð(ə)m, ðem/","/ð(ə)m, ðem/","他/她/它们（宾格）",false,true,true,true,true
+w1348,"themselves","/ðəmˈselvz/","/ðəmˈselvz/","他/她/它们自己",false,true,true,true,true
+w1349,"then","/ðen/","/ðen/","当时, 那时, 然后",false,true,true,true,true
+w1350,"there","/ðeə(r)/","/ðeə(r)/","那!你瞧! n. 那里, 那儿 ad. 在那里, 往那里",false,true,true,true,true
+w1351,"these","/ðiːz/","/ðiːz/","& pron. 这些",false,true,true,true,true
+w1352,"they","/ðeɪ/","/ðeɪ/","他（她）们, 它们",false,true,true,true,true
+w1355,"thing","/θɪŋ/","/θɪŋ/","东西, (复)物品, 用品",false,true,true,true,true
+w1361,"though","/ðəʊ/","/ðəʊ/","虽然, 可是",false,true,true,true,true
+w1365,"through","/θruː/","/θruː/","穿（通）过, 从始至终 ad. 穿(通)过, 自始至终",false,true,true,true,true
+w1367,"thus","/ðʌs/","/ðʌs/","这样, 因而",false,true,true,true,true
+w1372,"time","/taɪm/","/taɪm/","时间, 时期, 钟点",false,true,true,true,true
+w1375,"to","/tʊ, tuː/","/tʊ, tuː/","给, 对, 向",false,true,true,true,true
+w1376,"together","/təˈgeðə/","/təˈgeðə/","一起, 共同",true,true,true,true,true
+w1381,"tomorrow","/təˈmɔrəʊ/","/təˈmɔrəʊ/","& n. 明天",false,true,true,true,true
+w1383,"too","/tuː/","/tuː/","也, 还, 又",false,true,true,true,true
+w1389,"total","/ˈtəʊt(ə)l/","/ˈtəʊt(ə)l/","总数的, 完全的 n./ v. 合计, 总计",true,true,true,true,true
+w1397,"town","/taʊn/","/taʊn/","城镇, 城",false,true,true,true,true
+w1405,"train","/treɪn/","/treɪn/","火车 v. 培训, 训练",false,true,true,true,true
+w1411,"treat","/triːt/","/triːt/","对待, 看待",false,true,true,true,true
+w1412,"tree","/triː/","/triː/","树",false,true,true,true,true
+w1417,"true","/truː/","/truː/","真的, 真实的, 忠诚的",false,true,true,true,true
+w1419,"try","/trai/","/trai/","试, 试图, 努力",true,true,true,true,true
+w1422,"turn","/tɜːn/","/tɜːn/","旋转, 翻转, 转变",true,true,true,true,true
+w1429,"two","/tuː/","/tuː/","二",false,true,true,true,true
+w1430,"type","/ˈtaɪp/","/ˈtaɪp/","打字 n. 种类, 类型",false,true,true,true,true
+w1443,"up","/ʌp/","/ʌp/","向上, 在上方 prep. 向(高处), 向(在)…上(面)游",false,true,true,true,true
+w1444,"upon","/əˈpɔn/","/əˈpɔn/","在…上面",false,true,true,true,true
+w1446,"use","/juːz/","/juːz/","利用, 使用, 应用 n. [juːs] 用法",true,true,true,true,true
+w1452,"usually","/ˈjuːʒʊəlɪ/","/ˈjuːʒʊəlɪ/","通常, 经常",true,true,true,true,true
+w1455,"very","/ˈverɪ/","/ˈverɪ/","很, 非常",false,true,true,true,true
+w1462,"voice","/vɔɪs/","/vɔɪs/","说话声, 语态",false,true,true,true,true
+w1464,"wait","/weɪt/","/weɪt/","等, 等候",true,true,true,true,true
+w1466,"want","/wɔnt/","/wɔnt/","想, 想要, 需要",false,true,true,true,true
+w1467,"war","/wɔː(r)/","/wɔː(r)/","战争",false,true,true,true,true
+w1471,"watch","/wɔtʃ/","/wɔtʃ/","观看, 注视, 当心",true,true,true,true,true
+w1472,"water","/ˈwɔːtə(r)/","/ˈwɔːtə(r)/","水v. 浇水",true,true,true,true,true
+w1473,"way","/weɪ/","/weɪ/","路, 路线, 方式",false,true,true,true,true
+w1474,"we","/wiː, wɪ/","/wiː, wɪ/","我们",false,true,true,true,true
+w1478,"week","/wiːk/","/wiːk/","星期, 周",false,true,true,true,true
+w1489,"what","/wɔt; (US) hwɑt/","/wɔt; (US) hwɑt/","什么, 怎么样 a. 多么, 何等",false,true,true,true,true
+w1493,"when","/wen/","/wen/","当…的时候 ad. 什么时候, 何时",false,true,true,true,true
+w1497,"whether","/ˈweðə(r); (US) ˈhweðər/","/ˈweðə(r); (US) ˈhweðər/","是否",true,true,true,true,true
+w1498,"which","/wɪtʃ; (US) hwɪtʃ/","/wɪtʃ; (US) hwɪtʃ/","哪一个, 哪些",false,true,true,true,true
+w1500,"while","/waɪl; (US) hwaɪl/","/waɪl; (US) hwaɪl/","在…的时候, 和…同时 n. 一会儿, 一段时间",false,true,true,true,true
+w1501,"white","/waɪt; (US) hwaɪt/","/waɪt; (US) hwaɪt/","白色的 n. 白色",false,true,true,true,true
+w1502,"who","/huː/","/huː/","谁",false,true,true,true,true
+w1503,"whole","/həʊl/","/həʊl/","整个的",false,true,true,true,true
+w1505,"whose","/huːz/","/huːz/","谁的",false,true,true,true,true
+w1506,"wide","/waid/","/waid/","宽阔的",false,true,true,true,true
+w1507,"wife","/waɪf/","/waɪf/","妻子",false,true,true,true,true
+w1508,"will","/wɪl/","/wɪl/","意志, 遗嘱",false,true,true,true,true
+w1509,"will","/wɪl/","/wɪl/","将, 会(表示将来), 愿意",false,true,true,true,true
+w1510,"window","/ˈwɪndəʊ/","/ˈwɪndəʊ/","窗户, 计算机的窗",false,true,true,true,true
+w1515,"wish","/wɪʃ/","/wɪʃ/","愿望, 祝愿 vt. 希望, 想要",false,true,true,true,true
+w1516,"without","/wɪðaʊt/","/wɪðaʊt/","没有",false,true,true,true,true
+w1521,"word","/wəːd/","/wəːd/","词, 单词, 话",false,true,true,true,true
+w1522,"work","/wəːk/","/wəːk/","工作, 劳动, 事情 vi. 工作",true,true,true,true,true
+w1526,"world","/wəːld/","/wəːld/","世界",false,true,true,true,true
+w1532,"would","/wəd, wud/","/wəd, wud/","v.（will的过去时）将会, 打算, 想要",false,true,true,true,true
+w1534,"wrong","/rɔŋ/","/rɔŋ/","错误, 不正常, 有毛病的",false,true,true,true,true
+w1536,"year","/jɪə(r), jəː(r)/","/jɪə(r), jəː(r)/","年",false,true,true,true,true
+w1540,"you","/juː, jʊ/","/juː, jʊ/","你, 你们",false,true,true,true,true
+w1541,"young","/jʌŋ/","/jʌŋ/","年轻的",false,true,true,true,true
+w1542,"your","/jɔː/","/jɔː/","你的, 你们的",false,true,true,true,true

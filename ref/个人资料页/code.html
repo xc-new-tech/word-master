@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile Page - Vocabulary App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#667EEA",
+                        "success": "#48BB78",
+                        "warning": "#F6AD55",
+                        "error": "#FC8181",
+                        "background-light": "#F7FAFC",
+                        "background-dark": "#1A202C",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#2D3748",
+                        "text-primary-light": "#2D3748",
+                        "text-primary-dark": "#E2E8F0",
+                        "text-secondary-light": "#718096",
+                        "text-secondary-dark": "#A0AEC0",
+                    },
+                    fontFamily: {
+                        "display": ["Poppins", "Noto Sans SC", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "8px",
+                        "lg": "12px",
+                        "xl": "16px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-text-primary-light dark:text-text-primary-dark">arrow_back_ios_new</span>
+</div>
+<h1 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">我的档案</h1>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-transparent text-text-primary-light dark:text-text-primary-dark gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- Profile Header -->
+<div class="flex p-4 @container">
+<div class="flex w-full flex-col gap-4 items-center">
+<div class="flex gap-4 flex-col items-center">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-24 w-24 border-4 border-white dark:border-card-dark shadow-md" data-alt="A cute, customizable cartoon avatar with a friendly smile." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBr1j6rvwdPR2iw6dbZqTmHMU2R5KExaZjccVbZfI7-X6R5b89bwy0e-zOpjH3wDT5sqq9JnEc7W1pbuE0hXxV2bUZUqzPm6y_iW84crpwvvk0gNuKtfFiGjHka-bJW6DTwQmcZg6eyTVZ5uGbl0T-y-0k8Ih71jM1kAFu2am9_YsvVG6wz5UmrPl-e11pQ54eDflmpizcVnSXiQSu3MD6CEHwlhj0IY362I1dIGEjbia4D5MXfT5OGBEgse-R31AICUZb7mmhf7Opz');"></div>
+<button class="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white shadow-lg">
+<span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+</button>
+</div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-text-primary-light dark:text-text-primary-dark text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">Alex同学</p>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-base font-medium leading-normal text-center mt-1 bg-primary/10 text-primary px-3 py-1 rounded-full">Word Master</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats -->
+<div class="px-4 py-2">
+<div class="flex flex-wrap gap-4 rounded-lg bg-card-light dark:bg-card-dark p-4 shadow-sm">
+<div class="flex flex-1 flex-col items-center justify-center gap-1 text-center min-w-[80px]">
+<p class="text-primary tracking-light text-3xl font-bold leading-tight">120</p>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium leading-normal">Total Days</p>
+</div>
+<div class="w-px bg-gray-200 dark:bg-gray-600 self-stretch"></div>
+<div class="flex flex-1 flex-col items-center justify-center gap-1 text-center min-w-[80px]">
+<p class="text-primary tracking-light text-3xl font-bold leading-tight">850</p>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium leading-normal">Words Learned</p>
+</div>
+<div class="w-px bg-gray-200 dark:bg-gray-600 self-stretch"></div>
+<div class="flex flex-1 flex-col items-center justify-center gap-1 text-center min-w-[80px]">
+<p class="text-success tracking-light text-3xl font-bold leading-tight">45</p>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium leading-normal">Current Streak</p>
+</div>
+</div>
+</div>
+<!-- Achievements Section -->
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-6">My Achievements</h2>
+<div class="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 px-4">
+<div class="flex flex-col items-center gap-2 text-center">
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="h-full w-full" viewbox="0 0 36 36"><path class="stroke-gray-200 dark:stroke-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path><path class="stroke-success" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="100, 100" stroke-linecap="round" stroke-width="3"></path></svg>
+<span class="material-symbols-outlined absolute text-success" style="font-size: 32px;">school</span>
+</div>
+<p class="text-text-primary-light dark:text-text-primary-dark text-sm font-medium leading-normal">500 Words</p>
+</div>
+<div class="flex flex-col items-center gap-2 text-center">
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="h-full w-full" viewbox="0 0 36 36"><path class="stroke-gray-200 dark:stroke-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path><path class="stroke-success" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="100, 100" stroke-linecap="round" stroke-width="3"></path></svg>
+<span class="material-symbols-outlined absolute text-success" style="font-size: 32px;">verified</span>
+</div>
+<p class="text-text-primary-light dark:text-text-primary-dark text-sm font-medium leading-normal">Perfect Quiz</p>
+</div>
+<div class="flex flex-col items-center gap-2 text-center opacity-40">
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="h-full w-full" viewbox="0 0 36 36"><path class="stroke-gray-200 dark:stroke-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path><path class="stroke-warning" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="57, 100" stroke-linecap="round" stroke-width="3"></path></svg>
+<span class="material-symbols-outlined absolute text-text-secondary-light dark:text-text-secondary-dark" style="font-size: 32px;">local_fire_department</span>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium leading-normal">7-Day Streak</p>
+</div>
+<div class="flex flex-col items-center gap-2 text-center opacity-40">
+<div class="relative w-full aspect-square flex items-center justify-center">
+<svg class="h-full w-full" viewbox="0 0 36 36"><path class="stroke-gray-200 dark:stroke-gray-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path><path class="stroke-warning" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="85, 100" stroke-linecap="round" stroke-width="3"></path></svg>
+<span class="material-symbols-outlined absolute text-text-secondary-light dark:text-text-secondary-dark" style="font-size: 32px;">star</span>
+</div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-medium leading-normal">1000 Words</p>
+</div>
+</div>
+<!-- Learning Preferences -->
+<div class="px-4 py-6">
+<div class="rounded-lg bg-card-light dark:bg-card-dark p-4 flex flex-col gap-2 shadow-sm">
+<h3 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold">Learning Preferences</h3>
+<div class="flex justify-between items-center py-2">
+<span class="text-text-primary-light dark:text-text-primary-dark">Daily Reminders</span>
+<label class="relative inline-flex items-center cursor-pointer"><input checked="" class="sr-only peer" type="checkbox" value=""/><div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div></label>
+</div>
+<div class="w-full h-px bg-gray-200 dark:bg-gray-600"></div>
+<div class="flex justify-between items-center py-2">
+<span class="text-text-primary-light dark:text-text-primary-dark">Audio Pronunciation</span>
+<label class="relative inline-flex items-center cursor-pointer"><input checked="" class="sr-only peer" type="checkbox" value=""/><div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div></label>
+</div>
+<div class="w-full h-px bg-gray-200 dark:bg-gray-600"></div>
+<div class="flex justify-between items-center py-2">
+<span class="text-text-primary-light dark:text-text-primary-dark">Practice Mode</span>
+<label class="relative inline-flex items-center cursor-pointer"><input class="sr-only peer" type="checkbox" value=""/><div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div></label>
+</div>
+</div>
+</div>
+<!-- Study Plan -->
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3">Study Plan</h2>
+<div class="px-4">
+<div class="rounded-lg bg-card-light dark:bg-card-dark p-4 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark">chevron_left</span>
+</button>
+<h4 class="text-text-primary-light dark:text-text-primary-dark font-medium">May 2024</h4>
+<button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-7 text-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
+<div class="py-2">Su</div><div class="py-2">Mo</div><div class="py-2">Tu</div><div class="py-2">We</div><div class="py-2">Th</div><div class="py-2">Fr</div><div class="py-2">Sa</div>
+</div>
+<div class="grid grid-cols-7 text-center text-sm">
+<div class="py-2 text-gray-400 dark:text-gray-500">28</div>
+<div class="py-2 text-gray-400 dark:text-gray-500">29</div>
+<div class="py-2 text-gray-400 dark:text-gray-500">30</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">1</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark relative">
+                        2<span class="absolute bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-warning"></span>
+</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">3</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">4</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">5</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark bg-primary/20 rounded-full">6</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">7</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">8</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark relative">
+                        9<span class="absolute bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-warning"></span>
+</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">10</div>
+<div class="py-2 text-text-primary-light dark:text-text-primary-dark">11</div>
+</div>
+</div>
+</div>
+<!-- Fun Fact/Quote -->
+<div class="px-4 py-6">
+<div class="rounded-lg bg-primary/10 dark:bg-primary/20 p-4 text-center shadow-sm">
+<p class="text-primary dark:text-indigo-300 font-medium">"The longest word in English without a vowel is 'rhythms'."</p>
+</div>
+</div>
+<!-- Footer Links -->
+<div class="flex justify-center items-center gap-6 px-4 pb-8">
+<a class="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary" href="#">Help Center</a>
+<span class="text-text-secondary-light dark:text-text-secondary-dark">•</span>
+<a class="text-sm text-text-secondary-light dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary" href="#">About Us</a>
+</div>
+</div>
+</body></html>

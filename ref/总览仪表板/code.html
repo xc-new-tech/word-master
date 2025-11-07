@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learning Statistics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      body {
+        font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#667EEA",
+              "success": "#48BB78",
+              "warning": "#F6AD55",
+              "error": "#FC8181",
+              "background-light": "#F7FAFC",
+              "background-dark": "#1A202C",
+              "card-light": "#FFFFFF",
+              "card-dark": "#2D3748",
+              "text-light": "#2D3748",
+              "text-dark": "#E2E8F0",
+              "subtext-light": "#718096",
+              "subtext-dark": "#A0AEC0",
+              "border-light": "#E2E8F0",
+              "border-dark": "#4A5568"
+            },
+            fontFamily: {
+              "display": ["Poppins", "Noto Sans SC", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "lg": "12px",
+              "xl": "16px",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10 border-b border-border-light dark:border-border-dark">
+<div class="flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">arrow_back_ios_new</span>
+</div>
+<h1 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">学习统计</h1>
+</div>
+<!-- Weekly Streak Card -->
+<div class="p-4">
+<div class="flex flex-col gap-4 rounded-lg bg-card-light dark:bg-card-dark p-4 shadow-sm border border-border-light dark:border-border-dark">
+<h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">Weekly Streak</h2>
+<div class="grid grid-cols-7 gap-2 text-center">
+<!-- Days of the week headers -->
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Sun</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Mon</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Tue</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Wed</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Thu</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Fri</div>
+<div class="font-medium text-sm text-subtext-light dark:text-subtext-dark">Sat</div>
+<!-- Heatmap cells -->
+<div class="flex aspect-square items-center justify-center rounded bg-primary/10" data-alt="Heatmap cell for Sunday with low activity"></div>
+<div class="flex aspect-square items-center justify-center rounded bg-warning/50" data-alt="Heatmap cell for Monday with medium activity"></div>
+<div class="flex aspect-square items-center justify-center rounded bg-success/80" data-alt="Heatmap cell for Tuesday with high activity"></div>
+<div class="flex aspect-square items-center justify-center rounded bg-success" data-alt="Heatmap cell for Wednesday with very high activity"></div>
+<div class="flex aspect-square items-center justify-center rounded bg-warning/50" data-alt="Heatmap cell for Thursday with medium activity"></div>
+<div class="flex aspect-square items-center justify-center rounded bg-error/40" data-alt="Heatmap cell for Friday with very low activity"></div>
+<div class="flex aspect-square items-center justify-center rounded ring-2 ring-primary bg-primary/20 text-primary font-bold" data-alt="Heatmap cell for Saturday, current day"></div>
+</div>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-4">
+<div class="flex flex-col gap-2 rounded-lg bg-card-light dark:bg-card-dark p-4 border border-border-light dark:border-border-dark shadow-sm">
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal">总学习</p>
+<p class="text-text-light dark:text-text-dark tracking-light text-2xl font-bold leading-tight">1,240 <span class="text-base font-medium">词</span></p>
+</div>
+<div class="flex flex-col gap-2 rounded-lg bg-card-light dark:bg-card-dark p-4 border border-border-light dark:border-border-dark shadow-sm items-center">
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal w-full">今日新词</p>
+<div class="relative w-24 h-24">
+<svg class="w-full h-full" viewbox="0 0 36 36">
+<path class="text-border-light dark:text-border-dark" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-success" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="75, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-text-light dark:text-text-dark text-xl font-bold">15/20</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-lg bg-card-light dark:bg-card-dark p-4 border border-border-light dark:border-border-dark shadow-sm">
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal">掌握率</p>
+<p class="text-text-light dark:text-text-dark tracking-light text-2xl font-bold leading-tight">85%</p>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="p-4">
+<div class="flex flex-col gap-4 rounded-lg bg-card-light dark:bg-card-dark p-4 border border-border-light dark:border-border-dark shadow-sm">
+<!-- Chart Header -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<!-- Segmented Buttons for Chart Type -->
+<div class="flex flex-1 items-center justify-center rounded bg-background-light dark:bg-background-dark p-1 border border-border-light dark:border-border-dark">
+<label class="flex cursor-pointer h-9 grow items-center justify-center overflow-hidden rounded px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">趋势</span>
+<input checked="" class="invisible w-0" name="chart-type" type="radio" value="趋势"/>
+</label>
+<label class="flex cursor-pointer h-9 grow items-center justify-center overflow-hidden rounded px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">分布</span>
+<input class="invisible w-0" name="chart-type" type="radio" value="分布"/>
+</label>
+<label class="flex cursor-pointer h-9 grow items-center justify-center overflow-hidden rounded px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-subtext-light dark:text-subtext-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">对比</span>
+<input class="invisible w-0" name="chart-type" type="radio" value="对比"/>
+</label>
+</div>
+<!-- Time Range Selector -->
+<div class="flex h-9 items-center justify-center rounded bg-background-light dark:bg-background-dark p-1 border border-border-light dark:border-border-dark">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded px-3 has-[:checked]:bg-card-light has-[:checked]:dark:bg-card-dark text-subtext-light dark:text-subtext-dark has-[:checked]:text-text-light has-[:checked]:dark:text-text-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">周</span>
+<input checked="" class="invisible w-0" name="time-range" type="radio" value="周"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded px-3 has-[:checked]:bg-card-light has-[:checked]:dark:bg-card-dark text-subtext-light dark:text-subtext-dark has-[:checked]:text-text-light has-[:checked]:dark:text-text-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">月</span>
+<input class="invisible w-0" name="time-range" type="radio" value="月"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded px-3 has-[:checked]:bg-card-light has-[:checked]:dark:bg-card-dark text-subtext-light dark:text-subtext-dark has-[:checked]:text-text-light has-[:checked]:dark:text-text-dark text-sm font-medium leading-normal transition-colors">
+<span class="truncate">年</span>
+<input class="invisible w-0" name="time-range" type="radio" value="年"/>
+</label>
+</div>
+</div>
+<!-- Chart Placeholder (Line Graph) -->
+<div class="relative w-full h-64">
+<div class="w-full h-full flex flex-col justify-end">
+<svg class="w-full h-full absolute inset-0" fill="none" preserveaspectratio="none" viewbox="0 0 300 150">
+<!-- Grid Lines -->
+<line class="stroke-border-light dark:stroke-border-dark" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="300" y1="0" y2="0"></line>
+<line class="stroke-border-light dark:stroke-border-dark" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="300" y1="37.5" y2="37.5"></line>
+<line class="stroke-border-light dark:stroke-border-dark" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="300" y1="75" y2="75"></line>
+<line class="stroke-border-light dark:stroke-border-dark" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="300" y1="112.5" y2="112.5"></line>
+<line class="stroke-border-light dark:stroke-border-dark" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="300" y1="150" y2="150"></line>
+<!-- Gradient under the line -->
+<defs>
+<lineargradient id="line-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#667EEA" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#667EEA" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Data Line and Area -->
+<path d="M 0 100 L 50 80 L 100 90 L 150 60 L 200 70 L 250 40 L 300 50" stroke="#667EEA" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<path d="M 0 100 L 50 80 L 100 90 L 150 60 L 200 70 L 250 40 L 300 50 L 300 150 L 0 150 Z" fill="url(#line-gradient)"></path>
+</svg>
+<div class="flex justify-between text-xs text-subtext-light dark:text-subtext-dark px-1">
+<span>Sun</span>
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+</div>
+</div>
+</div>
+<!-- Export Button -->
+<button class="mt-2 self-end flex items-center gap-2 rounded-full bg-primary/10 dark:bg-primary/20 px-4 py-2 text-sm font-medium text-primary dark:text-indigo-300 hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-base">ios_share</span>
+<span>导出报告</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

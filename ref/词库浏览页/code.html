@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vocabulary Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+    .font-english {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#667EEA",
+            "success": "#48BB78",
+            "warning": "#F6AD55",
+            "error": "#FC8181",
+            "background-light": "#F7FAFC",
+            "background-dark": "#1A202C",
+            "surface-light": "#FFFFFF",
+            "surface-dark": "#2D3748",
+            "text-primary-light": "#2D3748",
+            "text-primary-dark": "#F7FAFC",
+            "text-secondary-light": "#718096",
+            "text-secondary-dark": "#A0AEC0",
+            "border-light": "#E2E8F0",
+            "border-dark": "#4A5568",
+          },
+          fontFamily: {
+            "display": ["Poppins", "Noto Sans SC", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "8px",
+            "lg": "12px",
+            "xl": "16px",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative min-h-screen w-full flex flex-col antialiased">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm p-4 pb-2">
+<div class="flex size-10 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-text-primary-light dark:text-text-primary-dark">arrow_back</span>
+</div>
+<h1 class="text-lg font-bold text-text-primary-light dark:text-text-primary-dark font-display flex-1 text-center">词汇库</h1>
+<div class="flex w-10 shrink-0 items-center justify-end">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-primary-light dark:text-text-primary-dark">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Tabs -->
+<nav class="sticky top-[60px] z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm px-4">
+<div class="flex border-b border-border-light dark:border-border-dark gap-2 overflow-x-auto whitespace-nowrap">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-primary px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">初一上</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary-light dark:text-text-secondary-dark px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">初一下</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary-light dark:text-text-secondary-dark px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">初二上</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary-light dark:text-text-secondary-dark px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">初二下</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary-light dark:text-text-secondary-dark px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">初三</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-text-secondary-light dark:text-text-secondary-dark px-3 pb-[13px] pt-4" href="#">
+<p class="text-sm font-bold leading-normal">中考核心</p>
+</a>
+</div>
+</nav>
+<main class="flex-1 px-4">
+<!-- Search Bar -->
+<div class="py-4">
+<label class="flex flex-col h-12 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="text-text-secondary-light dark:text-text-secondary-dark flex items-center justify-center pl-3">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary-light dark:text-text-primary-dark focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark px-2 text-base font-normal leading-normal" placeholder="搜索单词或单元" value=""/>
+</div>
+</label>
+</div>
+<!-- Chips / Filters -->
+<div class="flex gap-2 pb-4 overflow-x-auto whitespace-nowrap">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary/10 text-primary px-4">
+<span class="material-symbols-outlined text-base">tune</span>
+<p class="text-sm font-medium leading-normal">All</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark px-4">
+<span class="material-symbols-outlined text-base">task_alt</span>
+<p class="text-sm font-medium leading-normal">Mastered</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark px-4">
+<span class="material-symbols-outlined text-base">hourglass_top</span>
+<p class="text-sm font-medium leading-normal">Learning</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark px-4">
+<span class="material-symbols-outlined text-base">radio_button_unchecked</span>
+<p class="text-sm font-medium leading-normal">Not Started</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark px-4">
+<span class="material-symbols-outlined text-base">priority_high</span>
+<p class="text-sm font-medium leading-normal">Difficult</p>
+</div>
+</div>
+<!-- Image Grid / Unit Cards -->
+<div class="grid grid-cols-2 gap-4 pb-4">
+<!-- Expanded Unit Card with Word List -->
+<div class="col-span-2 flex flex-col gap-3 p-4 rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="flex items-center gap-4">
+<div class="relative flex size-12 items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-border-light dark:text-border-dark" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-success" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100, 100" stroke-dashoffset="35" stroke-width="3"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-success">65%</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-bold text-text-primary-light dark:text-text-primary-dark font-english">Unit 1: My New School</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">共 35 词</p>
+</div>
+<span class="material-symbols-outlined text-text-secondary-light dark:text-text-secondary-dark">expand_less</span>
+</div>
+<div class="border-t border-border-light dark:border-border-dark pt-3 mt-1">
+<div class="space-y-3">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-success"></div>
+<div class="flex-1"><span class="font-english font-medium text-text-primary-light dark:text-text-primary-dark">school</span><span class="text-text-secondary-light dark:text-text-secondary-dark ml-2">n. 学校</span></div>
+<input class="form-checkbox size-5 rounded-md border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-warning"></div>
+<div class="flex-1"><span class="font-english font-medium text-text-primary-light dark:text-text-primary-dark">family</span><span class="text-text-secondary-light dark:text-text-secondary-dark ml-2">n. 家庭</span></div>
+<input class="form-checkbox size-5 rounded-md border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-gray-300 dark:bg-gray-500"></div>
+<div class="flex-1"><span class="font-english font-medium text-text-primary-light dark:text-text-primary-dark">student</span><span class="text-text-secondary-light dark:text-text-secondary-dark ml-2">n. 学生</span></div>
+<input class="form-checkbox size-5 rounded-md border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0" type="checkbox"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Standard Unit Card -->
+<div class="flex flex-col gap-3 p-4 rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="flex items-center gap-3">
+<div class="relative flex size-12 items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-border-light dark:text-border-dark" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+<circle class="stroke-current text-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100, 100" stroke-dashoffset="75" stroke-width="3"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-primary">25%</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-bold text-text-primary-light dark:text-text-primary-dark font-english">Unit 2: My Family</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">共 42 词</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4 rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="flex items-center gap-3">
+<div class="relative flex size-12 items-center justify-center">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle class="stroke-current text-border-light dark:text-border-dark" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
+</svg>
+<span class="absolute text-xs font-bold text-text-secondary-light dark:text-text-secondary-dark">0%</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-bold text-text-primary-light dark:text-text-primary-dark font-english">Unit 3: My Food</p>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">共 38 词</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar (FAB) -->
+<footer class="sticky bottom-0 z-10 p-4 bg-gradient-to-t from-background-light dark:from-background-dark">
+<div class="flex items-center justify-between rounded-lg bg-surface-light dark:bg-surface-dark p-2 shadow-lg">
+<div class="pl-2">
+<p class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">已选择 <span class="text-primary font-bold">3</span> 个单词</p>
+</div>
+<button class="flex h-10 cursor-pointer items-center justify-center overflow-hidden rounded-md bg-primary px-5 text-white gap-2 text-sm font-bold leading-normal">
+                开始练习
+            </button>
+</div>
+</footer>
+</div>
+</body></html>

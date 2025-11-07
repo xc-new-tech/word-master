@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Memory Story - Negotiation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&amp;family=Poppins:wght@400;500;700&amp;family=Noto+Sans+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#667fea",
+            "background-light": "#f6f6f8",
+            "background-dark": "#111421",
+            "success": "#48BB78",
+            "warning": "#F6AD55",
+            "error": "#FC8181",
+            "text-light": "#1f2937",
+            "text-dark": "#f3f4f6",
+            "card-light": "#ffffff",
+            "card-dark": "#1f2937",
+            "subtle-light": "#e5e7eb",
+            "subtle-dark": "#374151"
+          },
+          fontFamily: {
+            "display": ["Poppins", "Noto Sans SC", "sans-serif"],
+            "chinese": ["Noto Sans SC", "sans-serif"],
+            "english": ["Poppins", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "0.75rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between border-b border-subtle-light dark:border-subtle-dark bg-background-light/80 dark:bg-background-dark/80 px-4 backdrop-blur-sm">
+<div class="flex h-12 w-12 items-center justify-start">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-light dark:text-text-dark hover:bg-subtle-light dark:hover:bg-subtle-dark">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+</div>
+<h1 class="font-english text-xl font-bold leading-tight tracking-tight text-text-light dark:text-text-dark">Negotiation</h1>
+<div class="flex h-12 w-12 items-center justify-end">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-text-light dark:text-text-dark hover:bg-subtle-light dark:hover:bg-subtle-dark">
+<span class="material-symbols-outlined text-2xl">ios_share</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-4 md:p-6">
+<div class="mx-auto flex max-w-lg flex-col items-center gap-6">
+<!-- Memory Story Card -->
+<div class="relative w-full overflow-hidden rounded-xl bg-card-light dark:bg-card-dark shadow-md">
+<div class="relative aspect-[3/4] w-full bg-[#f0e8d8] dark:bg-[#4a4234]">
+<!-- Illustration Panel -->
+<img class="absolute h-full w-full object-cover" data-alt="A hand-drawn style illustration of a vibrant marketplace with stalls, buyers, and sellers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApDvBmePBpGHvBN0_cA3SyMktAHaRai4H5hwf0g3zCGcq3Ix0Zr6LhY4TpGDBkRqQnEgbAntbYA5dvA5tTAAy0O-L60eCbt0HoWGzyLsgHUqR6n6D_shFP4HnYjtfgV2HHC5z3j49JtSRZZhwvaRT5QHZIcj7c_Af7oY6po21Z2oVzhuTdxgMhAwOqd4Tf9FvpoEXbgueJqn8gjvc7HD_hbXbowF9nOnFMp_gUgl1aWIm8R1laIvJ2LNyUelIUkW1nhJGqP02hWi-h"/>
+<div class="absolute inset-0 flex flex-col justify-between p-4">
+<!-- Narrative Box at the top -->
+<div class="w-full rounded-lg bg-white/80 p-3 shadow-sm backdrop-blur-sm dark:bg-black/60">
+<p class="font-english text-sm font-medium text-gray-800 dark:text-gray-200">At the Grand Bazaar, a lively <b class="font-bold text-primary">negotiation</b> is underway for a beautiful lamp.</p>
+</div>
+<!-- Speech Bubbles -->
+<div class="flex flex-col gap-3">
+<div class="self-start max-w-[70%]">
+<div class="rounded-lg rounded-bl-none bg-white/80 p-3 shadow-sm backdrop-blur-sm dark:bg-black/60">
+<p class="font-english text-sm font-medium text-gray-800 dark:text-gray-200">"This lamp is exquisite! How much is it?"</p>
+</div>
+</div>
+<div class="self-end max-w-[70%]">
+<div class="rounded-lg rounded-br-none bg-[#e0e7ff]/80 p-3 shadow-sm backdrop-blur-sm dark:bg-[#312e81]/60">
+<p class="font-english text-sm font-medium text-gray-800 dark:text-gray-200">"For you, a special price! But let's discuss."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom CTA Button -->
+<footer class="sticky bottom-0 bg-background-light/80 dark:bg-background-dark/80 px-4 py-3 backdrop-blur-sm">
+<div class="mx-auto max-w-lg">
+<button class="flex h-14 w-full cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-lg bg-primary text-white shadow-lg shadow-primary/30 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-2xl">auto_awesome</span>
+<span class="font-chinese text-lg font-bold tracking-wider">生成我的故事</span>
+</button>
+</div>
+</footer>
+</div>
+</body></html>

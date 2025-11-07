@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Spaced Repetition Review</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .font-english { font-family: 'Poppins', sans-serif; }
+      .font-chinese { font-family: 'Noto Sans SC', sans-serif; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#667EEA", // Indigo
+              "success": "#48BB78", // Green
+              "warning": "#F6AD55", // Orange
+              "error": "#FC8181", // Red
+              "background-light": "#f6f6f8",
+              "background-dark": "#111421",
+              "content-light": "#1f2937", // Gray 800
+              "content-dark": "#e5e7eb", // Gray 200
+              "subtle-light": "#6b7280", // Gray 500
+              "subtle-dark": "#9ca3af", // Gray 400
+              "card-light": "#ffffff",
+              "card-dark": "#1f2937",
+              "border-light": "#e5e7eb", // Gray 200
+              "border-dark": "#374151", // Gray 700
+            },
+            fontFamily: {
+              "display": ["Poppins", "Noto Sans SC", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem", // 8px
+              "lg": "0.75rem", // 12px
+              "xl": "1.5rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-hidden">
+<!-- Top Section: App Bar and Progress -->
+<div class="flex flex-col gap-4 p-4 pb-0 bg-background-light dark:bg-background-dark">
+<!-- Top App Bar -->
+<div class="flex items-center justify-between">
+<button class="flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-transparent text-content-light dark:text-content-dark">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h2 class="flex-1 text-center text-lg font-bold leading-tight tracking-[-0.015em] text-content-light dark:text-content-dark font-english">Review Session</h2>
+<div class="h-12 w-12"></div> <!-- Spacer -->
+</div>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between gap-6">
+<p class="text-sm font-medium leading-normal text-content-light dark:text-content-dark font-english">Session Progress</p>
+<p class="text-sm font-medium leading-normal text-subtle-light dark:text-subtle-dark font-english">1 / 20</p>
+</div>
+<div class="rounded-full bg-primary/20">
+<div class="h-2 rounded-full bg-primary" style="width: 5%;"></div>
+</div>
+</div>
+</div>
+<!-- Main Content: Card Stack and Swipe Affordances -->
+<main class="relative flex flex-1 flex-col items-center justify-center p-4">
+<!-- Swipe Affordance Text (Background) -->
+<div class="absolute inset-x-0 top-8 flex justify-between px-8">
+<div class="flex flex-col items-center gap-1 opacity-20">
+<span class="material-symbols-outlined text-success">arrow_upward</span>
+<p class="text-sm font-semibold text-success font-english">Easy</p>
+</div>
+</div>
+<div class="absolute inset-y-0 left-8 flex items-center justify-between">
+<div class="flex flex-col items-center gap-1 opacity-20">
+<span class="material-symbols-outlined text-error">arrow_back</span>
+<p class="text-sm font-semibold text-error font-english">Forgot</p>
+</div>
+</div>
+<div class="absolute inset-y-0 right-8 flex items-center justify-between">
+<div class="flex flex-col items-center gap-1 opacity-20">
+<span class="material-symbols-outlined text-warning">arrow_forward</span>
+<p class="text-sm font-semibold text-warning font-english">Good</p>
+</div>
+</div>
+<div class="absolute inset-x-0 bottom-8 flex justify-center">
+<div class="flex flex-col items-center gap-1 opacity-20">
+<p class="text-sm font-semibold text-error font-english">Hard</p>
+<span class="material-symbols-outlined text-error">arrow_downward</span>
+</div>
+</div>
+<!-- Card Stack -->
+<div class="relative w-full max-w-sm h-[60vh] max-h-[480px]">
+<!-- Card 3 (Bottom) -->
+<div class="absolute inset-x-4 top-4 h-full rounded-lg bg-card-light/50 dark:bg-card-dark/50 border border-border-light dark:border-border-dark shadow-md"></div>
+<!-- Card 2 (Middle) -->
+<div class="absolute inset-x-2 top-2 h-full rounded-lg bg-card-light/70 dark:bg-card-dark/70 border border-border-light dark:border-border-dark shadow-lg"></div>
+<!-- Card 1 (Top) -->
+<div class="absolute inset-0 flex h-full flex-col justify-between rounded-lg bg-card-light dark:bg-card-dark p-6 shadow-xl border border-border-light dark:border-border-dark">
+<div class="flex items-start justify-between">
+<div class="flex gap-1.5">
+<span class="h-2.5 w-2.5 rounded-full bg-success"></span>
+<span class="h-2.5 w-2.5 rounded-full bg-warning/30"></span>
+<span class="h-2.5 w-2.5 rounded-full bg-error/30"></span>
+</div>
+<button class="text-subtle-light dark:text-subtle-dark">
+<span class="material-symbols-outlined text-2xl">volume_up</span>
+</button>
+</div>
+<div class="flex flex-col items-center justify-center gap-4 text-center">
+<h1 class="text-4xl font-bold text-content-light dark:text-content-dark font-english">Eloquent</h1>
+<p class="text-base font-normal text-subtle-light dark:text-subtle-dark font-english">/ˈeləkwənt/</p>
+</div>
+<div class="flex h-10 items-center justify-center">
+<p class="text-base font-medium text-primary font-english">Tap to reveal</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Section: Stats -->
+<div class="flex flex-wrap gap-4 p-4 bg-background-light dark:bg-background-dark">
+<div class="flex min-w-0 flex-1 flex-col gap-1.5 rounded-lg p-4 bg-primary/10">
+<p class="text-sm font-medium text-primary/80 font-english">Daily Streak</p>
+<p class="tracking-light text-2xl font-bold text-content-light dark:text-content-dark font-english">🔥 15 days</p>
+</div>
+<div class="flex min-w-0 flex-1 flex-col gap-1.5 rounded-lg p-4 bg-primary/10">
+<p class="text-sm font-medium text-primary/80 font-english">Session Accuracy</p>
+<p class="tracking-light text-2xl font-bold text-content-light dark:text-content-dark font-english">🎯 92%</p>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dictation Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#667EEA",
+            "background-light": "#F7FAFC",
+            "background-dark": "#111421",
+            "success": "#48BB78",
+            "warning": "#F6AD55",
+            "error": "#FC8181"
+          },
+          fontFamily: {
+            "display": ["Poppins", "Noto Sans SC", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "8px",
+            "lg": "12px",
+            "xl": "16px",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .font-chinese { font-family: 'Noto Sans SC', sans-serif; }
+    .font-english { font-family: 'Poppins', sans-serif; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-zinc-700 dark:text-zinc-300">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold leading-tight tracking-[-0.015em] text-zinc-900 dark:text-zinc-100 flex-1 text-center font-chinese">听写报告</h1>
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-zinc-700 dark:text-zinc-300">
+<span class="material-symbols-outlined text-2xl">share</span>
+</button>
+</div>
+<main class="flex-1 px-4 py-6">
+<div class="flex flex-col items-center gap-8">
+<!-- Score Circle -->
+<div class="relative flex size-48 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
+<svg class="absolute inset-0 size-full" viewbox="0 0 100 100">
+<circle class="stroke-primary/20 dark:stroke-primary/30" cx="50" cy="50" fill="none" r="46" stroke-width="8"></circle>
+<circle class="stroke-primary" cx="50" cy="50" fill="none" r="46" stroke-dasharray="289" stroke-dashoffset="43.35" stroke-linecap="round" stroke-width="8" transform="rotate(-90 50 50)"></circle> <!-- 289 * (1 - 0.85) -->
+</svg>
+<div class="flex flex-col items-center text-center">
+<p class="text-5xl font-bold text-primary dark:text-primary/90 font-english">85<span class="text-2xl font-medium font-chinese">分</span></p>
+<p class="mt-1 text-lg font-medium text-success dark:text-success/90 font-chinese">优秀!</p>
+</div>
+</div>
+<!-- Performance Breakdown -->
+<div class="w-full max-w-sm">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
+<p class="font-medium font-chinese">答题分布: 17/20</p>
+<p class="font-medium font-english">85%</p>
+</div>
+<div class="flex h-3 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+<div class="h-full bg-success" style="width: 85%;"></div>
+<div class="h-full bg-error" style="width: 15%;"></div>
+</div>
+<div class="flex justify-between text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+<span class="flex items-center gap-1.5"><span class="block size-2 rounded-full bg-success"></span><span class="font-chinese">正确</span></span>
+<span class="flex items-center gap-1.5"><span class="block size-2 rounded-full bg-error"></span><span class="font-chinese">错误</span></span>
+</div>
+</div>
+</div>
+<!-- Mistake Summary Section -->
+<div class="w-full">
+<!-- Section Header -->
+<h3 class="text-zinc-900 dark:text-zinc-100 text-lg font-bold leading-tight tracking-[-0.015em] px-0 pb-2 pt-4 font-chinese">错题回顾</h3>
+<!-- Accordions -->
+<div class="flex flex-col gap-3">
+<details class="flex flex-col rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-1.5 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+<p class="text-base font-medium text-error dark:text-error/90 font-english">encorage</p>
+<div class="text-zinc-500 dark:text-zinc-400 group-open:rotate-180 transition-transform">
+<span class="material-symbols-outlined text-xl">expand_more</span>
+</div>
+</summary>
+<div class="border-t border-zinc-200 dark:border-zinc-700 pt-3 pb-2">
+<p class="text-zinc-700 dark:text-zinc-300 text-sm font-normal leading-relaxed font-english"><strong class="font-medium text-success">Correct:</strong> encourage</p>
+<p class="mt-1 text-zinc-500 dark:text-zinc-400 text-sm font-normal leading-relaxed font-chinese"><strong class="font-medium">记忆提示:</strong> 单词里藏着 'courage' (勇气)!</p>
+</div>
+</details>
+<details class="flex flex-col rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-1.5 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+<p class="text-base font-medium text-error dark:text-error/90 font-english">profesional</p>
+<div class="text-zinc-500 dark:text-zinc-400 group-open:rotate-180 transition-transform">
+<span class="material-symbols-outlined text-xl">expand_more</span>
+</div>
+</summary>
+<div class="border-t border-zinc-200 dark:border-zinc-700 pt-3 pb-2">
+<p class="text-zinc-700 dark:text-zinc-300 text-sm font-normal leading-relaxed font-english"><strong class="font-medium text-success">Correct:</strong> professional</p>
+<p class="mt-1 text-zinc-500 dark:text-zinc-400 text-sm font-normal leading-relaxed font-chinese"><strong class="font-medium">记忆提示:</strong> 专业的 (professional) 人需要两个 's'。</p>
+</div>
+</details>
+<details class="flex flex-col rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-1.5 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+<p class="text-base font-medium text-error dark:text-error/90 font-english">achivement</p>
+<div class="text-zinc-500 dark:text-zinc-400 group-open:rotate-180 transition-transform">
+<span class="material-symbols-outlined text-xl">expand_more</span>
+</div>
+</summary>
+<div class="border-t border-zinc-200 dark:border-zinc-700 pt-3 pb-2">
+<p class="text-zinc-700 dark:text-zinc-300 text-sm font-normal leading-relaxed font-english"><strong class="font-medium text-success">Correct:</strong> achievement</p>
+<p class="mt-1 text-zinc-500 dark:text-zinc-400 text-sm font-normal leading-relaxed font-chinese"><strong class="font-medium">记忆提示:</strong> 'i' before 'e', except after 'c'。</p>
+</div>
+</details>
+</div>
+</div>
+</div>
+</main>
+<!-- Action Buttons -->
+<div class="sticky bottom-0 bg-background-light dark:bg-background-dark p-4 pt-2 border-t border-zinc-200 dark:border-zinc-700">
+<div class="flex flex-col gap-3">
+<button class="w-full rounded-lg bg-primary px-5 py-3 text-base font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark font-chinese">再测一次</button>
+<button class="w-full rounded-lg border border-primary bg-transparent px-5 py-3 text-base font-medium text-primary hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark font-chinese">查看错题本</button>
+<button class="w-full py-2 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-primary font-chinese">返回主页</button>
+</div>
+</div>
+</div>
+</body></html>

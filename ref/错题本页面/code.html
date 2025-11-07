@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mistake Notebook</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      body {
+        font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+      }
+    </style>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#667EEA",
+              "success": "#48BB78",
+              "warning": "#F6AD55",
+              "danger": "#FC8181",
+              "background-light": "#f6f6f8",
+              "background-dark": "#111421",
+            },
+            fontFamily: {
+              "display": ["Poppins", "Noto Sans SC", "sans-serif"],
+              "english": ["Poppins", "sans-serif"],
+              "chinese": ["Noto Sans SC", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "8px",
+              "lg": "12px",
+              "xl": "16px",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative min-h-screen w-full mx-auto max-w-lg">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-primary p-4">
+<div class="flex size-10 items-center justify-start">
+<!-- Placeholder for back button -->
+</div>
+<h1 class="flex-1 text-center text-lg font-bold text-white font-chinese">错题本</h1>
+<div class="flex w-10 items-center justify-end">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-white">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Filter Chips -->
+<div class="bg-background-light dark:bg-background-dark px-4 pt-4 pb-2">
+<div class="flex gap-3 overflow-x-auto pb-2">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary px-4 shadow"><p class="text-sm font-medium leading-normal text-white font-chinese">全部</p></button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-700 px-4"><p class="text-sm font-medium leading-normal text-gray-700 dark:text-gray-300 font-chinese">拼写</p></button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-700 px-4"><p class="text-sm font-medium leading-normal text-gray-700 dark:text-gray-300 font-chinese">含义</p></button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-700 px-4"><p class="text-sm font-medium leading-normal text-gray-700 dark:text-gray-300 font-chinese">听写</p></button>
+</div>
+</div>
+<!-- Mistake List -->
+<main class="flex flex-col gap-4 p-4 pb-28">
+<!-- Word Card 1 (Expanded) -->
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+<div class="flex items-center gap-4 px-4 py-3">
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex items-center gap-2">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">phenomenon</p>
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-warning text-xs font-bold text-white">3</div>
+</div>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/fəˈnɒmɪnən/</p>
+<p class="mt-1 text-xs font-normal leading-normal text-gray-400 dark:text-gray-500 font-chinese">上次错误: 2023-10-26</p>
+</div>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 px-4 text-sm font-medium text-primary dark:bg-primary/20 dark:text-indigo-300 font-chinese">复习</button>
+</div>
+<!-- Timeline (Expanded View) -->
+<div class="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+<div class="grid grid-cols-[40px_1fr] gap-x-2 px-4 py-2">
+<div class="flex flex-col items-center gap-1 pt-3">
+<span class="material-symbols-outlined text-warning text-xl">error</span>
+<div class="h-full w-0.5 grow bg-gray-300 dark:bg-gray-600"></div>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-sm font-medium leading-normal text-gray-800 dark:text-gray-200 font-english">Spelled as 'fenomenon'</p>
+<p class="text-xs font-normal leading-normal text-gray-500 dark:text-gray-400">2023-10-26</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="h-2 w-0.5 grow bg-gray-300 dark:bg-gray-600"></div>
+<span class="material-symbols-outlined text-warning text-xl">error</span>
+<div class="h-full w-0.5 grow bg-gray-300 dark:bg-gray-600"></div>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-sm font-medium leading-normal text-gray-800 dark:text-gray-200 font-english">Selected wrong meaning</p>
+<p class="text-xs font-normal leading-normal text-gray-500 dark:text-gray-400">2023-09-15</p>
+</div>
+<div class="flex flex-col items-center gap-1 pb-3">
+<div class="h-2 w-0.5 grow bg-gray-300 dark:bg-gray-600"></div>
+<span class="material-symbols-outlined text-warning text-xl">error</span>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-sm font-medium leading-normal text-gray-800 dark:text-gray-200 font-chinese">Dictation error</p>
+<p class="text-xs font-normal leading-normal text-gray-500 dark:text-gray-400">2023-08-01</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Word Card 2 (Collapsed) -->
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+<div class="flex items-center gap-4 px-4 py-3">
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex items-center gap-2">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">acquire</p>
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-warning text-xs font-bold text-white">2</div>
+</div>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/əˈkwaɪər/</p>
+<p class="mt-1 text-xs font-normal leading-normal text-gray-400 dark:text-gray-500 font-chinese">上次错误: 2023-10-22</p>
+</div>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 px-4 text-sm font-medium text-primary dark:bg-primary/20 dark:text-indigo-300 font-chinese">复习</button>
+</div>
+</div>
+<!-- Word Card 3 (Collapsed) -->
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+<div class="flex items-center gap-4 px-4 py-3">
+<div class="flex flex-1 flex-col justify-center">
+<div class="flex items-center gap-2">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">conscience</p>
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-warning text-xs font-bold text-white">1</div>
+</div>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/ˈkɒnʃəns/</p>
+<p class="mt-1 text-xs font-normal leading-normal text-gray-400 dark:text-gray-500 font-chinese">上次错误: 2023-11-01</p>
+</div>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 px-4 text-sm font-medium text-primary dark:bg-primary/20 dark:text-indigo-300 font-chinese">复习</button>
+</div>
+</div>
+<!-- Selection Mode Example -->
+<div class="border-t border-dashed border-gray-400 pt-6 mt-4">
+<p class="text-center text-sm text-gray-500 dark:text-gray-400 mb-4 font-chinese">长按单词卡可进入批量选择模式</p>
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden">
+<div class="flex items-center gap-3 px-4 py-3">
+<div class="flex items-center justify-center">
+<input checked="" class="h-5 w-5 rounded-md border-2 border-gray-400 bg-transparent text-primary checked:border-primary checked:bg-primary focus:ring-0 focus:ring-offset-0 dark:border-gray-500" type="checkbox"/>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">negotiate</p>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/nɪˈɡəʊʃieɪt/</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden mt-4">
+<div class="flex items-center gap-3 px-4 py-3">
+<div class="flex items-center justify-center">
+<input class="h-5 w-5 rounded-md border-2 border-gray-400 bg-transparent text-primary checked:border-primary checked:bg-primary focus:ring-0 focus:ring-offset-0 dark:border-gray-500" type="checkbox"/>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">privilege</p>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/ˈprɪvəlɪdʒ/</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col rounded-lg bg-white dark:bg-gray-800 shadow-sm overflow-hidden mt-4">
+<div class="flex items-center gap-3 px-4 py-3">
+<div class="flex items-center justify-center">
+<input checked="" class="h-5 w-5 rounded-md border-2 border-gray-400 bg-transparent text-primary checked:border-primary checked:bg-primary focus:ring-0 focus:ring-offset-0 dark:border-gray-500" type="checkbox"/>
+</div>
+<div class="flex flex-1 flex-col justify-center">
+<p class="text-base font-semibold leading-normal text-gray-900 dark:text-white font-english">relevant</p>
+<p class="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400 font-english">/ˈreləvənt/</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Bar / FAB container -->
+<footer class="fixed bottom-0 left-0 right-0 w-full max-w-lg mx-auto bg-transparent">
+<!-- Selection Mode Bottom Bar -->
+<div class="flex items-center justify-between bg-white dark:bg-gray-800 p-3 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-danger font-medium">
+<span class="material-symbols-outlined">delete</span>
+<span class="font-chinese">删除</span>
+</button>
+<button class="flex h-11 items-center justify-center rounded-lg bg-primary px-5 text-base font-medium text-white font-chinese">创建复习 (2)</button>
+</div>
+</footer>
+<!-- Pinned Bottom Button (replaces bar in normal mode) -->
+<div class="fixed bottom-6 right-0 left-0 w-full max-w-lg mx-auto px-4 z-20">
+<button class="w-full flex h-12 items-center justify-center gap-2 rounded-lg bg-primary text-white font-medium shadow-lg">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-chinese">智能分析</span>
+</button>
+</div>
+</div>
+</body></html>

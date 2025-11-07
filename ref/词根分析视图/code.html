@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Word Etymology</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;family=Noto+Sans+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .font-chinese { font-family: 'Noto Sans SC', sans-serif; }
+        .font-english { font-family: 'Poppins', sans-serif; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#667fea",
+              "background-light": "#f6f6f8",
+              "background-dark": "#111421",
+              "success": "#48BB78",
+              "warning": "#F6AD55",
+              "error": "#FC8181",
+              "text-light": "#2D3748",
+              "text-dark": "#E2E8F0",
+              "border-light": "#E2E8F0",
+              "border-dark": "#4A5568",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1A202C",
+            },
+            fontFamily: {
+              "display": ["Poppins", "Noto Sans SC", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">arrow_back</span>
+</div>
+<h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center font-english">negotiate</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-transparent text-text-light dark:text-text-dark gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined">bookmark_border</span>
+</button>
+</div>
+</div>
+<!-- Headline Text -->
+<h1 class="text-text-light dark:text-text-dark tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6 font-english">Word Etymology</h1>
+<!-- Interactive Puzzle Blocks -->
+<div class="flex justify-center px-4 py-3">
+<div class="flex flex-wrap items-center justify-center gap-1 w-full max-w-md">
+<!-- Morpheme: neg- -->
+<div class="flex-1 min-w-[80px] cursor-pointer rounded-lg bg-warning/20 p-4 text-center transition-transform hover:scale-105">
+<p class="text-2xl font-bold text-[#D97706] font-english">neg-</p>
+<p class="text-sm text-[#D97706]/80 font-english">not</p>
+</div>
+<span class="text-2xl font-bold text-gray-300 dark:text-gray-600">+</span>
+<!-- Morpheme: oti- -->
+<div class="flex-1 min-w-[80px] cursor-pointer rounded-lg bg-success/20 p-4 text-center transition-transform hover:scale-105">
+<p class="text-2xl font-bold text-[#38A169] font-english">oti-</p>
+<p class="text-sm text-[#38A169]/80 font-english">leisure</p>
+</div>
+<span class="text-2xl font-bold text-gray-300 dark:text-gray-600">+</span>
+<!-- Morpheme: -ate -->
+<div class="flex-1 min-w-[80px] cursor-pointer rounded-lg bg-error/20 p-4 text-center transition-transform hover:scale-105">
+<p class="text-2xl font-bold text-[#E53E3E] font-english">-ate</p>
+<p class="text-sm text-[#E53E3E]/80 font-english">to do</p>
+</div>
+</div>
+</div>
+<!-- Combine Button -->
+<div class="flex px-4 py-3 justify-center mt-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/30">
+<span class="truncate font-chinese">查看组合</span>
+</button>
+</div>
+<!-- Section Header -->
+<h3 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-8 font-english">The Story of 'negotiate'</h3>
+<!-- Etymology Timeline -->
+<div class="px-4 py-3 space-y-8">
+<div class="relative pl-8">
+<!-- Vertical Line -->
+<div class="absolute left-4 top-1 h-full w-0.5 bg-border-light dark:bg-border-dark"></div>
+<!-- Timeline Item 1 -->
+<div class="relative flex items-start gap-4">
+<div class="absolute left-0 top-1.5 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-primary/20">
+<span class="material-symbols-outlined text-primary text-base">history_edu</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-primary font-english">Latin: negōtiārī</p>
+<div class="mt-2 flex items-center gap-4 rounded-lg bg-surface-light dark:bg-surface-dark p-4 border border-border-light dark:border-border-dark">
+<img class="h-16 w-16 rounded-lg object-cover" data-alt="Illustration of a Roman figure in a toga" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIn-ngWOlcmh39mtCmTlqfjdaqdJPJd8tARjNeiG2tTFqS5XCdtx-Vr34Fo37KeGxggtkrFOLj1y5yC_SxmMU6i9ds5JR6SKn1S7FTGMjVJ9JPChX61aRHDNkMf1zaBE4FfDAuxjHuZhIvfUH6jMdhgn3oAlUbC3NE69NGX70VBA18t_q9ugtn-3bMVOFw97wYdWc72t-_a9jr-FdWj6PzVP8HdnkkBZU3lat6GqS73w8UDN2UDWB7cePZscdWXHV59TiKeA1lPwkx"/>
+<p class="text-sm leading-relaxed text-text-light/80 dark:text-text-dark/80 font-english">
+                            From *negotium* ("business"), which itself comes from *nec* ("not") + *otium* ("leisure"). The original meaning was "to carry on business."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative pl-8">
+<!-- Timeline Item 2 -->
+<div class="relative flex items-start gap-4">
+<div class="absolute left-0 top-1.5 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-primary/20">
+<span class="material-symbols-outlined text-primary text-base">draw</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-primary font-english">16th Century English</p>
+<div class="mt-2 flex items-center gap-4 rounded-lg bg-surface-light dark:bg-surface-dark p-4 border border-border-light dark:border-border-dark">
+<img class="h-16 w-16 rounded-lg object-cover" data-alt="Illustration of a quill and scroll on a wooden desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiQ07XbbVmk5LS6b6KGZT5URwFSvBfd7BFI9-oPDkqBZ0lyYU5m7qbyiopuCarW_WItKOfkzI2HGv3j0S2lbNIKnH1e4KTwXq-bgwLa0Dt1Pn7L320M9sMUOabntIMo_0qXDb4UnsvOymymB28PwHPXMbQsnSS07z_URit--nvJBnGWXu0wyyAOKgUxeVwwmDp-snechmO6urmDhyUawCU_QdQhzqh-oXGtrhnNXT_ltXuI6GPBjHYQpSYPXhFJTKWvCQKMUI5rE5O"/>
+<p class="text-sm leading-relaxed text-text-light/80 dark:text-text-dark/80 font-english">
+                            The word was adopted into English. Its meaning evolved from just doing business to discussing terms to reach an agreement or bargain.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="h-5"></div>
+</div>
+</body></html>
