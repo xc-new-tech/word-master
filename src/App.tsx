@@ -30,7 +30,7 @@ function App() {
   }, [theme]);
 
   return (
-    <Router>
+    <Router basename="/word-master">
       <div className="min-h-screen bg-background-light dark:bg-background-dark">
         <Routes>
           {/* 主页 */}
