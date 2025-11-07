@@ -28,7 +28,6 @@ export default function LearningCurveChart({
   }
 
   const padding = { top: 20, right: 20, bottom: 30, left: 40 };
-  const chartWidth = 100; // 百分比
   const chartHeight = height - padding.top - padding.bottom;
 
   // 计算数据范围

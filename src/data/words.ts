@@ -9,7 +9,7 @@ import { highFrequencyWords } from './high-frequency-words';
 //
 // 优先展示20个精选高频词，数据质量最高，完全匹配新卡片设计
 
-const remainingWords: Word[] = [
+const remainingWords = [
   {
     "id": "w0001",
     "word": "a",
@@ -59369,4 +59369,4 @@ const remainingWords: Word[] = [
 ];
 
 // 导出完整词库：优先展示20个精选高频词，然后是其他词汇
-export const sampleWords: Word[] = [...highFrequencyWords, ...remainingWords];
+export const sampleWords = [...highFrequencyWords, ...remainingWords] as Word[];

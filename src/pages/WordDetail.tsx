@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppStore } from '@/store';
 import { Word } from '@/types';
 import { sampleWords } from '@/data/words';
 import TopBar from '@/components/TopBar';

@@ -7,11 +7,10 @@ import BottomNav from '@/components/BottomNav';
 import LearningCurveChart from '@/components/LearningCurveChart';
 import { useMemo } from 'react';
 import { getTodayReviewStats } from '@/utils/reviewQueue';
-import { sampleWords } from '@/data/words';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { statistics, theme, toggleTheme, learningRecords } = useAppStore();
+  const { theme, toggleTheme, learningRecords } = useAppStore();
 
   // 模拟本周学习数据
   const weeklyActivity = [
