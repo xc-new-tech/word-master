@@ -279,3 +279,170 @@ React Router 正常处理路由
 
 **修复完成时间**: 2025-11-08
 **状态**: ✅ 已部署
+
+---
+
+## 登录循环问题修复
+
+### 问题描述
+- ❌ 登录后一直跳回登录页面，无法进入学习页面
+- ❌ 使用浏览器工具测试发现登录成功但立即返回登录页
+
+### 问题根因分析
+
+#### 1. Login.tsx 竞态条件
+- `Login.tsx` 的 `handleLogin` 调用 `login(username)` 后立即执行 `navigate('/')`
+- `login()` 函数内部会调用 `window.location.reload()`
+- 两个导航操作产生竞态：navigate 可能在 reload 之前执行，导致状态不一致
+
+#### 2. persist storage key 动态切换问题（核心问题）
+- zustand persist 的 `name` 参数在模块加载时只计算一次
+- 使用 IIFE `(() => {...})()` 在模块加载时决定 storage key
+- 登录后即使调用 reload，persist 仍使用旧的 storage key
+- 导致 store 中的 `currentUser` 与 localStorage 不同步
+
+#### 3. 表现症状
+```
+用户登录
+  ↓
+localStorage 设置 currentUser = "用户名"
+  ↓
+window.location.reload()
+  ↓
+persist 使用旧的 storage key (guest)
+  ↓
+无法加载用户数据，currentUser 为 null
+  ↓
+ProtectedRoute 检测到 currentUser 为 null
+  ↓
+重定向回 /login
+```
+
+### 解决方案
+
+#### 1. 移除 Login.tsx 中的竞态导航
+**修改文件**: `src/pages/Login.tsx`
+```typescript
+// 修改前
+const handleLogin = (e: React.FormEvent) => {
+  e.preventDefault();
+  if (username.trim()) {
+    login(username.trim());
+    navigate('/');  // ❌ 与 login 内部的 reload 竞态
+  }
+};
+
+// 修改后
+const handleLogin = (e: React.FormEvent) => {
+  e.preventDefault();
+  if (username.trim()) {
+    login(username.trim());
+    // login 函数内部会调用 window.location.reload()，不需要手动导航
+  }
+};
+```
+
+#### 2. 实现动态 storage 切换
+**修改文件**: `src/store/index.ts`
+
+**添加自定义 storage**:
+```typescript
+import { persist, PersistStorage } from 'zustand/middleware';
+
+const customStorage: PersistStorage<AppState> = {
+  getItem: (_name: string) => {
+    const user = getCurrentUser(); // 每次都动态读取当前用户
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    const value = localStorage.getItem(actualKey);
+    if (!value) return null;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (_name: string, value) => {
+    const user = getCurrentUser(); // 每次都动态读取当前用户
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    localStorage.setItem(actualKey, JSON.stringify(value));
+  },
+  removeItem: (_name: string) => {
+    const user = getCurrentUser(); // 每次都动态读取当前用户
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    localStorage.removeItem(actualKey);
+  },
+};
+```
+
+**使用自定义 storage**:
+```typescript
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({ /* state */ }),
+    {
+      name: 'word-master-storage', // 占位符，实际 key 由 customStorage 决定
+      storage: customStorage, // 使用自定义 storage
+    }
+  )
+);
+```
+
+### 技术要点
+
+1. **动态 storage key**: 每次读写时都调用 `getCurrentUser()` 获取最新用户
+2. **正确的类型**: 实现 `PersistStorage<AppState>` 接口
+3. **JSON 序列化**: `getItem` 返回解析后的对象，`setItem` 序列化对象
+4. **避免竞态**: 只依赖 `login()` 内部的 `reload`，不手动导航
+
+### 测试结果
+
+#### 本地测试（Chrome DevTools）
+1. ✅ 清除 localStorage
+2. ✅ 访问首页自动跳转到登录页
+3. ✅ 输入用户名"最终测试"并登录
+4. ✅ 页面 reload 后成功进入首页
+5. ✅ localStorage 正确保存到 `word-master-storage-最终测试`
+6. ✅ store 中的 currentUser 与 localStorage 一致
+7. ✅ 可以正常访问学习功能
+
+#### 构建测试
+- ✅ TypeScript 编译通过
+- ✅ Vite 构建成功
+- 📦 产物大小：JS 867.93 kB (gzip: 205.31 kB)
+
+#### 部署测试
+- ✅ 部署到 GitHub Pages 成功
+- ✅ 代码提交并推送（commit: 5f2fbe6）
+
+### 修改文件清单
+1. `src/pages/Login.tsx` - 移除竞态导航
+2. `src/store/index.ts` - 实现 customStorage 支持动态用户切换
+
+### 数据流程（修复后）
+```
+用户登录
+  ↓
+localStorage.setItem('word-master-current-user', '用户名')
+  ↓
+login() 调用 window.location.reload()
+  ↓
+页面重新加载，模块重新执行
+  ↓
+persist 调用 customStorage.getItem()
+  ↓
+customStorage 读取 getCurrentUser() = '用户名'
+  ↓
+使用 'word-master-storage-用户名' 作为 key
+  ↓
+成功加载用户数据到 store
+  ↓
+ProtectedRoute 检测到 currentUser 不为 null
+  ↓
+允许访问首页 ✅
+```
+
+---
+
+**登录修复完成时间**: 2025-11-08
+**状态**: ✅ 已修复并部署
+**访问地址**: https://xc-new-tech.github.io/word-master/
