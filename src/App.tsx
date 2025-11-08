@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
 
 // 页面组件
@@ -17,6 +17,24 @@ import VocabularyLibrary from '@/pages/VocabularyLibrary';
 import Profile from '@/pages/Profile';
 import Achievements from '@/pages/Achievements';
 import Settings from '@/pages/Settings';
+
+// 处理 GitHub Pages 404 重定向
+function RedirectHandler() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const redirect = sessionStorage.redirect;
+    if (redirect) {
+      sessionStorage.removeItem('redirect');
+      // 从完整 URL 中提取路径
+      const url = new URL(redirect);
+      const path = url.pathname.replace('/word-master', '') || '/';
+      navigate(path + url.search + url.hash, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
+}
 
 // 路由保护组件
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -43,6 +61,7 @@ function App() {
 
   return (
     <Router basename="/word-master">
+      <RedirectHandler />
       <div className="min-h-screen bg-background-light dark:bg-background-dark">
         <Routes>
           {/* 登录页面 - 不需要保护 */}
