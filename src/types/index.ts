@@ -83,3 +83,11 @@ export interface Statistics {
   streak: number;
   accuracy: number;
 }
+
+// 用户账号
+export interface UserAccount {
+  username: string;
+  displayName: string;
+  createdAt: Date;
+  lastLoginAt: Date;
+}

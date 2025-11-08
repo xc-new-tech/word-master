@@ -17,7 +17,7 @@ interface ModeOption {
 
 export default function ModeSelection() {
   const navigate = useNavigate();
-  const { setCurrentWords, setCurrentIndex, learningRecords, userProfile } = useAppStore();
+  const { setCurrentWords, setCurrentIndex, learningRecords, userProfile, sequentialProgress, setCurrentMode, resetSequentialProgress } = useAppStore();
   const [selectedMode, setSelectedMode] = useState<LearningMode>('sequential');
 
   const modes: ModeOption[] = [
@@ -52,6 +52,12 @@ export default function ModeSelection() {
     },
   ];
 
+  const handleResetProgress = () => {
+    if (confirm('确定要重新开始顺序学习吗？这将清除当前的学习进度。')) {
+      resetSequentialProgress();
+    }
+  };
+
   const handleStartLearning = () => {
     // 准备推荐上下文
     const learningRecordsMap = new Map(
@@ -62,6 +68,7 @@ export default function ModeSelection() {
       userLevel: userProfile.grade,
       learningRecords: learningRecordsMap,
       currentDate: new Date(),
+      sequentialProgress: selectedMode === 'sequential' ? sequentialProgress : undefined,
     };
 
     // 将mode id标准化（exam-sprint -> sprint）
@@ -77,6 +84,7 @@ export default function ModeSelection() {
     // 设置学习单词列表（默认20个）
     setCurrentWords(filteredWords.slice(0, userProfile.dailyGoal || 20));
     setCurrentIndex(0);
+    setCurrentMode(modeType as 'sequential' | 'random' | 'smart' | 'sprint');
     navigate('/learning');
   };
 
@@ -124,20 +132,31 @@ export default function ModeSelection() {
 
                 {/* Progress bar for sequential mode */}
                 {mode.progress && (
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="text-sm text-subtext-light dark:text-subtext-dark">
-                      Unit 3 - {mode.progress.percentage}% complete
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <div className="w-24 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-                        <div
-                          className="h-1.5 rounded-full bg-success"
-                          style={{ width: `${mode.progress.percentage}%` }}
-                        />
-                      </div>
-                      <p className="text-sm font-semibold text-text-light dark:text-text-dark">
-                        {mode.progress.percentage}%
+                  <div className="mt-3">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-subtext-light dark:text-subtext-dark">
+                        已学习 {sequentialProgress} 个单词
                       </p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+                          <div
+                            className="h-1.5 rounded-full bg-success"
+                            style={{ width: `${Math.min((sequentialProgress / 1548) * 100, 100)}%` }}
+                          />
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleResetProgress();
+                          }}
+                          className="flex items-center justify-center size-6 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                          title="重新开始"
+                        >
+                          <span className="material-symbols-outlined text-lg text-subtext-light dark:text-subtext-dark">
+                            refresh
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}

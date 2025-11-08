@@ -13,6 +13,7 @@ interface RecommendationContext {
   userLevel: '初一' | '初二' | '初三';
   learningRecords: Map<string, LearningRecord>;
   currentDate: Date;
+  sequentialProgress?: number; // 顺序学习的进度（已学习到第几个单词）
 }
 
 /**
@@ -116,12 +117,23 @@ export function filterByMode(
 ): Word[] {
   switch (mode) {
     case 'sequential':
-      // 按单元顺序
-      return [...words].sort((a, b) => {
+      // 按单元顺序排序
+      const sorted = [...words].sort((a, b) => {
         const unitA = parseInt(a.unit.replace('Unit ', ''));
         const unitB = parseInt(b.unit.replace('Unit ', ''));
         return unitA - unitB;
       });
+
+      // 根据进度返回单词（从上次学习的位置继续）
+      const progress = context.sequentialProgress || 0;
+
+      // 如果已经学完所有单词，从头开始
+      if (progress >= sorted.length) {
+        return sorted;
+      }
+
+      // 从进度位置开始返回剩余单词
+      return sorted.slice(progress);
 
     case 'random':
       // 随机打乱

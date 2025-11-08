@@ -7,7 +7,7 @@ import WordIllustration from '@/components/WordIllustration';
 
 export default function Learning() {
   const navigate = useNavigate();
-  const { currentWords, currentIndex, setCurrentIndex } = useAppStore();
+  const { currentWords, currentIndex, setCurrentIndex, currentMode, sequentialProgress, setSequentialProgress } = useAppStore();
   const [showOverlay, setShowOverlay] = useState<'review' | 'mastered' | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -29,6 +29,10 @@ export default function Learning() {
         setCurrentIndex(currentIndex + 1);
       } else {
         // 学习完成
+        // 如果是顺序学习模式，更新学习进度
+        if (currentMode === 'sequential') {
+          setSequentialProgress(sequentialProgress + currentWords.length);
+        }
         alert('恭喜完成今日学习!');
         navigate('/');
       }

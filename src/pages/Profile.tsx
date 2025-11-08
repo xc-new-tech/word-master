@@ -6,7 +6,19 @@ import BottomNav from '@/components/BottomNav';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { userProfile } = useAppStore();
+  const { userProfile, currentUser, logout } = useAppStore();
+
+  const handleLogout = () => {
+    if (confirm('确定要退出登录吗？')) {
+      logout();
+    }
+  };
+
+  const handleSwitchAccount = () => {
+    if (confirm('确定要切换账号吗？当前学习进度会被保存。')) {
+      logout();
+    }
+  };
 
   const stats = [
     { label: '连续学习', value: '7', unit: '天', color: 'primary' },
@@ -15,11 +27,13 @@ export default function Profile() {
   ];
 
   const menuItems = [
-    { icon: 'person', label: '个人信息', path: '/profile/edit' },
-    { icon: 'emoji_events', label: '成就系统', path: '/achievements' },
-    { icon: 'leaderboard', label: '学习排行', path: '/leaderboard' },
-    { icon: 'history', label: '学习记录', path: '/history' },
-    { icon: 'settings', label: '设置', path: '/settings' },
+    { icon: 'person', label: '个人信息', path: '/profile/edit', type: 'nav' as const },
+    { icon: 'emoji_events', label: '成就系统', path: '/achievements', type: 'nav' as const },
+    { icon: 'leaderboard', label: '学习排行', path: '/leaderboard', type: 'nav' as const },
+    { icon: 'history', label: '学习记录', path: '/history', type: 'nav' as const },
+    { icon: 'settings', label: '设置', path: '/settings', type: 'nav' as const },
+    { icon: 'swap_horiz', label: '切换账号', action: handleSwitchAccount, type: 'action' as const },
+    { icon: 'logout', label: '退出登录', action: handleLogout, type: 'action' as const },
   ];
 
   return (
@@ -34,7 +48,7 @@ export default function Profile() {
               <span className="material-symbols-outlined text-5xl">account_circle</span>
             </div>
             <h2 className="text-xl font-bold text-text-light dark:text-text-dark font-chinese">
-              WordMaster 学习者
+              {currentUser || 'WordMaster 学习者'}
             </h2>
             <p className="text-sm text-subtext-light dark:text-subtext-dark mt-1 font-chinese">
               {userProfile.grade} · 每日目标 {userProfile.dailyGoal}词
@@ -99,14 +113,24 @@ export default function Profile() {
           {menuItems.map((item) => (
             <Card
               key={item.label}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                if (item.type === 'nav') {
+                  navigate(item.path);
+                } else if (item.type === 'action' && item.action) {
+                  item.action();
+                }
+              }}
               className="flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div className={`flex size-10 items-center justify-center rounded-full ${
+                  item.label === '退出登录' ? 'bg-error/10 text-error' : 'bg-primary/10 text-primary'
+                }`}>
                   <span className="material-symbols-outlined text-xl">{item.icon}</span>
                 </div>
-                <p className="text-base font-medium text-text-light dark:text-text-dark font-chinese">
+                <p className={`text-base font-medium font-chinese ${
+                  item.label === '退出登录' ? 'text-error' : 'text-text-light dark:text-text-dark'
+                }`}>
                   {item.label}
                 </p>
               </div>
