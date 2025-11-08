@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppStore, getAllAccounts } from '@/store';
 
 export default function Login() {
-  const navigate = useNavigate();
   const { login } = useAppStore();
   const [username, setUsername] = useState('');
   const [accounts] = useState(getAllAccounts());
@@ -12,13 +10,13 @@ export default function Login() {
     e.preventDefault();
     if (username.trim()) {
       login(username.trim());
-      navigate('/');
+      // login 函数内部会调用 window.location.reload()，不需要手动导航
     }
   };
 
   const handleQuickLogin = (accountUsername: string) => {
     login(accountUsername);
-    navigate('/');
+    // login 函数内部会调用 window.location.reload()，不需要手动导航
   };
 
   return (

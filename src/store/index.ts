@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, PersistStorage } from 'zustand/middleware';
 import { Word, LearningRecord, UserProfile, Statistics, UserAccount } from '@/types';
 
 // 账号管理辅助函数
@@ -86,6 +86,31 @@ interface AppState {
   statistics: Statistics;
   updateStatistics: (stats: Partial<Statistics>) => void;
 }
+
+// 自定义 storage，支持动态切换用户的 storage key
+const customStorage: PersistStorage<AppState> = {
+  getItem: (_name: string) => {
+    const user = getCurrentUser();
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    const value = localStorage.getItem(actualKey);
+    if (!value) return null;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (_name: string, value) => {
+    const user = getCurrentUser();
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    localStorage.setItem(actualKey, JSON.stringify(value));
+  },
+  removeItem: (_name: string) => {
+    const user = getCurrentUser();
+    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    localStorage.removeItem(actualKey);
+  },
+};
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -180,10 +205,8 @@ export const useAppStore = create<AppState>()(
         })),
     }),
     {
-      name: (() => {
-        const user = getCurrentUser();
-        return user ? getStorageKey(user) : 'word-master-storage-guest';
-      })(),
+      name: 'word-master-storage', // 这个 name 只是占位符，实际的 key 由 customStorage 动态决定
+      storage: customStorage,
     }
   )
 );
