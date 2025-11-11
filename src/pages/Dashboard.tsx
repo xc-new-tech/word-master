@@ -14,46 +14,44 @@ export default function Dashboard() {
 
   // 基于真实学习记录生成本周学习数据
   const weeklyActivity = useMemo(() => {
-    // TODO: 从 learningRecords 中统计每天的学习数据
-    // 目前返回空数据，后续可以基于实际学习记录生成
-    const recordsArray = Object.values(learningRecords);
-    if (recordsArray.length === 0) {
-      return [
-        { day: 'Sun', value: 0 },
-        { day: 'Mon', value: 0 },
-        { day: 'Tue', value: 0 },
-        { day: 'Wed', value: 0 },
-        { day: 'Thu', value: 0 },
-        { day: 'Fri', value: 0 },
-        { day: 'Sat', value: 0 },
-      ];
-    }
+    const now = new Date();
+    const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    // 简化版：显示有学习记录的天数
-    const hasLearning = recordsArray.length > 0 ? 50 : 0;
-    return [
-      { day: 'Sun', value: 0 },
-      { day: 'Mon', value: hasLearning },
-      { day: 'Tue', value: hasLearning },
-      { day: 'Wed', value: hasLearning },
-      { day: 'Thu', value: hasLearning },
-      { day: 'Fri', value: hasLearning },
-      { day: 'Sat', value: hasLearning },
-    ];
+    // 计算过去7天的数据
+    return weekDays.map((day, index) => {
+      const targetDate = new Date(now);
+      // 计算目标日期（今天是星期几，往前推算）
+      const todayDayOfWeek = now.getDay(); // 0 = Sunday, 6 = Saturday
+      const daysAgo = (todayDayOfWeek - index + 7) % 7;
+      targetDate.setDate(now.getDate() - daysAgo);
+      targetDate.setHours(0, 0, 0, 0);
+      const dateStr = targetDate.toDateString();
+
+      // 统计该天有多少个单词被学习或复习
+      const dailyCount = Object.values(learningRecords).filter(record => {
+        return record.reviews.some(review =>
+          new Date(review.date).toDateString() === dateStr
+        );
+      }).length;
+
+      // 归一化到 0-100（假设每天最多学习20个单词）
+      const normalizedValue = Math.min((dailyCount / 20) * 100, 100);
+
+      return { day, value: normalizedValue };
+    });
   }, [learningRecords]);
 
-  // 生成学习曲线数据（基于真实学习记录生成模拟数据）
+  // 生成学习曲线数据（基于真实学习记录）
   const learningCurveData = useMemo(() => {
-    return weeklyActivity.map(({ day }, index) => {
-      // 根据热力图数据生成词数
-      const baseCount = weeklyActivity[index].value;
-      const count = Math.floor((baseCount / 100) * 20); // 转换为学习词数
+    return weeklyActivity.map(({ day, value }) => {
+      // 将归一化的value转换为实际学习词数
+      const count = Math.round((value / 100) * 20);
       return {
         date: day,
         count: count,
       };
     });
-  }, []);
+  }, [weeklyActivity]);
 
   // 计算今日复习统计
   const reviewStats = useMemo(() => {

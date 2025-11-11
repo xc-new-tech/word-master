@@ -4,6 +4,7 @@ import { useAppStore } from '@/store';
 import { Word, LearningRecord, ReviewRecord } from '@/types';
 import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
 import { calculateStatistics } from '@/utils/statistics';
+import { useToast } from '@/hooks/useToast';
 import WordIllustration from '@/components/WordIllustration';
 
 export default function Learning() {
@@ -23,6 +24,7 @@ export default function Learning() {
   const [showOverlay, setShowOverlay] = useState<'review' | 'mastered' | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
+  const { success, error, ToastComponent } = useToast();
 
   if (currentWords.length === 0) {
     navigate('/mode-selection');
@@ -110,8 +112,8 @@ export default function Learning() {
         if (currentMode === 'sequential') {
           setSequentialProgress(sequentialProgress + currentWords.length);
         }
-        alert('恭喜完成今日学习!');
-        navigate('/');
+        success('恭喜完成今日学习!');
+        setTimeout(() => navigate('/'), 1500);
       }
     }, 500);
   };
@@ -122,9 +124,12 @@ export default function Learning() {
 
   const playPronunciation = () => {
     if (isSpeechSupported) {
-      speakWord(currentWord.word, 'us').catch(err => console.error('发音失败:', err));
+      speakWord(currentWord.word, 'us').catch(err => {
+        console.error('发音失败:', err);
+        error('发音播放失败，请检查浏览器设置');
+      });
     } else {
-      alert('您的浏览器不支持语音播放功能');
+      error('您的浏览器不支持语音播放功能');
     }
   };
 
@@ -478,6 +483,7 @@ export default function Learning() {
           <span className="material-symbols-outlined text-4xl">check</span>
         </button>
       </div>
+      {ToastComponent}
     </div>
   );
 }
