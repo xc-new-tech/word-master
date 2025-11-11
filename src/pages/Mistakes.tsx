@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 import { sampleWords } from '@/data/words';
+import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
 
 export default function Mistakes() {
   const navigate = useNavigate();
@@ -84,7 +85,9 @@ export default function Mistakes() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('播放发音');
+                    if (isSpeechSupported) {
+                      speakWord(word.word, 'us').catch(err => console.error('发音失败:', err));
+                    }
                   }}
                   className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
                 >

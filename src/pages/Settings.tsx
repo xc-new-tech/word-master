@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store';
+import { LearningMode, UserSettings } from '@/types';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 
@@ -69,7 +70,7 @@ export default function Settings() {
                   value={userProfile.preferredMode}
                   onChange={(e) =>
                     setUserProfile({
-                      preferredMode: e.target.value as any,
+                      preferredMode: e.target.value as LearningMode,
                     })
                   }
                   className="w-full h-10 px-3 rounded-lg border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:border-primary focus:outline-none font-chinese"
@@ -131,7 +132,7 @@ export default function Settings() {
                   ].map((size) => (
                     <button
                       key={size.value}
-                      onClick={() => handleFontSizeChange(size.value as any)}
+                      onClick={() => handleFontSizeChange(size.value as UserSettings['fontSize'])}
                       className={`h-10 rounded-lg text-sm font-medium transition-all font-chinese ${
                         userProfile.settings.fontSize === size.value
                           ? 'bg-primary text-white'
