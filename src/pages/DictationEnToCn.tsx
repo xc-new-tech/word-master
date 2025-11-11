@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { sampleWords } from '@/data/words';
 import { Word } from '@/types';
+import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
 
 export default function DictationEnToCn() {
   const navigate = useNavigate();
@@ -19,9 +20,14 @@ export default function DictationEnToCn() {
   const progress = ((currentIndex + 1) / words.length) * 100;
 
   const playAudio = () => {
-    if (playCount < 3) {
-      console.log('播放发音:', currentWord.word);
+    if (playCount < 3 && isSpeechSupported) {
+      speakWord(currentWord.word, 'us').catch(err => {
+        console.error('发音失败:', err);
+        alert('发音播放失败，请检查浏览器设置');
+      });
       setPlayCount(playCount + 1);
+    } else if (!isSpeechSupported) {
+      alert('您的浏览器不支持语音播放功能');
     }
   };
 

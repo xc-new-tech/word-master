@@ -1,448 +1,645 @@
-# 添加简单账号系统
+# WordMaster 单词学习系统 - 全面质量检查报告
 
-## 需求描述
-添加一个简单的账号系统，支持多用户，保存每个用户的独立学习进度。
+## 检查时间
+2025-11-11
 
-## 设计方案
-
-### 方案：纯前端多账号系统
-- **特点**：无需后端，基于 localStorage，支持多账号切换
-- **数据隔离**：每个账号有独立的学习数据存储空间
-- **登录方式**：简单的用户名输入（无需密码）
-- **数据持久化**：使用 zustand persist，按账号分别存储
-
-### 功能列表
-1. **登录/注册页面**
-   - 输入用户名即可登录或创建新账号
-   - 显示已有账号列表，快速切换
-
-2. **账号管理**
-   - 当前登录用户显示
-   - 切换账号功能
-   - 删除账号功能（可选）
-
-3. **数据隔离**
-   - 学习记录（learningRecords）
-   - 顺序学习进度（sequentialProgress）
-   - 统计数据（statistics）
-   - 用户配置（userProfile）
-
-4. **路由保护**
-   - 未登录时自动跳转到登录页
-   - 登录后保持登录状态
-
-## 待办事项
-
-- [ ] 1. 设计账号数据结构和状态管理
-- [ ] 2. 创建登录/注册页面组件
-- [ ] 3. 修改 store 配置，实现按账号隔离数据
-- [ ] 4. 添加路由保护，未登录时跳转登录页
-- [ ] 5. 在设置页面添加"切换账号"/"退出登录"功能
-- [ ] 6. 测试多账号切换和数据隔离
-
-## 涉及的文件
-1. `src/store/index.ts` - 添加账号管理状态
-2. `src/pages/Login.tsx` - 新建登录页面（需创建）
-3. `src/App.tsx` - 添加路由保护
-4. `src/pages/Profile.tsx` - 添加账号切换功能（如果有的话）
-5. `src/types/index.ts` - 添加账号相关类型定义
-
-## 技术实现
-- 使用 localStorage 存储账号列表
-- 每个账号的数据使用独立的 storage key：`word-master-storage-{username}`
-- 当前登录用户存储在：`word-master-current-user`
-
-## 预期效果
-- ✅ 支持多个用户独立使用
-- ✅ 每个用户有独立的学习进度
-- ✅ 快速切换账号
-- ✅ 数据不会混淆
-- ✅ 界面简洁友好
+## 检查范围
+- 30 个 TypeScript/TSX 文件
+- 核心功能：登录、学习、听写、复习、统计
+- 状态管理、工具函数、组件、类型定义
 
 ---
 
-## 审查
+## 🔴 高优先级问题（影响功能和用户体验）
 
-### 已完成的修改
-
-#### 1. 类型定义 (`src/types/index.ts`)
-- ✅ 添加 `UserAccount` 接口
-  - `username`: 用户名
-  - `displayName`: 显示名称
-  - `createdAt`: 创建时间
-  - `lastLoginAt`: 最后登录时间
-
-#### 2. 状态管理 (`src/store/index.ts`)
-- ✅ 添加账号管理辅助函数
-  - `getCurrentUser()`: 获取当前登录用户
-  - `setCurrentUser()`: 设置当前登录用户
-  - `getStorageKey()`: 根据用户名生成存储键
-  - `getAllAccounts()`: 获取所有账号列表
-  - `saveAccount()`: 保存账号信息
-
-- ✅ 添加账号相关状态和方法
-  - `currentUser`: 当前登录用户
-  - `login()`: 登录方法
-  - `logout()`: 退出登录方法
-
-- ✅ 修改 persist 配置
-  - 动态生成存储键：`word-master-storage-{username}`
-  - 未登录时使用：`word-master-storage-guest`
-  - 实现数据按账号完全隔离
-
-#### 3. 登录页面 (`src/pages/Login.tsx` - 新建)
-- ✅ 创建美观的登录界面
-- ✅ 支持输入用户名登录/注册
-- ✅ 显示已有账号列表，支持快速登录
-- ✅ 显示上次登录时间
-- ✅ 响应式设计，支持深色模式
-
-#### 4. 路由保护 (`src/App.tsx`)
-- ✅ 添加 `ProtectedRoute` 组件
-- ✅ 未登录时自动跳转到登录页
-- ✅ 添加 `/login` 路由
-- ✅ 所有功能页面都使用路由保护
-
-#### 5. 个人中心页面 (`src/pages/Profile.tsx`)
-- ✅ 显示当前登录用户名
-- ✅ 添加"切换账号"功能
-- ✅ 添加"退出登录"功能
-- ✅ 退出登录按钮使用红色警示样式
-- ✅ 切换账号前提示用户确认
-
-### 修改文件清单
-1. `src/types/index.ts` - 添加账号类型定义
-2. `src/store/index.ts` - 添加账号管理功能
-3. `src/pages/Login.tsx` - 新建登录页面
-4. `src/App.tsx` - 添加路由保护
-5. `src/pages/Profile.tsx` - 添加账号切换功能
-
-### 技术实现细节
-
-**数据隔离机制**
-- 每个用户的数据存储在独立的 localStorage key 中
-- 格式：`word-master-storage-{username}`
-- 当前用户信息存储在：`word-master-current-user`
-- 账号列表存储在：`word-master-accounts`
-
-**登录流程**
-1. 用户输入用户名或选择已有账号
-2. 调用 `login()` 方法
-3. 保存账号信息到账号列表
-4. 设置当前用户
-5. 刷新页面加载该用户的数据
-
-**切换账号流程**
-1. 用户点击"切换账号"
-2. 调用 `logout()` 方法
-3. 清除当前用户
-4. 刷新页面跳转到登录页
-5. 用户选择其他账号登录
-
-**数据持久化**
-- 使用 zustand persist 中间件
-- 每个账号的数据独立存储
-- 切换账号时自动加载对应数据
-- 退出登录不会清除数据
-
-### 用户体验改进
-- ✅ 支持多用户独立使用
-- ✅ 每个用户有独立的学习进度
-- ✅ 快速切换账号
-- ✅ 数据不会混淆
-- ✅ 界面简洁美观
-- ✅ 支持深色模式
-- ✅ 显示账号列表和登录历史
-
-### TypeScript 编译检查
-- ✅ 无编译错误（已通过 `tsc --noEmit` 检查）
-
-### 测试结果
-- ✅ 开发服务器正常启动
-- ✅ 编译无错误
-- ✅ 类型检查通过
-
-### 使用方法
-
-**首次使用**
-1. 访问应用，自动跳转到登录页
-2. 输入用户名（如：张三）
-3. 点击"登录/注册"
-4. 开始学习
-
-**切换账号**
-1. 进入"个人中心"页面
-2. 点击"切换账号"
-3. 确认后跳转到登录页
-4. 选择其他账号或创建新账号
-
-**多人使用同一设备**
-- 每个人使用不同的用户名登录
-- 学习进度完全独立
-- 数据不会相互影响
-
----
-
-**实施完成时间**: 2025-11-08
-**状态**: ✅ 完成
-**测试结果**: TypeScript 编译通过，开发服务器正常运行
-
----
-
-## 部署审查
-
-### 构建测试
-- ✅ 运行 `npm run build` 构建成功
-- ✅ TypeScript 编译通过，无类型错误
-- ✅ Vite 打包成功
-- 📦 产物大小：
-  - index.html: 0.95 kB (gzip: 0.51 kB)
-  - CSS: 34.45 kB (gzip: 6.13 kB)
-  - JS: 867.37 kB (gzip: 205.12 kB)
-
-### Git提交
-- ✅ 提交 9 个文件修改
-- ✅ 新增 Login.tsx 登录页面
-- ✅ 新增 todo.md 任务文档
-- ✅ 更新账号系统相关核心文件
-- 📝 提交信息：`feat: 添加简单账号系统，支持多用户独立学习`
-- 🔗 提交哈希：ca2cf7f
-
-### GitHub 推送
-- ✅ 成功推送到 origin/main 分支
-- ✅ 远程仓库更新完成
-
-### GitHub Pages 部署
-- ✅ 执行 `npm run deploy` 部署成功
-- ✅ 自动触发预构建（predeploy）
-- ✅ 发布到 gh-pages 分支
-- 🌐 部署状态：Published
-
-### 后续优化建议
-- 💡 考虑代码分割以减小 JS 包体积（当前 867 kB）
-- 💡 可使用动态 import() 实现按需加载
-- 💡 可配置 manualChunks 优化分块策略
-
----
-
-**部署完成时间**: 2025-11-08
-**部署状态**: ✅ 成功
-**访问地址**: https://xc-new-tech.github.io/word-master/
-
----
-
-## 路由修复
-
-### 问题描述
-- ❌ 直接访问子路由（如 /login）时出现 404 错误
-- 原因：GitHub Pages 无法识别 SPA 的客户端路由
-
-### 解决方案
-1. **创建 404.html**
-   - 位置：`public/404.html`
-   - 功能：将访问的 URL 保存到 sessionStorage
-   - 重定向到根路径 `/word-master/`
-
-2. **添加重定向处理器**
-   - 位置：`src/App.tsx`
-   - 组件：`RedirectHandler`
-   - 功能：检查 sessionStorage 中的重定向记录，恢复原始路由
-
-### 技术实现
-```
-用户访问 /word-master/login
-    ↓
-GitHub Pages 返回 404.html
-    ↓
-404.html 保存 URL 到 sessionStorage
-    ↓
-重定向到 /word-master/
-    ↓
-App 加载，RedirectHandler 检测重定向
-    ↓
-恢复到 /login 路由
-    ↓
-React Router 正常处理路由
-```
-
-### 修改文件
-1. `public/404.html` - 新建
-2. `src/App.tsx` - 添加 RedirectHandler 组件
-
-### 测试结果
-- ✅ 重新构建成功
-- ✅ 部署到 GitHub Pages 成功
-- ✅ 代码提交并推送（commit: 6fe38d1）
-- 🔍 等待验证直接访问子路由是否正常
-
----
-
-**修复完成时间**: 2025-11-08
-**状态**: ✅ 已部署
-
----
-
-## 登录循环问题修复
-
-### 问题描述
-- ❌ 登录后一直跳回登录页面，无法进入学习页面
-- ❌ 使用浏览器工具测试发现登录成功但立即返回登录页
-
-### 问题根因分析
-
-#### 1. Login.tsx 竞态条件
-- `Login.tsx` 的 `handleLogin` 调用 `login(username)` 后立即执行 `navigate('/')`
-- `login()` 函数内部会调用 `window.location.reload()`
-- 两个导航操作产生竞态：navigate 可能在 reload 之前执行，导致状态不一致
-
-#### 2. persist storage key 动态切换问题（核心问题）
-- zustand persist 的 `name` 参数在模块加载时只计算一次
-- 使用 IIFE `(() => {...})()` 在模块加载时决定 storage key
-- 登录后即使调用 reload，persist 仍使用旧的 storage key
-- 导致 store 中的 `currentUser` 与 localStorage 不同步
-
-#### 3. 表现症状
-```
-用户登录
-  ↓
-localStorage 设置 currentUser = "用户名"
-  ↓
-window.location.reload()
-  ↓
-persist 使用旧的 storage key (guest)
-  ↓
-无法加载用户数据，currentUser 为 null
-  ↓
-ProtectedRoute 检测到 currentUser 为 null
-  ↓
-重定向回 /login
-```
-
-### 解决方案
-
-#### 1. 移除 Login.tsx 中的竞态导航
-**修改文件**: `src/pages/Login.tsx`
+### 1. 功能未完成 - 复习功能
+**位置**: `/src/pages/Dashboard.tsx:132-134`
+**问题描述**: 
 ```typescript
-// 修改前
-const handleLogin = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (username.trim()) {
-    login(username.trim());
-    navigate('/');  // ❌ 与 login 内部的 reload 竞态
-  }
-};
+onClick={() => {
+  // TODO: 导航到复习页面
+  alert('复习功能开发中...');
+}}
+```
+**影响**: 
+- 用户看到"今日待复习"提示但无法使用
+- 艾宾浩斯复习算法已实现但未连接到 UI
+- 复习队列工具函数已完成但未被调用
 
-// 修改后
-const handleLogin = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (username.trim()) {
-    login(username.trim());
-    // login 函数内部会调用 window.location.reload()，不需要手动导航
+**改进建议**:
+- [ ] 创建 `src/pages/Review.tsx` 复习页面
+- [ ] 使用 `getWordsNeedingReview()` 从 `reviewQueue.ts` 获取待复习单词
+- [ ] 复用 Learning 页面的卡片设计
+- [ ] 添加复习结果统计
+
+---
+
+### 2. 学习记录未保存到 Store
+**位置**: `/src/pages/Learning.tsx:22-40`
+**问题描述**:
+```typescript
+const handleMark = (status: 'review' | 'mastered') => {
+  // ... 只是移动到下一个单词，没有保存学习记录
+  if (currentIndex < currentWords.length - 1) {
+    setCurrentIndex(currentIndex + 1);
+  }
+}
+```
+**影响**:
+- 用户标记"已掌握"或"需要复习"后，数据未保存
+- 智能推荐算法无法获取学习记录
+- 统计数据不准确
+- 复习功能无法正常工作
+
+**改进建议**:
+- [ ] 调用 `addLearningRecord()` 或 `updateLearningRecord()` 保存数据
+- [ ] 创建包含以下信息的学习记录：
+  ```typescript
+  {
+    wordId: currentWord.id,
+    firstSeen: new Date(),
+    lastReview: new Date(),
+    reviews: [{
+      date: new Date(),
+      correct: status === 'mastered',
+      mode: 'learn',
+      timeSpent: 0
+    }],
+    mastery: status === 'mastered' ? 80 : 40,
+    status: status === 'mastered' ? 'learning' : 'new'
+  }
+  ```
+- [ ] 更新统计数据（todayNewWords, totalWords）
+
+---
+
+### 3. 听写记录未保存
+**位置**: `/src/pages/DictationEnToCn.tsx`, `/src/pages/DictationCnToEn.tsx`
+**问题描述**:
+- 听写完成后只显示结果，未保存到学习记录
+- 无法追踪听写错误的单词
+- 错题本功能无法获取真实数据
+
+**改进建议**:
+- [ ] 在 `DictationResult.tsx` 页面保存听写记录
+- [ ] 更新学习记录的 mastery 和 reviews
+- [ ] 错误的单词标记为需要复习
+
+---
+
+### 4. 统计数据未实时更新
+**位置**: `/src/store/index.ts:193-205`, `/src/pages/Dashboard.tsx`
+**问题描述**:
+```typescript
+statistics: {
+  totalWords: 0,      // 始终为 0
+  masteredWords: 0,   // 始终为 0
+  todayNewWords: 0,   // 始终为 0
+  todayReviews: 0,    // 始终为 0
+  streak: 0,
+  accuracy: 0,
+}
+```
+**影响**:
+- Dashboard 显示的统计数据不准确
+- 用户无法看到真实的学习进度
+
+**改进建议**:
+- [ ] 在学习/听写完成后调用 `updateStatistics()`
+- [ ] 创建计算函数从 learningRecords 统计：
+  ```typescript
+  const calculateStatistics = (learningRecords: Record<string, LearningRecord>) => {
+    const records = Object.values(learningRecords);
+    const today = new Date().toDateString();
+    
+    return {
+      totalWords: records.length,
+      masteredWords: records.filter(r => r.mastery >= 80).length,
+      todayNewWords: records.filter(r => 
+        new Date(r.firstSeen).toDateString() === today
+      ).length,
+      todayReviews: records.filter(r =>
+        r.reviews.some(rev => new Date(rev.date).toDateString() === today)
+      ).length,
+      // ... streak 和 accuracy 计算
+    };
+  };
+  ```
+
+---
+
+### 5. 听写功能未实现真实语音播放
+**位置**: `/src/pages/DictationEnToCn.tsx:21-26`
+**问题描述**:
+```typescript
+const playAudio = () => {
+  if (playCount < 3) {
+    console.log('播放发音:', currentWord.word);  // ❌ 只是 console.log
+    setPlayCount(playCount + 1);
   }
 };
 ```
+**影响**:
+- 英译中听写模式无法播放单词发音
+- 用户体验不完整
 
-#### 2. 实现动态 storage 切换
-**修改文件**: `src/store/index.ts`
-
-**添加自定义 storage**:
-```typescript
-import { persist, PersistStorage } from 'zustand/middleware';
-
-const customStorage: PersistStorage<AppState> = {
-  getItem: (_name: string) => {
-    const user = getCurrentUser(); // 每次都动态读取当前用户
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
-    const value = localStorage.getItem(actualKey);
-    if (!value) return null;
-    try {
-      return JSON.parse(value);
-    } catch {
-      return null;
+**改进建议**:
+- [ ] 使用 `speakWord()` 从 `speechSynthesis.ts` 播放发音
+- [ ] 参考 Learning.tsx 的实现：
+  ```typescript
+  import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
+  
+  const playAudio = () => {
+    if (playCount < 3 && isSpeechSupported) {
+      speakWord(currentWord.word, 'us').catch(err => {
+        console.error('发音失败:', err);
+        alert('发音播放失败，请检查浏览器设置');
+      });
+      setPlayCount(playCount + 1);
     }
-  },
-  setItem: (_name: string, value) => {
-    const user = getCurrentUser(); // 每次都动态读取当前用户
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
-    localStorage.setItem(actualKey, JSON.stringify(value));
-  },
-  removeItem: (_name: string) => {
-    const user = getCurrentUser(); // 每次都动态读取当前用户
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
-    localStorage.removeItem(actualKey);
-  },
-};
-```
-
-**使用自定义 storage**:
-```typescript
-export const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({ /* state */ }),
-    {
-      name: 'word-master-storage', // 占位符，实际 key 由 customStorage 决定
-      storage: customStorage, // 使用自定义 storage
-    }
-  )
-);
-```
-
-### 技术要点
-
-1. **动态 storage key**: 每次读写时都调用 `getCurrentUser()` 获取最新用户
-2. **正确的类型**: 实现 `PersistStorage<AppState>` 接口
-3. **JSON 序列化**: `getItem` 返回解析后的对象，`setItem` 序列化对象
-4. **避免竞态**: 只依赖 `login()` 内部的 `reload`，不手动导航
-
-### 测试结果
-
-#### 本地测试（Chrome DevTools）
-1. ✅ 清除 localStorage
-2. ✅ 访问首页自动跳转到登录页
-3. ✅ 输入用户名"最终测试"并登录
-4. ✅ 页面 reload 后成功进入首页
-5. ✅ localStorage 正确保存到 `word-master-storage-最终测试`
-6. ✅ store 中的 currentUser 与 localStorage 一致
-7. ✅ 可以正常访问学习功能
-
-#### 构建测试
-- ✅ TypeScript 编译通过
-- ✅ Vite 构建成功
-- 📦 产物大小：JS 867.93 kB (gzip: 205.31 kB)
-
-#### 部署测试
-- ✅ 部署到 GitHub Pages 成功
-- ✅ 代码提交并推送（commit: 5f2fbe6）
-
-### 修改文件清单
-1. `src/pages/Login.tsx` - 移除竞态导航
-2. `src/store/index.ts` - 实现 customStorage 支持动态用户切换
-
-### 数据流程（修复后）
-```
-用户登录
-  ↓
-localStorage.setItem('word-master-current-user', '用户名')
-  ↓
-login() 调用 window.location.reload()
-  ↓
-页面重新加载，模块重新执行
-  ↓
-persist 调用 customStorage.getItem()
-  ↓
-customStorage 读取 getCurrentUser() = '用户名'
-  ↓
-使用 'word-master-storage-用户名' 作为 key
-  ↓
-成功加载用户数据到 store
-  ↓
-ProtectedRoute 检测到 currentUser 不为 null
-  ↓
-允许访问首页 ✅
-```
+  };
+  ```
 
 ---
 
-**登录修复完成时间**: 2025-11-08
-**状态**: ✅ 已修复并部署
-**访问地址**: https://xc-new-tech.github.io/word-master/
+### 6. 错题本使用模拟数据
+**位置**: `/src/pages/Mistakes.tsx:9-10`
+**问题描述**:
+```typescript
+// 模拟错题数据
+const [mistakeWords] = useState(sampleWords.slice(0, 3));
+```
+**影响**:
+- 显示的是示例单词，不是真实错题
+- 用户无法看到自己的错误记录
+
+**改进建议**:
+- [ ] 从 learningRecords 筛选错误率高的单词
+- [ ] 使用以下逻辑：
+  ```typescript
+  const mistakeWords = useMemo(() => {
+    return Object.entries(learningRecords)
+      .filter(([_, record]) => {
+        const errorRate = record.reviews.filter(r => !r.correct).length / record.reviews.length;
+        return errorRate > 0.3 || record.mastery < 50;
+      })
+      .map(([wordId, _]) => sampleWords.find(w => w.id === wordId))
+      .filter(Boolean);
+  }, [learningRecords]);
+  ```
+
+---
+
+## 🟡 中优先级问题（代码质量和维护性）
+
+### 7. TypeScript 类型不安全
+**位置**: `/src/pages/Settings.tsx:72, 134`
+**问题描述**:
+```typescript
+preferredMode: e.target.value as any,  // ❌ 使用 any 绕过类型检查
+handleFontSizeChange(size.value as any)  // ❌ 使用 any
+```
+**改进建议**:
+- [ ] 使用类型断言或类型守卫：
+  ```typescript
+  preferredMode: e.target.value as LearningMode,
+  handleFontSizeChange(size.value as UserSettings['fontSize'])
+  ```
+
+---
+
+### 8. 使用 alert/confirm 提示用户
+**位置**: 多个文件
+- `/src/pages/Learning.tsx:36, 50`
+- `/src/pages/Dashboard.tsx:133`
+- `/src/pages/Profile.tsx:12, 18`
+- `/src/pages/ModeSelection.tsx:56`
+- `/src/pages/VocabularyLibrary.tsx:220`
+
+**问题描述**:
+```typescript
+alert('恭喜完成今日学习!');
+if (confirm('确定要退出登录吗？')) { }
+```
+**影响**:
+- 原生弹窗不美观，与应用风格不统一
+- 无法自定义样式和交互
+
+**改进建议**:
+- [ ] 创建自定义 Modal 组件：
+  ```typescript
+  // src/components/Modal.tsx
+  export function Modal({ title, message, onConfirm, onCancel }) { }
+  
+  // src/components/Toast.tsx  
+  export function Toast({ message, type }) { }
+  
+  // src/hooks/useToast.ts
+  export function useToast() {
+    return {
+      success: (msg) => {},
+      error: (msg) => {},
+      info: (msg) => {}
+    };
+  }
+  ```
+
+---
+
+### 9. Console.log 调试代码未清理
+**位置**: 多个文件
+- `/src/pages/Mistakes.tsx:87`
+- `/src/pages/DictationEnToCn.tsx:23`
+- `/src/utils/speechSynthesis.ts:87, 95`
+
+**改进建议**:
+- [ ] 移除或替换为条件日志：
+  ```typescript
+  if (import.meta.env.DEV) {
+    console.log('调试信息');
+  }
+  ```
+- [ ] 或创建统一的日志工具：
+  ```typescript
+  // src/utils/logger.ts
+  export const logger = {
+    debug: (...args) => import.meta.env.DEV && console.log(...args),
+    error: (...args) => console.error(...args)
+  };
+  ```
+
+---
+
+### 10. 学习曲线数据计算不准确
+**位置**: `/src/pages/Dashboard.tsx:16-56`
+**问题描述**:
+```typescript
+// TODO: 从 learningRecords 中统计每天的学习数据
+// 目前返回空数据，后续可以基于实际学习记录生成
+```
+**影响**:
+- 学习曲线图显示模拟数据
+- 用户无法看到真实的学习趋势
+
+**改进建议**:
+- [ ] 实现真实的统计逻辑：
+  ```typescript
+  const weeklyActivity = useMemo(() => {
+    const now = new Date();
+    const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    return weekDays.map((day, index) => {
+      const targetDate = new Date(now);
+      targetDate.setDate(now.getDate() - (6 - index)); // 过去7天
+      const dateStr = targetDate.toDateString();
+      
+      const dailyCount = Object.values(learningRecords).filter(record => {
+        return record.reviews.some(review => 
+          new Date(review.date).toDateString() === dateStr
+        );
+      }).length;
+      
+      return { day, value: Math.min(dailyCount * 5, 100) }; // 归一化到 0-100
+    });
+  }, [learningRecords]);
+  ```
+
+---
+
+### 11. 设置页面功能按钮无实际功能
+**位置**: `/src/pages/Settings.tsx:231-276, 287-311`
+**问题描述**:
+- "关于我们"、"帮助中心"、"意见反馈" 按钮无点击事件
+- "导出学习数据"、"清除所有数据" 按钮未实现
+
+**改进建议**:
+- [ ] 实现数据导出功能：
+  ```typescript
+  const handleExportData = () => {
+    const data = {
+      user: currentUser,
+      learningRecords,
+      statistics,
+      userProfile,
+      exportDate: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `wordmaster-${currentUser}-${Date.now()}.json`;
+    a.click();
+  };
+  ```
+- [ ] 实现清除数据功能（需二次确认）
+- [ ] 添加帮助中心页面/弹窗
+
+---
+
+### 12. 缺少错误边界处理
+**位置**: `/src/App.tsx`
+**问题描述**:
+- 没有 React ErrorBoundary
+- 组件错误会导致整个应用崩溃
+
+**改进建议**:
+- [ ] 创建错误边界组件：
+  ```typescript
+  // src/components/ErrorBoundary.tsx
+  class ErrorBoundary extends React.Component {
+    state = { hasError: false, error: null };
+    
+    static getDerivedStateFromError(error) {
+      return { hasError: true, error };
+    }
+    
+    componentDidCatch(error, errorInfo) {
+      console.error('应用错误:', error, errorInfo);
+    }
+    
+    render() {
+      if (this.state.hasError) {
+        return <ErrorFallback error={this.state.error} />;
+      }
+      return this.props.children;
+    }
+  }
+  ```
+- [ ] 在 App.tsx 中使用
+
+---
+
+## 🟢 低优先级问题（优化建议）
+
+### 13. 个人中心统计数据硬编码
+**位置**: `/src/pages/Profile.tsx:23-27`
+**问题描述**:
+```typescript
+const stats = [
+  { label: '连续学习', value: '7', unit: '天', color: 'primary' },  // ❌ 硬编码
+  { label: '累计学习', value: '30', unit: '天', color: 'success' }, // ❌ 硬编码
+  { label: '总词汇量', value: '1240', unit: '词', color: 'warning' }, // ❌ 硬编码
+];
+```
+**改进建议**:
+- [ ] 从 store 读取真实数据
+- [ ] 实现连续学习天数（streak）计算
+
+---
+
+### 14. Date 对象序列化问题
+**位置**: `/src/types/index.ts`, Store persist
+**问题描述**:
+```typescript
+interface LearningRecord {
+  firstSeen: Date;      // ⚠️ Date 对象在 JSON.stringify 后变成字符串
+  lastReview: Date;     // ⚠️ 需要反序列化
+  reviews: ReviewRecord[];
+}
+```
+**影响**:
+- localStorage 存储后，Date 变成字符串
+- 读取时需要手动转换回 Date 对象
+- 可能导致日期比较错误
+
+**改进建议**:
+- [ ] 使用 ISO 字符串存储：
+  ```typescript
+  interface LearningRecord {
+    firstSeen: string;  // ISO 8601 格式
+    lastReview: string;
+  }
+  ```
+- [ ] 或在 persist 配置中添加 deserialize：
+  ```typescript
+  {
+    name: 'word-master-storage',
+    storage: customStorage,
+    deserialize: (str) => {
+      const data = JSON.parse(str);
+      // 转换所有日期字符串
+      return convertDates(data);
+    }
+  }
+  ```
+
+---
+
+### 15. 缺少加载状态
+**位置**: 多个页面组件
+**问题描述**:
+- 数据加载时没有 Loading 状态
+- 用户可能看到闪烁或空白
+
+**改进建议**:
+- [ ] 创建 Loading 组件：
+  ```typescript
+  // src/components/Loading.tsx
+  export function Loading() {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+  ```
+- [ ] 在数据加载时显示
+
+---
+
+### 16. 缺少空状态处理
+**位置**: `/src/pages/Dashboard.tsx`, `/src/pages/VocabularyLibrary.tsx`
+**问题描述**:
+- 新用户首次登录时，Dashboard 显示全是 0
+- 没有引导用户开始学习
+
+**改进建议**:
+- [ ] 检测新用户并显示欢迎引导：
+  ```typescript
+  if (Object.keys(learningRecords).length === 0) {
+    return <WelcomeGuide />;
+  }
+  ```
+
+---
+
+### 17. 缺少数据验证
+**位置**: `/src/store/index.ts`, localStorage 操作
+**问题描述**:
+- 从 localStorage 读取数据时未验证格式
+- 可能因数据损坏导致应用崩溃
+
+**改进建议**:
+- [ ] 添加数据验证：
+  ```typescript
+  const customStorage: PersistStorage<AppState> = {
+    getItem: (_name: string) => {
+      try {
+        const value = localStorage.getItem(actualKey);
+        if (!value) return null;
+        const data = JSON.parse(value);
+        // 验证数据结构
+        if (!validateAppState(data)) {
+          console.warn('Invalid data structure, resetting...');
+          return null;
+        }
+        return data;
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        return null;
+      }
+    }
+  };
+  ```
+
+---
+
+### 18. 性能优化建议
+
+#### 18.1 单词列表渲染优化
+**位置**: `/src/pages/VocabularyLibrary.tsx`
+**问题**: 一次渲染 1548 个单词可能导致性能问题
+
+**改进建议**:
+- [ ] 使用虚拟滚动（react-window 或 react-virtual）
+- [ ] 或实现分页加载
+
+#### 18.2 避免不必要的重渲染
+**位置**: 多个页面组件
+**改进建议**:
+- [ ] 使用 React.memo 包裹纯组件
+- [ ] 使用 useCallback 缓存回调函数
+- [ ] 使用 useMemo 缓存计算结果
+
+---
+
+### 19. 可访问性（A11y）改进
+**问题**:
+- 缺少 aria-label 属性
+- 按钮没有明确的文本标签（只有图标）
+- 颜色对比度可能不足
+
+**改进建议**:
+- [ ] 为图标按钮添加 aria-label
+- [ ] 确保键盘导航可用
+- [ ] 检查颜色对比度符合 WCAG 标准
+
+---
+
+### 20. 国际化（i18n）准备
+**问题**:
+- 所有文本硬编码在组件中
+- 不支持多语言
+
+**改进建议**（可选）:
+- [ ] 如需支持多语言，使用 react-i18next
+- [ ] 将所有文本提取到语言文件
+
+---
+
+## ✅ 做得好的地方
+
+1. **TypeScript 配置严格**
+   - 启用了 strict mode
+   - noUnusedLocals 和 noUnusedParameters
+   - 编译通过，无类型错误
+
+2. **状态管理清晰**
+   - Zustand + persist 简洁高效
+   - 自定义 storage 支持多用户数据隔离
+
+3. **账号系统实现完善**
+   - 多账号支持
+   - 数据完全隔离
+   - 用户体验流畅
+
+4. **算法实现完整**
+   - 艾宾浩斯遗忘曲线算法
+   - 智能推荐算法
+   - 复习队列管理
+
+5. **UI/UX 设计优秀**
+   - 深色模式支持
+   - 响应式设计
+   - 动画流畅
+
+6. **代码结构清晰**
+   - 文件组织合理
+   - 组件职责单一
+   - 工具函数独立
+
+---
+
+## 📋 待办事项总结
+
+### 立即执行（影响核心功能）
+- [ ] 实现复习功能页面
+- [ ] 保存学习记录到 Store
+- [ ] 保存听写记录
+- [ ] 实现统计数据自动更新
+- [ ] 听写页面添加真实语音播放
+- [ ] 错题本使用真实数据
+
+### 近期执行（提升代码质量）
+- [ ] 替换 alert/confirm 为自定义组件
+- [ ] 清理 console.log 调试代码
+- [ ] 修复 TypeScript any 类型
+- [ ] 实现学习曲线真实数据统计
+- [ ] 添加错误边界
+- [ ] 实现设置页面的功能按钮
+
+### 长期优化（提升用户体验）
+- [ ] 添加加载状态
+- [ ] 优化空状态显示
+- [ ] 添加数据验证
+- [ ] 性能优化（虚拟滚动）
+- [ ] 改进可访问性
+- [ ] Date 对象序列化处理
+
+---
+
+## 📊 质量评分
+
+| 维度 | 评分 | 说明 |
+|------|------|------|
+| 功能完整性 | 6/10 | 核心功能完成，但学习记录保存、复习功能缺失 |
+| 代码质量 | 7/10 | 结构清晰，但有 TODO、硬编码数据、类型不安全 |
+| 用户体验 | 7/10 | UI 美观，但缺少 Loading、空状态、错误提示 |
+| 数据管理 | 7/10 | 状态管理良好，但数据未保存、统计不准确 |
+| 性能 | 7/10 | 基本良好，大列表渲染需优化 |
+| 安全性 | 8/10 | 前端应用，无明显安全问题 |
+| **总体评分** | **7/10** | **良好，需完善核心功能和数据流** |
+
+---
+
+## 🎯 下一步行动建议
+
+### Phase 1: 修复核心功能（1-2天）
+1. 实现学习记录保存逻辑
+2. 实现复习功能页面
+3. 修复统计数据计算
+4. 听写功能集成语音播放
+
+### Phase 2: 完善数据流（1天）
+1. 错题本连接真实数据
+2. 学习曲线使用真实统计
+3. 个人中心显示真实数据
+
+### Phase 3: 提升代码质量（1-2天）
+1. 替换 alert/confirm
+2. 清理调试代码
+3. 修复 TypeScript 类型
+4. 添加错误边界
+
+### Phase 4: 用户体验优化（按需）
+1. 添加 Loading 状态
+2. 改进空状态
+3. 性能优化
+4. 可访问性改进
+
+---
+
+**检查人**: Claude
+**检查日期**: 2025-11-11
+**项目状态**: 基础架构完善，核心功能需完成
+**建议**: 优先完成 Phase 1 和 Phase 2，确保功能可用性

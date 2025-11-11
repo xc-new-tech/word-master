@@ -128,10 +128,7 @@ export default function Dashboard() {
                 </p>
               </div>
               <button
-                onClick={() => {
-                  // TODO: 导航到复习页面
-                  alert('复习功能开发中...');
-                }}
+                onClick={() => navigate('/review')}
                 className="rounded-lg bg-warning px-4 py-2 text-sm font-medium text-white hover:bg-warning/90 transition-colors font-chinese"
               >
                 开始复习

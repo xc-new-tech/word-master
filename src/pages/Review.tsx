@@ -1,60 +1,81 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
-import { Word, LearningRecord, ReviewRecord } from '@/types';
+import { Word, ReviewRecord, LearningRecord } from '@/types';
 import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
+import { getWordsNeedingReview } from '@/utils/reviewQueue';
 import { calculateStatistics } from '@/utils/statistics';
+import { sampleWords } from '@/data/words';
 import WordIllustration from '@/components/WordIllustration';
 
-export default function Learning() {
+export default function Review() {
   const navigate = useNavigate();
   const {
-    currentWords,
-    currentIndex,
-    setCurrentIndex,
-    currentMode,
-    sequentialProgress,
-    setSequentialProgress,
     learningRecords,
-    addLearningRecord,
     updateLearningRecord,
     updateStatistics
   } = useAppStore();
+
+  // 获取需要复习的单词
+  const reviewWords = useMemo(() => {
+    const needReview = getWordsNeedingReview(sampleWords, learningRecords);
+    return needReview.map(item => item.word);
+  }, [learningRecords]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [showOverlay, setShowOverlay] = useState<'review' | 'mastered' | null>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
+  const [reviewResults, setReviewResults] = useState<{ correct: number; incorrect: number }>({
+    correct: 0,
+    incorrect: 0
+  });
 
-  if (currentWords.length === 0) {
-    navigate('/mode-selection');
-    return null;
+  // 如果没有待复习单词，返回Dashboard
+  if (reviewWords.length === 0) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background-light dark:bg-background-dark">
+        <div className="text-center">
+          <span className="material-symbols-outlined text-6xl text-success mb-4">check_circle</span>
+          <h2 className="text-2xl font-bold text-text-light dark:text-text-dark mb-2">
+            太棒了！
+          </h2>
+          <p className="text-subtext-light dark:text-subtext-dark mb-6">
+            当前没有需要复习的单词
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            className="rounded-lg bg-primary px-6 py-3 text-white font-medium hover:bg-primary/90"
+          >
+            返回首页
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  const currentWord: Word = currentWords[currentIndex];
-  const progress = ((currentIndex + 1) / currentWords.length) * 100;
+  const currentWord: Word = reviewWords[currentIndex];
+  const progress = ((currentIndex + 1) / reviewWords.length) * 100;
 
   const handleMark = (status: 'review' | 'mastered') => {
     setShowOverlay(status);
 
-    // 保存学习记录
+    // 保存复习记录
     const wordId = currentWord.id;
-    const timeSpent = Math.floor((Date.now() - startTime) / 1000); // 秒
+    const timeSpent = Math.floor((Date.now() - startTime) / 1000);
     const correct = status === 'mastered';
 
     // 创建复习记录
     const reviewRecord: ReviewRecord = {
       date: new Date(),
       correct,
-      mode: 'learn',
+      mode: 'review',
       timeSpent,
     };
 
-    // 获取或创建学习记录
+    // 更新学习记录
     const existingRecord = learningRecords[wordId];
-
-    let updatedRecords = { ...learningRecords };
-
     if (existingRecord) {
-      // 更新现有记录
       const newMastery = correct
         ? Math.min(100, existingRecord.mastery + 20)
         : Math.max(0, existingRecord.mastery - 10);
@@ -72,48 +93,46 @@ export default function Learning() {
         status: newStatus,
       };
 
-      updatedRecords[wordId] = updatedRecord;
+      const updatedRecords = { ...learningRecords, [wordId]: updatedRecord };
+
       updateLearningRecord(wordId, {
         lastReview: updatedRecord.lastReview,
         reviews: updatedRecord.reviews,
         mastery: updatedRecord.mastery,
         status: newStatus,
       });
-    } else {
-      // 创建新记录
-      const newRecord: LearningRecord = {
-        wordId,
-        firstSeen: new Date(),
-        lastReview: new Date(),
-        reviews: [reviewRecord],
-        mastery: correct ? 60 : 20,
-        status: correct ? 'learning' : 'new',
-      };
 
-      updatedRecords[wordId] = newRecord;
-      addLearningRecord(newRecord);
+      // 自动重新计算统计数据
+      const newStatistics = calculateStatistics(updatedRecords);
+      updateStatistics(newStatistics);
     }
 
-    // 自动重新计算所有统计数据
-    const newStatistics = calculateStatistics(updatedRecords);
-    updateStatistics(newStatistics);
+    // 更新复习结果统计
+    setReviewResults(prev => ({
+      correct: prev.correct + (correct ? 1 : 0),
+      incorrect: prev.incorrect + (correct ? 0 : 1)
+    }));
 
     setTimeout(() => {
       setShowOverlay(null);
-      setIsFlipped(false); // 重置翻转状态
-      if (currentIndex < currentWords.length - 1) {
+      setIsFlipped(false);
+      if (currentIndex < reviewWords.length - 1) {
         setCurrentIndex(currentIndex + 1);
-        setStartTime(Date.now()); // 重置下一个单词的开始时间
+        setStartTime(Date.now());
       } else {
-        // 学习完成
-        // 如果是顺序学习模式，更新学习进度
-        if (currentMode === 'sequential') {
-          setSequentialProgress(sequentialProgress + currentWords.length);
-        }
-        alert('恭喜完成今日学习!');
-        navigate('/');
+        // 复习完成，显示结果
+        showReviewSummary();
       }
     }, 500);
+  };
+
+  const showReviewSummary = () => {
+    const total = reviewResults.correct + reviewResults.incorrect + 1; // +1 是当前单词
+    const finalCorrect = reviewResults.correct + (showOverlay === 'mastered' ? 1 : 0);
+    const accuracy = Math.round((finalCorrect / total) * 100);
+
+    alert(`复习完成！\n总计：${total}个单词\n掌握：${finalCorrect}个\n需复习：${total - finalCorrect}个\n准确率：${accuracy}%`);
+    navigate('/');
   };
 
   const handleCardClick = () => {
@@ -139,41 +158,36 @@ export default function Learning() {
           <span className="material-symbols-outlined text-3xl">close</span>
         </div>
         <div className="flex flex-col items-center flex-grow px-4">
-          <p className="text-primary text-base font-bold leading-normal tracking-wide shrink-0">
-            {currentIndex + 1}/{currentWords.length}
+          <p className="text-warning text-base font-bold leading-normal tracking-wide shrink-0">
+            复习 {currentIndex + 1}/{reviewWords.length}
           </p>
-          <div className="w-full h-2 bg-primary/20 rounded-full mt-1">
-            <div className="h-full bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+          <div className="w-full h-2 bg-warning/20 rounded-full mt-1">
+            <div className="h-full bg-warning rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
           </div>
         </div>
         <div className="flex size-12 shrink-0 items-center justify-end" />
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Content Area - 复用 Learning 页面的卡片设计 */}
       <main className="flex flex-col flex-grow items-center justify-center p-4 pt-8 relative">
         <div className="w-full max-w-sm h-[60vh] relative flex items-center justify-center">
           {/* Card Stack */}
-          {/* Card 3 (Back) */}
-          {currentIndex + 2 < currentWords.length && (
+          {currentIndex + 2 < reviewWords.length && (
             <div
               className="absolute w-[85%] h-full rounded-lg bg-white dark:bg-gray-800 shadow-lg"
               style={{ transform: 'translateY(32px) scale(0.9)', zIndex: 1, filter: 'brightness(0.95)' }}
             />
           )}
 
-          {/* Card 2 (Middle) */}
-          {currentIndex + 1 < currentWords.length && (
+          {currentIndex + 1 < reviewWords.length && (
             <div
               className="absolute w-[92.5%] h-full rounded-lg bg-white dark:bg-gray-800 shadow-xl"
               style={{ transform: 'translateY(16px) scale(0.95)', zIndex: 2, filter: 'brightness(0.98)' }}
             />
           )}
 
-          {/* Card 1 (Front - Active) with Flip Effect */}
-          <div
-            className="absolute w-full h-full z-10"
-            style={{ perspective: '1000px' }}
-          >
+          {/* Card with Flip Effect */}
+          <div className="absolute w-full h-full z-10" style={{ perspective: '1000px' }}>
             <div
               className="relative w-full h-full"
               style={{
@@ -188,7 +202,6 @@ export default function Learning() {
                 className="absolute w-full h-full rounded-lg overflow-hidden shadow-2xl cursor-pointer"
                 style={{ backfaceVisibility: 'hidden' }}
               >
-                {/* 金色渐变顶部 */}
                 <div className="bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 dark:from-amber-600 dark:via-yellow-700 dark:to-amber-800 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -217,12 +230,9 @@ export default function Learning() {
                   </div>
                 </div>
 
-                {/* 白色内容区域 */}
                 <div className="bg-white dark:bg-gray-800 p-6 overflow-y-auto" style={{ height: 'calc(100% - 180px)' }}>
                   <div className="space-y-4">
-                    {/* 插画区域 */}
                     <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-orange-300 via-rose-300 to-pink-300 dark:from-orange-400 dark:via-rose-400 dark:to-pink-400 shadow-lg p-6">
-                      {/* SVG插画 */}
                       <div className="w-full h-full flex items-center justify-center">
                         <div className="w-4/5 h-4/5">
                           <WordIllustration
@@ -231,7 +241,6 @@ export default function Learning() {
                           />
                         </div>
                       </div>
-                      {/* 底部描述文字 */}
                       <div className="absolute bottom-3 left-4 right-4 text-white text-center text-sm font-chinese font-medium drop-shadow-md">
                         {currentWord.data.gameDescription && currentWord.data.gameDescription.length > 25
                           ? currentWord.data.gameDescription.substring(0, 25) + '...'
@@ -239,17 +248,15 @@ export default function Learning() {
                       </div>
                     </div>
 
-                    {/* 记忆提示 */}
                     <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-l-4 border-amber-500">
                       <h3 className="text-amber-700 dark:text-amber-400 text-sm font-bold mb-2 font-chinese">
                         💡 记忆提示
                       </h3>
                       <p className="text-text-light dark:text-text-dark text-base leading-relaxed font-chinese">
-                        {currentWord.data.gameDescription || currentWord.data.memoryStory || '在语言游戏中理解单词的本质，通过真实场景建立记忆连接'}
+                        {currentWord.data.gameDescription || currentWord.data.memoryStory || '在语言游戏中理解单词的本质'}
                       </p>
                     </div>
 
-                    {/* 快速提示：点击翻转 */}
                     <div className="text-center text-subtext-light dark:text-subtext-dark text-sm font-chinese">
                       点击卡片查看详细内容 →
                     </div>
@@ -257,7 +264,7 @@ export default function Learning() {
                 </div>
               </div>
 
-              {/* 卡片反面 */}
+              {/* 卡片反面 - 详细内容 */}
               <div
                 onClick={handleCardClick}
                 className="absolute w-full h-full rounded-lg bg-white dark:bg-gray-800 shadow-2xl overflow-y-auto cursor-pointer"
@@ -267,45 +274,11 @@ export default function Learning() {
                 }}
               >
                 <div className="p-6 space-y-5">
-                  {/* 词源解析 */}
                   {currentWord.data.etymology && (
                     <div>
                       <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-3 font-chinese">
                         词源解析
                       </h3>
-                      <div className="flex items-center justify-center gap-2 mb-3">
-                        {currentWord.data.etymology.prefix && (
-                          <>
-                            <div className="flex-1 max-w-[90px] rounded-lg bg-stone-100 dark:bg-stone-700 p-3 text-center">
-                              <p className="text-lg font-bold text-stone-700 dark:text-stone-200 font-english">
-                                {currentWord.data.etymology.prefix}
-                              </p>
-                              <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 font-chinese">前缀</p>
-                              <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 font-chinese">在...之上</p>
-                            </div>
-                            <span className="text-stone-400 dark:text-stone-500">+</span>
-                          </>
-                        )}
-                        <div className="flex-1 max-w-[90px] rounded-lg bg-stone-100 dark:bg-stone-700 p-3 text-center">
-                          <p className="text-lg font-bold text-stone-700 dark:text-stone-200 font-english">
-                            {currentWord.data.etymology.root}
-                          </p>
-                          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 font-chinese">词根</p>
-                          <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 font-chinese">核心含义</p>
-                        </div>
-                        {currentWord.data.etymology.suffix && (
-                          <>
-                            <span className="text-stone-400 dark:text-stone-500">+</span>
-                            <div className="flex-1 max-w-[90px] rounded-lg bg-stone-100 dark:bg-stone-700 p-3 text-center">
-                              <p className="text-lg font-bold text-stone-700 dark:text-stone-200 font-english">
-                                {currentWord.data.etymology.suffix}
-                              </p>
-                              <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 font-chinese">后缀</p>
-                              <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 font-chinese">形容词</p>
-                            </div>
-                          </>
-                        )}
-                      </div>
                       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-l-4 border-amber-500">
                         <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-chinese italic">
                           "{currentWord.data.etymology.meaning}"
@@ -314,30 +287,23 @@ export default function Learning() {
                     </div>
                   )}
 
-                  {/* 例句展示 */}
-                  <div>
-                    <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-3 font-chinese">
-                      例句展示
-                    </h3>
-                    <div className="space-y-3">
-                      {currentWord.data.academicContext && (
-                        <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4 border-l-4 border-amber-500">
-                          <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-english">
-                            "{currentWord.data.academicContext}"
-                          </p>
-                        </div>
-                      )}
-                      {currentWord.data.dailyContext && (
-                        <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4 border-l-4 border-amber-500">
-                          <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-english">
-                            "{currentWord.data.dailyContext}"
-                          </p>
-                        </div>
-                      )}
+                  {(currentWord.data.academicContext || currentWord.data.dailyContext) && (
+                    <div>
+                      <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-3 font-chinese">
+                        例句展示
+                      </h3>
+                      <div className="space-y-3">
+                        {currentWord.data.academicContext && (
+                          <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4 border-l-4 border-amber-500">
+                            <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-english">
+                              "{currentWord.data.academicContext}"
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
-                  {/* 记忆故事 */}
                   {currentWord.data.memoryStory && (
                     <div className="bg-gradient-to-br from-orange-50 via-rose-50 to-pink-50 dark:from-orange-900/20 dark:via-rose-900/20 dark:to-pink-900/20 rounded-lg p-4">
                       <h3 className="text-sm font-bold text-orange-700 dark:text-orange-400 mb-2 font-chinese">
@@ -346,87 +312,6 @@ export default function Learning() {
                       <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-chinese">
                         {currentWord.data.memoryStory}
                       </p>
-                    </div>
-                  )}
-
-                  {/* 使用场景 */}
-                  {(currentWord.data.academicContext || currentWord.data.dailyContext) && (
-                    <div>
-                      <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-3 font-chinese">
-                        使用场景
-                      </h3>
-                      <div className="space-y-3">
-                        {currentWord.data.academicContext && (
-                          <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4">
-                            <p className="text-xs font-bold text-stone-600 dark:text-stone-400 mb-2 font-chinese">
-                              艺术评论：
-                            </p>
-                            <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-english">
-                              "{currentWord.data.academicContext}"
-                            </p>
-                          </div>
-                        )}
-                        {currentWord.data.dailyContext && (
-                          <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4">
-                            <p className="text-xs font-bold text-stone-600 dark:text-stone-400 mb-2 font-chinese">
-                              日常生活：
-                            </p>
-                            <p className="text-sm text-text-light dark:text-text-dark leading-relaxed font-english">
-                              "{currentWord.data.dailyContext}"
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 词汇关系 */}
-                  {currentWord.data.confusableWords && currentWord.data.confusableWords.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-3 font-chinese">
-                        词汇关系
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs font-bold text-stone-600 dark:text-stone-400 mb-2 font-chinese">近义词</p>
-                          <div className="space-y-1">
-                            {currentWord.data.confusableWords.slice(0, 2).map((word, index) => (
-                              <p key={index} className="text-sm text-text-light dark:text-text-dark font-english">
-                                • {word}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-stone-600 dark:text-stone-400 mb-2 font-chinese">反义词</p>
-                          <div className="space-y-1">
-                            {currentWord.data.confusableWords.slice(2, 4).map((word, index) => (
-                              <p key={index} className="text-sm text-text-light dark:text-text-dark font-english">
-                                • {word}
-                              </p>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 常用搭配 */}
-                  {currentWord.data.collocations.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-bold text-text-light dark:text-text-dark mb-2 font-chinese">
-                        常用搭配
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {currentWord.data.collocations.slice(0, 6).map((collocation, index) => (
-                          <span
-                            key={index}
-                            className="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-700 text-text-light dark:text-text-dark text-sm font-english"
-                          >
-                            {collocation}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   )}
                 </div>
@@ -456,7 +341,7 @@ export default function Learning() {
         </div>
       </main>
 
-      {/* Meta Text / Gesture Hints */}
+      {/* Meta Text */}
       <div className="w-full max-w-md mx-auto p-4 pt-2">
         <p className="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal text-center">
           向左滑"需要复习",向右滑"已掌握"

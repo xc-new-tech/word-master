@@ -7,6 +7,7 @@ import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
 import ModeSelection from '@/pages/ModeSelection';
 import Learning from '@/pages/Learning';
+import Review from '@/pages/Review';
 import WordDetail from '@/pages/WordDetail';
 import DictationModeSelection from '@/pages/DictationModeSelection';
 import DictationEnToCn from '@/pages/DictationEnToCn';
@@ -73,6 +74,7 @@ function App() {
           {/* 学习模块 */}
           <Route path="/mode-selection" element={<ProtectedRoute><ModeSelection /></ProtectedRoute>} />
           <Route path="/learning" element={<ProtectedRoute><Learning /></ProtectedRoute>} />
+          <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
           <Route path="/word/:wordId" element={<ProtectedRoute><WordDetail /></ProtectedRoute>} />
 
           {/* 听写模块 */}
