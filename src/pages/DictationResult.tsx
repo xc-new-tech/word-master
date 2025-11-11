@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Word } from '@/types';
+import { Word, LearningRecord, ReviewRecord } from '@/types';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
+import { useAppStore } from '@/store';
+import { calculateStatistics } from '@/utils/statistics';
 
 interface Answer {
   word: Word;
@@ -13,10 +16,81 @@ export default function DictationResult() {
   const navigate = useNavigate();
   const location = useLocation();
   const answers: Answer[] = location.state?.answers || [];
+  const { learningRecords, addLearningRecord, updateLearningRecord, updateStatistics } = useAppStore();
 
   const correctCount = answers.filter((a) => a.correct).length;
   const totalCount = answers.length;
   const accuracy = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+
+  // 保存听写记录到学习系统
+  useEffect(() => {
+    if (answers.length === 0) return;
+
+    // 判断听写模式（从导航路径判断）
+    const isDictationEnToCn = location.pathname.includes('en-to-cn') ||
+                              (document.referrer && document.referrer.includes('en-to-cn'));
+    const dictationMode = isDictationEnToCn ? 'dictation-en-cn' : 'dictation-cn-en';
+
+    const updatedRecords = { ...learningRecords };
+
+    answers.forEach((answer) => {
+      const wordId = answer.word.id;
+      const existingRecord = learningRecords[wordId];
+
+      // 创建复习记录
+      const reviewRecord: ReviewRecord = {
+        date: new Date(),
+        correct: answer.correct,
+        mode: dictationMode,
+        timeSpent: 0,
+      };
+
+      if (existingRecord) {
+        // 更新现有记录
+        const masteryChange = answer.correct ? 15 : -15;
+        const newMastery = Math.max(0, Math.min(100, existingRecord.mastery + masteryChange));
+
+        const newStatus: LearningRecord['status'] =
+          newMastery >= 80 ? 'mastered' :
+          newMastery >= 40 ? 'learning' :
+          newMastery <= 20 ? 'forgotten' : 'learning';
+
+        const updatedRecord: LearningRecord = {
+          ...existingRecord,
+          lastReview: new Date(),
+          reviews: [...existingRecord.reviews, reviewRecord],
+          mastery: newMastery,
+          status: newStatus,
+        };
+
+        updatedRecords[wordId] = updatedRecord;
+
+        updateLearningRecord(wordId, {
+          lastReview: updatedRecord.lastReview,
+          reviews: updatedRecord.reviews,
+          mastery: updatedRecord.mastery,
+          status: newStatus,
+        });
+      } else {
+        // 创建新记录
+        const newRecord: LearningRecord = {
+          wordId,
+          firstSeen: new Date(),
+          lastReview: new Date(),
+          reviews: [reviewRecord],
+          mastery: answer.correct ? 60 : 20,
+          status: answer.correct ? 'learning' : 'new',
+        };
+
+        updatedRecords[wordId] = newRecord;
+        addLearningRecord(newRecord);
+      }
+    });
+
+    // 更新统计数据
+    const newStatistics = calculateStatistics(updatedRecords);
+    updateStatistics(newStatistics);
+  }, []);
 
   const getResultEmoji = () => {
     if (accuracy >= 90) return '🎉';

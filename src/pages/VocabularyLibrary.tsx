@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 import BottomNav from '@/components/BottomNav';
@@ -16,6 +17,9 @@ export default function VocabularyLibrary() {
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [selectedFrequency, setSelectedFrequency] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('alphabet');
+
+  // 虚拟滚动父容器ref
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const levels = [
     { id: 'all', name: '全部' },
@@ -72,6 +76,14 @@ export default function VocabularyLibrary() {
 
     return words;
   }, [searchQuery, selectedLevel, selectedFrequency, sortBy]);
+
+  // 虚拟滚动配置
+  const virtualizer = useVirtualizer({
+    count: filteredWords.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 120, // 每个单词卡片高度约120px
+    overscan: 5, // 预渲染5个额外项
+  });
 
   return (
     <div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col pb-20">
@@ -178,56 +190,86 @@ export default function VocabularyLibrary() {
           </Card>
         </div>
 
-        {/* 单词列表 */}
-        <div className="space-y-2">
-          {filteredWords.map((word) => (
-            <Card key={word.id} onClick={() => navigate(`/word/${word.id}`)}>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="text-lg font-bold text-text-light dark:text-text-dark font-english">
-                      {word.word}
-                    </p>
-                    <span
-                      className={`px-2 py-0.5 rounded text-xs font-medium font-chinese ${
-                        word.frequency === '高频'
-                          ? 'bg-error/10 text-error'
-                          : word.frequency === '中频'
-                          ? 'bg-warning/10 text-warning'
-                          : 'bg-success/10 text-success'
-                      }`}
-                    >
-                      {word.frequency}
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary font-chinese">
-                      {word.level}
-                    </span>
-                  </div>
-                  <p className="text-sm text-subtext-light dark:text-subtext-dark font-english">
-                    {word.data.phonetic_uk}
-                  </p>
-                  <p className="text-sm text-text-light dark:text-text-dark mt-1 font-chinese">
-                    {word.data.meanings.join(', ')}
-                  </p>
-                </div>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isSpeechSupported) {
-                      speakWord(word.word, 'us').catch(err => console.error('发音失败:', err));
-                    } else {
-                      alert('您的浏览器不支持语音播放功能');
-                    }
+        {/* 单词列表（虚拟滚动） */}
+        <div
+          ref={parentRef}
+          className="overflow-auto"
+          style={{ height: 'calc(100vh - 400px)' }}
+        >
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              width: '100%',
+              position: 'relative',
+            }}
+          >
+            {virtualizer.getVirtualItems().map((virtualRow) => {
+              const word = filteredWords[virtualRow.index];
+              return (
+                <div
+                  key={virtualRow.key}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
                   }}
-                  className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors active:scale-95"
-                  title="播放发音"
+                  className="pb-2"
                 >
-                  <span className="material-symbols-outlined text-xl">volume_up</span>
-                </button>
-              </div>
-            </Card>
-          ))}
+                  <Card onClick={() => navigate(`/word/${word.id}`)}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-lg font-bold text-text-light dark:text-text-dark font-english">
+                            {word.word}
+                          </p>
+                          <span
+                            className={`px-2 py-0.5 rounded text-xs font-medium font-chinese ${
+                              word.frequency === '高频'
+                                ? 'bg-error/10 text-error'
+                                : word.frequency === '中频'
+                                ? 'bg-warning/10 text-warning'
+                                : 'bg-success/10 text-success'
+                            }`}
+                          >
+                            {word.frequency}
+                          </span>
+                          <span className="px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary font-chinese">
+                            {word.level}
+                          </span>
+                        </div>
+                        <p className="text-sm text-subtext-light dark:text-subtext-dark font-english">
+                          {word.data.phonetic_uk}
+                        </p>
+                        <p className="text-sm text-text-light dark:text-text-dark mt-1 font-chinese">
+                          {word.data.meanings.join(', ')}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (isSpeechSupported) {
+                            speakWord(word.word, 'us').catch((err) =>
+                              console.error('发音失败:', err)
+                            );
+                          } else {
+                            alert('您的浏览器不支持语音播放功能');
+                          }
+                        }}
+                        className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors active:scale-95"
+                        title="播放发音"
+                      >
+                        <span className="material-symbols-outlined text-xl">volume_up</span>
+                      </button>
+                    </div>
+                  </Card>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {filteredWords.length === 0 && (

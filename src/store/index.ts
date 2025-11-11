@@ -87,6 +87,39 @@ interface AppState {
   updateStatistics: (stats: Partial<Statistics>) => void;
 }
 
+// Date反序列化辅助函数：递归遍历对象，将ISO日期字符串转换为Date对象
+function reviveDates(obj: any): any {
+  if (obj === null || obj === undefined) return obj;
+
+  // 如果是字符串且匹配ISO 8601日期格式
+  if (typeof obj === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(obj)) {
+    const date = new Date(obj);
+    // 验证日期是否有效
+    if (!isNaN(date.getTime())) {
+      return date;
+    }
+    return obj;
+  }
+
+  // 如果是数组，递归处理每个元素
+  if (Array.isArray(obj)) {
+    return obj.map(item => reviveDates(item));
+  }
+
+  // 如果是对象，递归处理每个属性
+  if (typeof obj === 'object') {
+    const result: any = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        result[key] = reviveDates(obj[key]);
+      }
+    }
+    return result;
+  }
+
+  return obj;
+}
+
 // 自定义 storage，支持动态切换用户的 storage key
 const customStorage: PersistStorage<AppState> = {
   getItem: (_name: string) => {
@@ -95,7 +128,9 @@ const customStorage: PersistStorage<AppState> = {
     const value = localStorage.getItem(actualKey);
     if (!value) return null;
     try {
-      return JSON.parse(value);
+      const parsed = JSON.parse(value);
+      // 反序列化Date对象
+      return reviveDates(parsed);
     } catch {
       return null;
     }

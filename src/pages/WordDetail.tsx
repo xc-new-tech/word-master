@@ -1,25 +1,38 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Word } from '@/types';
 import { sampleWords } from '@/data/words';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
+import { useToast } from '@/hooks/useToast';
 
 export default function WordDetail() {
   const navigate = useNavigate();
   const { wordId } = useParams();
   const word: Word | undefined = sampleWords.find((w) => w.id === wordId);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const { error, ToastComponent } = useToast();
 
   if (!word) {
     navigate(-1);
     return null;
   }
 
-  const playPronunciation = () => {
-    if (isSpeechSupported) {
-      speakWord(word.word, 'us').catch(err => console.error('发音失败:', err));
-    } else {
-      alert('您的浏览器不支持语音播放功能');
+  const playPronunciation = async () => {
+    if (!isSpeechSupported) {
+      error('您的浏览器不支持语音播放功能');
+      return;
+    }
+
+    setIsSpeaking(true);
+    try {
+      await speakWord(word.word, 'us');
+    } catch (err) {
+      console.error('发音失败:', err);
+      error('发音播放失败，请重试');
+    } finally {
+      setIsSpeaking(false);
     }
   };
 
@@ -42,9 +55,15 @@ export default function WordDetail() {
             </p>
             <button
               onClick={playPronunciation}
-              className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
+              disabled={isSpeaking}
+              className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              title={isSpeaking ? '播放中...' : '播放发音'}
             >
-              <span className="material-symbols-outlined text-2xl">volume_up</span>
+              {isSpeaking ? (
+                <span className="material-symbols-outlined text-2xl animate-spin">progress_activity</span>
+              ) : (
+                <span className="material-symbols-outlined text-2xl">volume_up</span>
+              )}
             </button>
           </div>
         </div>
@@ -229,6 +248,7 @@ export default function WordDetail() {
           </button>
         </div>
       </div>
+      {ToastComponent}
     </div>
   );
 }

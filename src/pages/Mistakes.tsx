@@ -1,14 +1,84 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 import { sampleWords } from '@/data/words';
 import { speakWord, isSpeechSupported } from '@/utils/speechSynthesis';
+import { useAppStore } from '@/store';
+
+type FilterType = 'all' | 'dictation' | 'spelling' | 'meaning';
 
 export default function Mistakes() {
   const navigate = useNavigate();
-  // 模拟错题数据
-  const [mistakeWords] = useState(sampleWords.slice(0, 3));
+  const { learningRecords } = useAppStore();
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+
+  // 从学习记录中筛选错题
+  const mistakeWordsData = useMemo(() => {
+    const records = Object.entries(learningRecords)
+      .map(([wordId, record]) => {
+        const totalReviews = record.reviews.length;
+        if (totalReviews === 0) return null;
+
+        const incorrectReviews = record.reviews.filter(r => !r.correct);
+        const errorRate = incorrectReviews.length / totalReviews;
+
+        // 筛选条件：错误率 >30% 或 掌握度 <50
+        if (errorRate <= 0.3 && record.mastery >= 50) return null;
+
+        const word = sampleWords.find(w => w.id === wordId);
+        if (!word) return null;
+
+        // 获取最近一次错误记录
+        const lastError = incorrectReviews[incorrectReviews.length - 1];
+
+        // 判断错误类型
+        const dictationErrors = incorrectReviews.filter(r =>
+          r.mode === 'dictation-en-cn' || r.mode === 'dictation-cn-en'
+        ).length;
+        const learningErrors = incorrectReviews.filter(r =>
+          r.mode === 'learn' || r.mode === 'review'
+        ).length;
+
+        return {
+          word,
+          errorCount: incorrectReviews.length,
+          errorRate,
+          lastError: lastError?.date || record.lastReview,
+          lastErrorMode: lastError?.mode || 'learn',
+          dictationErrors,
+          learningErrors,
+          mastery: record.mastery
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .sort((a, b) => b.errorRate - a.errorRate);
+
+    return records;
+  }, [learningRecords]);
+
+  // 根据筛选条件过滤
+  const filteredMistakes = useMemo(() => {
+    switch (activeFilter) {
+      case 'dictation':
+        return mistakeWordsData.filter(item => item.dictationErrors > 0);
+      case 'spelling':
+        // 拼写错误主要来自中译英听写
+        return mistakeWordsData.filter(item =>
+          item.lastErrorMode === 'dictation-cn-en'
+        );
+      case 'meaning':
+        // 释义错误主要来自学习和复习
+        return mistakeWordsData.filter(item =>
+          item.learningErrors > 0
+        );
+      case 'all':
+      default:
+        return mistakeWordsData;
+    }
+  }, [mistakeWordsData, activeFilter]);
+
+  const mistakeWords = filteredMistakes.map(item => item.word);
 
   return (
     <div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col">
@@ -32,70 +102,116 @@ export default function Mistakes() {
 
         {/* 筛选选项 */}
         <div className="flex gap-2 overflow-x-auto pb-2">
-          <button className="px-4 py-2 rounded-full bg-primary text-white text-sm font-medium whitespace-nowrap font-chinese">
+          <button
+            onClick={() => setActiveFilter('all')}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap font-chinese transition-colors ${
+              activeFilter === 'all'
+                ? 'bg-primary text-white'
+                : 'bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:border-primary'
+            }`}
+          >
             全部
           </button>
-          <button className="px-4 py-2 rounded-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark text-sm font-medium whitespace-nowrap hover:border-primary transition-colors font-chinese">
+          <button
+            onClick={() => setActiveFilter('dictation')}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap font-chinese transition-colors ${
+              activeFilter === 'dictation'
+                ? 'bg-primary text-white'
+                : 'bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:border-primary'
+            }`}
+          >
             听写错误
           </button>
-          <button className="px-4 py-2 rounded-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark text-sm font-medium whitespace-nowrap hover:border-primary transition-colors font-chinese">
+          <button
+            onClick={() => setActiveFilter('spelling')}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap font-chinese transition-colors ${
+              activeFilter === 'spelling'
+                ? 'bg-primary text-white'
+                : 'bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:border-primary'
+            }`}
+          >
             拼写错误
           </button>
-          <button className="px-4 py-2 rounded-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark text-sm font-medium whitespace-nowrap hover:border-primary transition-colors font-chinese">
+          <button
+            onClick={() => setActiveFilter('meaning')}
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap font-chinese transition-colors ${
+              activeFilter === 'meaning'
+                ? 'bg-primary text-white'
+                : 'bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:border-primary'
+            }`}
+          >
             释义错误
           </button>
         </div>
 
         {/* 错题列表 */}
         <div className="space-y-3">
-          {mistakeWords.map((word) => (
-            <Card
-              key={word.id}
-              onClick={() => navigate(`/word/${word.id}`)}
-              className="border-l-4 border-error"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="text-xl font-bold text-text-light dark:text-text-dark font-english">
-                      {word.word}
+          {filteredMistakes.map((item) => {
+            const { word, errorCount, lastError, lastErrorMode, mastery } = item;
+
+            // 格式化日期
+            const errorDate = new Date(lastError);
+            const formattedDate = `${errorDate.getFullYear()}-${String(errorDate.getMonth() + 1).padStart(2, '0')}-${String(errorDate.getDate()).padStart(2, '0')}`;
+
+            // 错误模式描述
+            const modeDesc = lastErrorMode === 'dictation-en-cn' ? '听写错误(英译中)' :
+                            lastErrorMode === 'dictation-cn-en' ? '拼写错误(中译英)' :
+                            lastErrorMode === 'review' ? '复习错误' : '学习错误';
+
+            // 根据掌握度判断易错点
+            const errorTip = mastery < 30 ? '基础薄弱，需加强记忆' :
+                            mastery < 60 ? '掌握不牢，需多次复习' :
+                            '偶尔出错，注意细节';
+
+            return (
+              <Card
+                key={word.id}
+                onClick={() => navigate(`/word/${word.id}`)}
+                className="border-l-4 border-error"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-xl font-bold text-text-light dark:text-text-dark font-english">
+                        {word.word}
+                      </p>
+                      <span className="px-2 py-0.5 rounded text-xs font-medium bg-error/10 text-error font-chinese">
+                        错误{errorCount}次
+                      </span>
+                    </div>
+                    <p className="text-sm text-subtext-light dark:text-subtext-dark font-english">
+                      {word.data.phonetic_uk}
                     </p>
-                    <span className="px-2 py-0.5 rounded text-xs font-medium bg-error/10 text-error font-chinese">
-                      错误3次
-                    </span>
-                  </div>
-                  <p className="text-sm text-subtext-light dark:text-subtext-dark font-english">
-                    {word.data.phonetic_uk}
-                  </p>
-                  <p className="text-sm text-text-light dark:text-text-dark mt-1 font-chinese">
-                    {word.data.meanings.join(', ')}
-                  </p>
+                    <p className="text-sm text-text-light dark:text-text-dark mt-1 font-chinese">
+                      {word.data.meanings.join(', ')}
+                    </p>
 
-                  {/* 错误记录 */}
-                  <div className="mt-2 space-y-1">
-                    <div className="text-xs text-error font-chinese">
-                      <span className="font-medium">最近错误:</span> 2025-11-05 听写错误
-                    </div>
-                    <div className="text-xs text-subtext-light dark:text-subtext-dark font-chinese">
-                      易错点: 拼写容易混淆
+                    {/* 错误记录 */}
+                    <div className="mt-2 space-y-1">
+                      <div className="text-xs text-error font-chinese">
+                        <span className="font-medium">最近错误:</span> {formattedDate} {modeDesc}
+                      </div>
+                      <div className="text-xs text-subtext-light dark:text-subtext-dark font-chinese">
+                        易错点: {errorTip}
+                      </div>
                     </div>
                   </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isSpeechSupported) {
+                        speakWord(word.word, 'us').catch(err => console.error('发音失败:', err));
+                      }
+                    }}
+                    className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-xl">volume_up</span>
+                  </button>
                 </div>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isSpeechSupported) {
-                      speakWord(word.word, 'us').catch(err => console.error('发音失败:', err));
-                    }
-                  }}
-                  className="flex items-center justify-center rounded-full h-10 w-10 bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-xl">volume_up</span>
-                </button>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
 
         {mistakeWords.length === 0 && (
@@ -114,11 +230,11 @@ export default function Mistakes() {
       </main>
 
       {/* 底部操作 */}
-      {mistakeWords.length > 0 && (
+      {filteredMistakes.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-background-light to-transparent dark:from-background-dark p-4">
           <div className="mx-auto max-w-md">
             <button className="h-14 w-full rounded-lg bg-primary text-lg font-bold text-white shadow-lg shadow-primary/40 transition-transform active:scale-[0.98] font-chinese">
-              重新听写错题 ({mistakeWords.length}词)
+              重新听写错题 ({filteredMistakes.length}词)
             </button>
           </div>
         </div>

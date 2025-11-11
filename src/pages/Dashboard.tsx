@@ -65,6 +65,48 @@ export default function Dashboard() {
     return 'bg-primary/10';
   };
 
+  // 新用户引导：如果没有任何学习记录，显示欢迎界面
+  const isNewUser = Object.keys(learningRecords).length === 0 && statistics.totalWords === 0;
+
+  if (isNewUser) {
+    return (
+      <div className="mx-auto flex h-screen w-full max-w-md flex-col">
+        <TopBar
+          title="学习统计"
+          showBack={false}
+          rightIcon={
+            <span className="material-symbols-outlined text-2xl">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          }
+          onRightIconClick={toggleTheme}
+        />
+
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <span className="material-symbols-outlined text-8xl text-primary mb-6 animate-pulse">
+            school
+          </span>
+          <h2 className="text-2xl font-bold text-text-light dark:text-text-dark mb-4 font-chinese">
+            欢迎来到 WordMaster！
+          </h2>
+          <p className="text-subtext-light dark:text-subtext-dark mb-8 leading-relaxed font-chinese">
+            开始你的英语学习之旅吧！
+            <br />
+            我们有 <span className="font-bold text-primary">1568 个</span> 中考词汇等你探索
+          </p>
+          <button
+            onClick={() => navigate('/mode-selection')}
+            className="px-8 py-4 bg-primary text-white rounded-lg font-medium text-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/40 active:scale-[0.98] font-chinese"
+          >
+            开始学习
+          </button>
+        </div>
+
+        <BottomNav />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col">
       <TopBar
