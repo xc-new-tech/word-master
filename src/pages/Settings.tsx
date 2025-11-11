@@ -2,9 +2,13 @@ import { useAppStore } from '@/store';
 import { LearningMode, UserSettings } from '@/types';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
+import { useToast } from '@/hooks/useToast';
+import { useModal } from '@/hooks/useModal';
 
 export default function Settings() {
-  const { userProfile, setUserProfile, theme, toggleTheme } = useAppStore();
+  const { userProfile, setUserProfile, theme, toggleTheme, learningRecords, currentUser } = useAppStore();
+  const { success, error, ToastComponent } = useToast();
+  const { danger, ModalComponent } = useModal();
 
   const handleDailyGoalChange = (goal: number) => {
     setUserProfile({ dailyGoal: goal });
@@ -20,6 +24,58 @@ export default function Settings() {
     setUserProfile({
       settings: { ...userProfile.settings, fontSize },
     });
+  };
+
+  const handleExportData = () => {
+    try {
+      // 准备导出数据
+      const exportData = {
+        username: currentUser,
+        exportDate: new Date().toISOString(),
+        userProfile,
+        learningRecords,
+        totalWords: Object.keys(learningRecords).length,
+      };
+
+      // 创建 JSON 文件
+      const dataStr = JSON.stringify(exportData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+
+      // 创建下载链接
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `wordmaster-backup-${currentUser}-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      success('学习数据已成功导出');
+    } catch (err) {
+      console.error('导出失败:', err);
+      error('导出数据失败，请稍后重试');
+    }
+  };
+
+  const handleClearData = () => {
+    danger(
+      '清除所有数据',
+      '此操作将清除所有学习记录和进度，且无法恢复！建议先导出数据备份。确定要继续吗？',
+      () => {
+        try {
+          // 清除当前用户的所有数据
+          localStorage.removeItem(`word-master-storage-${currentUser}`);
+          success('数据已清除，页面即将刷新');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } catch (err) {
+          console.error('清除失败:', err);
+          error('清除数据失败，请稍后重试');
+        }
+      }
+    );
   };
 
   return (
@@ -285,7 +341,10 @@ export default function Settings() {
           </h3>
           <Card>
             <div className="space-y-3">
-              <button className="flex w-full items-center justify-between">
+              <button
+                onClick={handleExportData}
+                className="flex w-full items-center justify-between hover:opacity-70 transition-opacity"
+              >
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-success">cloud_upload</span>
                   <p className="text-sm font-medium text-text-light dark:text-text-dark font-chinese">
@@ -299,7 +358,10 @@ export default function Settings() {
 
               <div className="h-px bg-border-light dark:bg-border-dark" />
 
-              <button className="flex w-full items-center justify-between">
+              <button
+                onClick={handleClearData}
+                className="flex w-full items-center justify-between hover:opacity-70 transition-opacity"
+              >
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-error">delete</span>
                   <p className="text-sm font-medium text-error font-chinese">清除所有数据</p>
@@ -316,6 +378,8 @@ export default function Settings() {
           <p>版本 1.0.0</p>
         </div>
       </main>
+      {ToastComponent}
+      {ModalComponent}
     </div>
   );
 }

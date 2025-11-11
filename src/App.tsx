@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 // 页面组件
 import Login from '@/pages/Login';
@@ -61,37 +62,39 @@ function App() {
   }, [theme]);
 
   return (
-    <Router basename="/word-master">
-      <RedirectHandler />
-      <div className="min-h-screen bg-background-light dark:bg-background-dark">
-        <Routes>
-          {/* 登录页面 - 不需要保护 */}
-          <Route path="/login" element={<Login />} />
+    <ErrorBoundary>
+      <Router basename="/word-master">
+        <RedirectHandler />
+        <div className="min-h-screen bg-background-light dark:bg-background-dark">
+          <Routes>
+            {/* 登录页面 - 不需要保护 */}
+            <Route path="/login" element={<Login />} />
 
-          {/* 受保护的路由 */}
-          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            {/* 受保护的路由 */}
+            <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
-          {/* 学习模块 */}
-          <Route path="/mode-selection" element={<ProtectedRoute><ModeSelection /></ProtectedRoute>} />
-          <Route path="/learning" element={<ProtectedRoute><Learning /></ProtectedRoute>} />
-          <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
-          <Route path="/word/:wordId" element={<ProtectedRoute><WordDetail /></ProtectedRoute>} />
+            {/* 学习模块 */}
+            <Route path="/mode-selection" element={<ProtectedRoute><ModeSelection /></ProtectedRoute>} />
+            <Route path="/learning" element={<ProtectedRoute><Learning /></ProtectedRoute>} />
+            <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
+            <Route path="/word/:wordId" element={<ProtectedRoute><WordDetail /></ProtectedRoute>} />
 
-          {/* 听写模块 */}
-          <Route path="/dictation" element={<ProtectedRoute><DictationModeSelection /></ProtectedRoute>} />
-          <Route path="/dictation/en-to-cn" element={<ProtectedRoute><DictationEnToCn /></ProtectedRoute>} />
-          <Route path="/dictation/cn-to-en" element={<ProtectedRoute><DictationCnToEn /></ProtectedRoute>} />
-          <Route path="/dictation/result" element={<ProtectedRoute><DictationResult /></ProtectedRoute>} />
+            {/* 听写模块 */}
+            <Route path="/dictation" element={<ProtectedRoute><DictationModeSelection /></ProtectedRoute>} />
+            <Route path="/dictation/en-to-cn" element={<ProtectedRoute><DictationEnToCn /></ProtectedRoute>} />
+            <Route path="/dictation/cn-to-en" element={<ProtectedRoute><DictationCnToEn /></ProtectedRoute>} />
+            <Route path="/dictation/result" element={<ProtectedRoute><DictationResult /></ProtectedRoute>} />
 
-          {/* 其他功能 */}
-          <Route path="/mistakes" element={<ProtectedRoute><Mistakes /></ProtectedRoute>} />
-          <Route path="/vocabulary" element={<ProtectedRoute><VocabularyLibrary /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-          <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
-          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-        </Routes>
-      </div>
-    </Router>
+            {/* 其他功能 */}
+            <Route path="/mistakes" element={<ProtectedRoute><Mistakes /></ProtectedRoute>} />
+            <Route path="/vocabulary" element={<ProtectedRoute><VocabularyLibrary /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          </Routes>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

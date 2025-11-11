@@ -1,30 +1,137 @@
 import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
 import { useAppStore } from '@/store';
 import TopBar from '@/components/TopBar';
 import Card from '@/components/Card';
 import BottomNav from '@/components/BottomNav';
+import { useModal } from '@/hooks/useModal';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { userProfile, currentUser, logout } = useAppStore();
+  const { userProfile, currentUser, logout, learningRecords } = useAppStore();
+  const { confirm, ModalComponent } = useModal();
 
   const handleLogout = () => {
-    if (confirm('确定要退出登录吗？')) {
+    confirm('退出登录', '确定要退出登录吗？', () => {
       logout();
-    }
+    });
   };
 
   const handleSwitchAccount = () => {
-    if (confirm('确定要切换账号吗？当前学习进度会被保存。')) {
+    confirm('切换账号', '确定要切换账号吗？当前学习进度会被保存。', () => {
       logout();
-    }
+    });
   };
 
-  const stats = [
-    { label: '连续学习', value: '7', unit: '天', color: 'primary' },
-    { label: '累计学习', value: '30', unit: '天', color: 'success' },
-    { label: '总词汇量', value: '1240', unit: '词', color: 'warning' },
-  ];
+  // 计算真实的学习统计数据
+  const stats = useMemo(() => {
+    const records = Object.values(learningRecords);
+
+    // 计算连续学习天数
+    const calculateStreak = () => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // 获取所有学习日期并排序
+      const learningDates = new Set<string>();
+      records.forEach(record => {
+        record.reviews.forEach(review => {
+          const reviewDate = new Date(review.date);
+          reviewDate.setHours(0, 0, 0, 0);
+          learningDates.add(reviewDate.toDateString());
+        });
+      });
+
+      const sortedDates = Array.from(learningDates)
+        .map(dateStr => new Date(dateStr))
+        .sort((a, b) => b.getTime() - a.getTime());
+
+      if (sortedDates.length === 0) return 0;
+
+      // 检查是否今天学习过
+      const lastStudyDate = sortedDates[0];
+      const daysDiff = Math.floor((today.getTime() - lastStudyDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      // 如果最后学习日期超过1天前，连续天数为0
+      if (daysDiff > 1) return 0;
+
+      // 计算连续天数
+      let streak = 1;
+      for (let i = 1; i < sortedDates.length; i++) {
+        const currentDate = sortedDates[i];
+        const prevDate = sortedDates[i - 1];
+        const diff = Math.floor((prevDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        if (diff === 1) {
+          streak++;
+        } else {
+          break;
+        }
+      }
+
+      return streak;
+    };
+
+    // 计算累计学习天数
+    const calculateTotalDays = () => {
+      const learningDates = new Set<string>();
+      records.forEach(record => {
+        record.reviews.forEach(review => {
+          const reviewDate = new Date(review.date);
+          reviewDate.setHours(0, 0, 0, 0);
+          learningDates.add(reviewDate.toDateString());
+        });
+      });
+      return learningDates.size;
+    };
+
+    // 计算总词汇量（已学习的单词数）
+    const totalWords = records.length;
+
+    return [
+      { label: '连续学习', value: String(calculateStreak()), unit: '天', color: 'primary' as const },
+      { label: '累计学习', value: String(calculateTotalDays()), unit: '天', color: 'success' as const },
+      { label: '总词汇量', value: String(totalWords), unit: '词', color: 'warning' as const },
+    ];
+  }, [learningRecords]);
+
+  // 计算本周学习情况
+  const weeklyData = useMemo(() => {
+    const today = new Date();
+    const currentDayOfWeek = today.getDay(); // 0-6 (Sunday-Saturday)
+
+    // 获取所有学习日期
+    const learningDates = new Set<string>();
+    Object.values(learningRecords).forEach(record => {
+      record.reviews.forEach(review => {
+        const reviewDate = new Date(review.date);
+        reviewDate.setHours(0, 0, 0, 0);
+        learningDates.add(reviewDate.toDateString());
+      });
+    });
+
+    // 生成本周的7天数据
+    return ['日', '一', '二', '三', '四', '五', '六'].map((day, index) => {
+      const targetDate = new Date(today);
+      const daysAgo = (currentDayOfWeek - index + 7) % 7;
+      targetDate.setDate(today.getDate() - daysAgo);
+      targetDate.setHours(0, 0, 0, 0);
+
+      const isToday = index === currentDayOfWeek;
+      const hasLearned = learningDates.has(targetDate.toDateString());
+
+      let status: 'completed' | 'missed' | 'today' | 'future';
+      if (isToday) {
+        status = hasLearned ? 'completed' : 'today';
+      } else if (targetDate > today) {
+        status = 'future';
+      } else {
+        status = hasLearned ? 'completed' : 'missed';
+      }
+
+      return { day, status };
+    });
+  }, [learningRecords]);
 
   const menuItems = [
     { icon: 'person', label: '个人信息', path: '/profile/edit', type: 'nav' as const },
@@ -87,21 +194,29 @@ export default function Profile() {
             本周学习
           </h3>
           <div className="grid grid-cols-7 gap-2 text-center">
-            {['日', '一', '二', '三', '四', '五', '六'].map((day, index) => (
-              <div key={day}>
+            {weeklyData.map((item) => (
+              <div key={item.day}>
                 <div className="text-xs text-subtext-light dark:text-subtext-dark mb-1 font-chinese">
-                  {day}
+                  {item.day}
                 </div>
                 <div
                   className={`aspect-square rounded flex items-center justify-center text-xs font-bold ${
-                    index < 5
+                    item.status === 'completed'
                       ? 'bg-success text-white'
-                      : index === 5
+                      : item.status === 'missed'
                       ? 'bg-error/40 text-white'
-                      : 'bg-primary/20 text-primary ring-2 ring-primary'
+                      : item.status === 'today'
+                      ? 'bg-primary/20 text-primary ring-2 ring-primary'
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-400'
                   }`}
                 >
-                  {index < 5 ? '✓' : index === 5 ? '×' : '今'}
+                  {item.status === 'completed'
+                    ? '✓'
+                    : item.status === 'missed'
+                    ? '×'
+                    : item.status === 'today'
+                    ? '今'
+                    : '-'}
                 </div>
               </div>
             ))}
@@ -149,6 +264,7 @@ export default function Profile() {
       </main>
 
       <BottomNav />
+      {ModalComponent}
     </div>
   );
 }
