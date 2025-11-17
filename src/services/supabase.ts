@@ -106,13 +106,6 @@ export const authService = {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: profileData.email,
       password,
-      options: {
-        // 虽然 signInWithPassword 不需要 emailRedirectTo，
-        // 但我们确保 Supabase 客户端知道应用的 base URL
-        data: {
-          redirectUrl: getAuthRedirectUrl(),
-        },
-      },
     });
 
     if (error) throw error;
@@ -133,7 +126,7 @@ export const authService = {
 
   // 监听认证状态变化
   onAuthStateChange(callback: (user: User | null) => void) {
-    return supabase.auth.onAuthStateChange((event, session) => {
+    return supabase.auth.onAuthStateChange((_event, session) => {
       callback(session?.user ?? null);
     });
   },

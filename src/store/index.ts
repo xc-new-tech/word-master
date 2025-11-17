@@ -25,6 +25,18 @@ function getStorageKey(userId: string): string {
 // 同步状态
 export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
+// 持久化的状态（不包含同步状态等临时数据）
+interface PersistedState {
+  userProfile: UserProfile;
+  theme: 'light' | 'dark';
+  learningRecords: Record<string, LearningRecord>;
+  sequentialProgress: number;
+  currentWords: Word[];
+  currentIndex: number;
+  currentMode: 'sequential' | 'random' | 'smart' | 'sprint' | null;
+  statistics: Statistics;
+}
+
 interface AppState {
   // 当前登录用户（Supabase User ID）
   currentUser: string | null;
@@ -106,7 +118,7 @@ function reviveDates(obj: any): any {
 }
 
 // 自定义 storage，支持按用户ID存储
-const customStorage: PersistStorage<AppState> = {
+const customStorage: PersistStorage<PersistedState> = {
   getItem: (_name: string) => {
     const userId = getCurrentUserId();
     if (!userId) return null;
