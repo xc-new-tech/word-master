@@ -6,9 +6,29 @@ import { useToast } from '@/hooks/useToast';
 import { useModal } from '@/hooks/useModal';
 
 export default function Settings() {
-  const { userProfile, setUserProfile, theme, toggleTheme, learningRecords, currentUser } = useAppStore();
+  const {
+    userProfile,
+    setUserProfile,
+    theme,
+    toggleTheme,
+    learningRecords,
+    currentUser,
+    logout,
+    syncStatus,
+    lastSyncTime,
+    syncToCloud,
+  } = useAppStore();
   const { success, error, ToastComponent } = useToast();
   const { danger, ModalComponent } = useModal();
+
+  const handleManualSync = async () => {
+    try {
+      await syncToCloud();
+      success('数据同步成功！');
+    } catch (err) {
+      error('数据同步失败，请稍后重试');
+    }
+  };
 
   const handleDailyGoalChange = (goal: number) => {
     setUserProfile({ dailyGoal: goal });
@@ -365,6 +385,104 @@ export default function Settings() {
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-error">delete</span>
                   <p className="text-sm font-medium text-error font-chinese">清除所有数据</p>
+                </div>
+                <span className="material-symbols-outlined text-subtext-light dark:text-subtext-dark">
+                  chevron_right
+                </span>
+              </button>
+            </div>
+          </Card>
+        </div>
+
+        {/* 账号管理 */}
+        <div>
+          <h3 className="text-sm font-bold text-subtext-light dark:text-subtext-dark mb-3 font-chinese">
+            账号管理
+          </h3>
+          <Card>
+            <div className="space-y-3">
+              {/* 云端同步状态 */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-text-light dark:text-text-dark">
+                    cloud_sync
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-text-light dark:text-text-dark font-chinese">
+                      云端同步
+                    </p>
+                    <p className="text-xs text-subtext-light dark:text-subtext-dark">
+                      {syncStatus === 'syncing' && '正在同步...'}
+                      {syncStatus === 'success' && lastSyncTime && `上次同步: ${new Date(lastSyncTime).toLocaleTimeString()}`}
+                      {syncStatus === 'error' && '同步失败'}
+                      {syncStatus === 'idle' && '待同步'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {syncStatus === 'syncing' && (
+                    <svg className="animate-spin h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  )}
+                  {syncStatus === 'success' && (
+                    <span className="material-symbols-outlined text-success text-lg">check_circle</span>
+                  )}
+                  {syncStatus === 'error' && (
+                    <span className="material-symbols-outlined text-error text-lg">error</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="h-px bg-border-light dark:bg-border-dark" />
+
+              {/* 手动同步按钮 */}
+              <button
+                onClick={handleManualSync}
+                disabled={syncStatus === 'syncing'}
+                className="flex w-full items-center justify-between hover:opacity-70 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-primary">sync</span>
+                  <p className="text-sm font-medium text-text-light dark:text-text-dark font-chinese">
+                    立即同步
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-subtext-light dark:text-subtext-dark">
+                  chevron_right
+                </span>
+              </button>
+
+              <div className="h-px bg-border-light dark:bg-border-dark" />
+
+              {/* 当前账号 */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-text-light dark:text-text-dark">
+                    person
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-text-light dark:text-text-dark font-chinese">
+                      当前账号ID
+                    </p>
+                    <p className="text-xs text-subtext-light dark:text-subtext-dark font-mono">
+                      {currentUser?.substring(0, 8)}...
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-px bg-border-light dark:bg-border-dark" />
+
+              {/* 退出登录 */}
+              <button
+                onClick={logout}
+                className="flex w-full items-center justify-between hover:opacity-70 transition-opacity"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-warning">logout</span>
+                  <p className="text-sm font-medium text-warning font-chinese">退出登录</p>
                 </div>
                 <span className="material-symbols-outlined text-subtext-light dark:text-subtext-dark">
                   chevron_right

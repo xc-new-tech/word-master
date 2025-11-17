@@ -1,60 +1,46 @@
 import { create } from 'zustand';
 import { persist, PersistStorage } from 'zustand/middleware';
-import { Word, LearningRecord, UserProfile, Statistics, UserAccount } from '@/types';
+import { Word, LearningRecord, UserProfile, Statistics } from '@/types';
+import { authService, dataService } from '@/services/supabase';
 
-// 账号管理辅助函数
-const CURRENT_USER_KEY = 'word-master-current-user';
-const ACCOUNTS_KEY = 'word-master-accounts';
+// 当前用户ID的localStorage key
+const CURRENT_USER_KEY = 'word-master-current-user-id';
 
-function getCurrentUser(): string | null {
+function getCurrentUserId(): string | null {
   return localStorage.getItem(CURRENT_USER_KEY);
 }
 
-function setCurrentUser(username: string | null) {
-  if (username) {
-    localStorage.setItem(CURRENT_USER_KEY, username);
+function setCurrentUserId(userId: string | null) {
+  if (userId) {
+    localStorage.setItem(CURRENT_USER_KEY, userId);
   } else {
     localStorage.removeItem(CURRENT_USER_KEY);
   }
 }
 
-function getStorageKey(username: string): string {
-  return `word-master-storage-${username}`;
+function getStorageKey(userId: string): string {
+  return `word-master-storage-${userId}`;
 }
 
-function getAllAccounts(): UserAccount[] {
-  const accountsJson = localStorage.getItem(ACCOUNTS_KEY);
-  if (!accountsJson) return [];
-  try {
-    return JSON.parse(accountsJson);
-  } catch {
-    return [];
-  }
-}
-
-function saveAccount(username: string) {
-  const accounts = getAllAccounts();
-  const existingAccount = accounts.find(acc => acc.username === username);
-
-  if (existingAccount) {
-    existingAccount.lastLoginAt = new Date();
-  } else {
-    accounts.push({
-      username,
-      displayName: username,
-      createdAt: new Date(),
-      lastLoginAt: new Date(),
-    });
-  }
-
-  localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
-}
+// 同步状态
+export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
 interface AppState {
-  // 当前登录用户
+  // 当前登录用户（Supabase User ID）
   currentUser: string | null;
-  login: (username: string) => void;
+  setCurrentUser: (userId: string | null) => void;
   logout: () => void;
+
+  // 同步状态
+  syncStatus: SyncStatus;
+  lastSyncTime: Date | null;
+  syncError: string | null;
+  setSyncStatus: (status: SyncStatus, error?: string) => void;
+  setLastSyncTime: (time: Date) => void;
+
+  // 数据同步方法
+  syncToCloud: () => Promise<void>;
+  syncFromCloud: () => Promise<void>;
 
   // 用户配置
   userProfile: UserProfile;
@@ -85,28 +71,27 @@ interface AppState {
   // 统计数据
   statistics: Statistics;
   updateStatistics: (stats: Partial<Statistics>) => void;
+
+  // 重置所有数据（用于登出）
+  resetData: () => void;
 }
 
-// Date反序列化辅助函数：递归遍历对象，将ISO日期字符串转换为Date对象
+// Date反序列化辅助函数
 function reviveDates(obj: any): any {
   if (obj === null || obj === undefined) return obj;
 
-  // 如果是字符串且匹配ISO 8601日期格式
   if (typeof obj === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(obj)) {
     const date = new Date(obj);
-    // 验证日期是否有效
     if (!isNaN(date.getTime())) {
       return date;
     }
     return obj;
   }
 
-  // 如果是数组，递归处理每个元素
   if (Array.isArray(obj)) {
     return obj.map(item => reviveDates(item));
   }
 
-  // 如果是对象，递归处理每个属性
   if (typeof obj === 'object') {
     const result: any = {};
     for (const key in obj) {
@@ -120,80 +105,199 @@ function reviveDates(obj: any): any {
   return obj;
 }
 
-// 自定义 storage，支持动态切换用户的 storage key
+// 自定义 storage，支持按用户ID存储
 const customStorage: PersistStorage<AppState> = {
   getItem: (_name: string) => {
-    const user = getCurrentUser();
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    const userId = getCurrentUserId();
+    if (!userId) return null;
+
+    const actualKey = getStorageKey(userId);
     const value = localStorage.getItem(actualKey);
     if (!value) return null;
+
     try {
       const parsed = JSON.parse(value);
-      // 反序列化Date对象
       return reviveDates(parsed);
     } catch {
       return null;
     }
   },
   setItem: (_name: string, value) => {
-    const user = getCurrentUser();
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    const userId = getCurrentUserId();
+    if (!userId) return;
+
+    const actualKey = getStorageKey(userId);
     localStorage.setItem(actualKey, JSON.stringify(value));
   },
   removeItem: (_name: string) => {
-    const user = getCurrentUser();
-    const actualKey = user ? getStorageKey(user) : 'word-master-storage-guest';
+    const userId = getCurrentUserId();
+    if (!userId) return;
+
+    const actualKey = getStorageKey(userId);
     localStorage.removeItem(actualKey);
+  },
+};
+
+// 默认状态
+const defaultState = {
+  userProfile: {
+    grade: '初三' as const,
+    dailyGoal: 20,
+    preferredMode: 'smart' as const,
+    settings: {
+      pronunciation: 'uk' as const,
+      fontSize: 'medium' as const,
+      theme: 'auto' as const,
+      soundEnabled: true,
+    },
+  },
+  theme: 'light' as const,
+  learningRecords: {},
+  sequentialProgress: 0,
+  currentWords: [],
+  currentIndex: 0,
+  currentMode: null,
+  statistics: {
+    totalWords: 0,
+    masteredWords: 0,
+    todayNewWords: 0,
+    todayReviews: 0,
+    streak: 0,
+    accuracy: 0,
   },
 };
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       // 当前登录用户
-      currentUser: getCurrentUser(),
-      login: (username: string) => {
-        if (!username || username.trim() === '') return;
-        const trimmedUsername = username.trim();
-        saveAccount(trimmedUsername);
-        setCurrentUser(trimmedUsername);
-        set({ currentUser: trimmedUsername });
-        // 切换用户后重新加载页面以加载该用户的数据
-        window.location.reload();
-      },
-      logout: () => {
-        setCurrentUser(null);
-        set({ currentUser: null });
-        // 退出登录后重新加载页面
-        window.location.reload();
+      currentUser: getCurrentUserId(),
+      setCurrentUser: (userId: string | null) => {
+        setCurrentUserId(userId);
+        set({ currentUser: userId });
       },
 
-      // 默认用户配置
-      userProfile: {
-        grade: '初三',
-        dailyGoal: 20,
-        preferredMode: 'smart',
-        settings: {
-          pronunciation: 'uk',
-          fontSize: 'medium',
-          theme: 'auto',
-          soundEnabled: true,
-        },
+      logout: async () => {
+        try {
+          await authService.signOut();
+        } catch (error) {
+          console.error('退出登录失败:', error);
+        } finally {
+          setCurrentUserId(null);
+          set({
+            currentUser: null,
+            syncStatus: 'idle',
+            lastSyncTime: null,
+            syncError: null,
+          });
+          window.location.reload();
+        }
       },
+
+      // 同步状态
+      syncStatus: 'idle',
+      lastSyncTime: null,
+      syncError: null,
+      setSyncStatus: (status: SyncStatus, error?: string) => {
+        set({ syncStatus: status, syncError: error || null });
+      },
+      setLastSyncTime: (time: Date) => {
+        set({ lastSyncTime: time });
+      },
+
+      // 同步到云端
+      syncToCloud: async () => {
+        const state = get();
+        const { currentUser, userProfile, learningRecords, statistics, sequentialProgress } = state;
+
+        if (!currentUser) {
+          console.warn('未登录，无法同步到云端');
+          return;
+        }
+
+        try {
+          set({ syncStatus: 'syncing' });
+
+          await dataService.uploadUserData(
+            currentUser,
+            userProfile,
+            learningRecords,
+            statistics,
+            sequentialProgress
+          );
+
+          set({
+            syncStatus: 'success',
+            lastSyncTime: new Date(),
+            syncError: null,
+          });
+
+          console.log('数据同步到云端成功');
+        } catch (error: any) {
+          console.error('同步到云端失败:', error);
+          set({
+            syncStatus: 'error',
+            syncError: error.message || '同步失败',
+          });
+        }
+      },
+
+      // 从云端同步
+      syncFromCloud: async () => {
+        const { currentUser } = get();
+
+        if (!currentUser) {
+          console.warn('未登录，无法从云端同步');
+          return;
+        }
+
+        try {
+          set({ syncStatus: 'syncing' });
+
+          const cloudData = await dataService.downloadUserData(currentUser);
+
+          if (cloudData) {
+            // 合并云端数据到本地
+            set({
+              userProfile: cloudData.user_profile,
+              learningRecords: cloudData.learning_records,
+              statistics: cloudData.statistics,
+              sequentialProgress: cloudData.sequential_progress,
+              syncStatus: 'success',
+              lastSyncTime: new Date(cloudData.last_synced_at),
+              syncError: null,
+            });
+
+            console.log('从云端同步数据成功');
+          } else {
+            // 云端没有数据，上传本地数据
+            console.log('云端无数据，上传本地数据');
+            await get().syncToCloud();
+          }
+        } catch (error: any) {
+          console.error('从云端同步失败:', error);
+          set({
+            syncStatus: 'error',
+            syncError: error.message || '同步失败',
+          });
+        }
+      },
+
+      // 用户配置
+      ...defaultState,
+
       setUserProfile: (profile) =>
         set((state) => ({
           userProfile: { ...state.userProfile, ...profile },
         })),
 
       // 主题
-      theme: 'light',
       toggleTheme: () =>
         set((state) => ({
           theme: state.theme === 'light' ? 'dark' : 'light',
         })),
 
       // 学习记录
-      learningRecords: {},
       addLearningRecord: (record) =>
         set((state) => ({
           learningRecords: {
@@ -212,39 +316,38 @@ export const useAppStore = create<AppState>()(
           },
         })),
 
-      // 顺序学习进度（记录已学习到第几个单词）
-      sequentialProgress: 0,
+      // 顺序学习进度
       setSequentialProgress: (progress) => set({ sequentialProgress: progress }),
       resetSequentialProgress: () => set({ sequentialProgress: 0 }),
 
       // 当前学习会话
-      currentWords: [],
       setCurrentWords: (words) => set({ currentWords: words }),
-      currentIndex: 0,
       setCurrentIndex: (index) => set({ currentIndex: index }),
-      currentMode: null,
       setCurrentMode: (mode) => set({ currentMode: mode }),
 
       // 统计数据
-      statistics: {
-        totalWords: 0,
-        masteredWords: 0,
-        todayNewWords: 0,
-        todayReviews: 0,
-        streak: 0,
-        accuracy: 0,
-      },
       updateStatistics: (stats) =>
         set((state) => ({
           statistics: { ...state.statistics, ...stats },
         })),
+
+      // 重置数据
+      resetData: () => set(defaultState),
     }),
     {
-      name: 'word-master-storage', // 这个 name 只是占位符，实际的 key 由 customStorage 动态决定
+      name: 'word-master-storage',
       storage: customStorage,
+      // 只持久化必要的数据，同步状态不持久化
+      partialize: (state) => ({
+        userProfile: state.userProfile,
+        theme: state.theme,
+        learningRecords: state.learningRecords,
+        sequentialProgress: state.sequentialProgress,
+        currentWords: state.currentWords,
+        currentIndex: state.currentIndex,
+        currentMode: state.currentMode,
+        statistics: state.statistics,
+      }),
     }
   )
 );
-
-// 导出账号管理函数供组件使用
-export { getAllAccounts };

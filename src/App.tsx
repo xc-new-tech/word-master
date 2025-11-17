@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
+import { authService } from '@/services/supabase';
+import { useAutoSync } from '@/hooks/useAutoSync';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 // 页面组件
@@ -50,10 +52,38 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
-  const { theme } = useAppStore();
+  const { theme, setCurrentUser, syncFromCloud } = useAppStore();
 
+  // 启用自动同步
+  useAutoSync();
+
+  // 监听认证状态
   useEffect(() => {
-    // 应用主题到html元素
+    const { data: { subscription } } = authService.onAuthStateChange(async (user) => {
+      if (user) {
+        console.log('用户已登录:', user.id);
+        setCurrentUser(user.id);
+
+        // 登录后从云端同步数据
+        try {
+          await syncFromCloud();
+        } catch (error) {
+          console.error('登录后同步失败:', error);
+        }
+      } else {
+        console.log('用户未登录');
+        setCurrentUser(null);
+      }
+    });
+
+    // 组件卸载时取消订阅
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [setCurrentUser, syncFromCloud]);
+
+  // 应用主题
+  useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
