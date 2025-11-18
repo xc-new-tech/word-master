@@ -238,21 +238,33 @@ export default function Learning() {
                       </div>
                       {/* 底部描述文字 */}
                       <div className="absolute bottom-3 left-4 right-4 text-white text-center text-sm font-chinese font-medium drop-shadow-md">
-                        {currentWord.data.gameDescription && currentWord.data.gameDescription.length > 25
-                          ? currentWord.data.gameDescription.substring(0, 25) + '...'
-                          : currentWord.data.gameDescription || '点击卡片查看更多'}
+                        点击卡片查看语言游戏 →
                       </div>
                     </div>
 
-                    {/* 记忆提示 */}
-                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-l-4 border-amber-500">
-                      <h3 className="text-amber-700 dark:text-amber-400 text-sm font-bold mb-2 font-chinese">
-                        💡 记忆提示
-                      </h3>
-                      <p className="text-text-light dark:text-text-dark text-base leading-relaxed font-chinese">
-                        {currentWord.data.gameDescription || currentWord.data.memoryStory || '在语言游戏中理解单词的本质，通过真实场景建立记忆连接'}
-                      </p>
-                    </div>
+                    {/* 语言游戏描述 */}
+                    {currentWord.data.gameDescription && (
+                      <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 className="text-amber-700 dark:text-amber-400 text-sm font-bold mb-2 font-chinese">
+                          🎮 语言游戏
+                        </h3>
+                        <p className="text-text-light dark:text-text-dark text-base leading-relaxed font-chinese">
+                          {currentWord.data.gameDescription}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 记忆故事 */}
+                    {currentWord.data.memoryStory && (
+                      <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border-l-4 border-purple-500">
+                        <h3 className="text-purple-700 dark:text-purple-400 text-sm font-bold mb-2 font-chinese">
+                          💡 记忆故事
+                        </h3>
+                        <p className="text-text-light dark:text-text-dark text-base leading-relaxed font-chinese">
+                          {currentWord.data.memoryStory}
+                        </p>
+                      </div>
+                    )}
 
                     {/* 快速提示：点击翻转 */}
                     <div className="text-center text-subtext-light dark:text-subtext-dark text-sm font-chinese">
